@@ -1,6 +1,6 @@
 package jessy;
 
-public final class figures {
+public final class Figures {
 	public static final char PAWN = '\u2659';
 	public static final char KNIGHT  = '\u2658';
 	public static final char BISHOP  = '\u2657';
