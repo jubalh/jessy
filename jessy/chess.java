@@ -1,24 +1,16 @@
+package jessy;
+
 import static java.lang.System.out;
+import jessy.figures;
+import jessy.Board;
 
 public final class chess {
     private chess() { }
 
     public static void main(final String[] args) {
-		char [] [] ar = new char [8][8];
-
-		ar[1][2] = '\u2654';
-		System.out.println(ar.length);
-		drawBoard(ar);
+		Board board = new Board();
+		board.setFigure(1, 1, figures.KING);
+		board.drawBoard();
     }
-
-	public static void drawBoard(char[][] board) {
-		for ( char[] col : board ) {
-			for ( char row : col ) {
-				System.out.print("[" + row + " ]");
-			}
-			System.out.println();
-		}
-	}
-
 }
 
