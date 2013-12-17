@@ -2,7 +2,7 @@ package jessy;
 
 public final class Board {
 
-	private char [] [] matrix = new char [8][8];
+	private char [][] matrix = new char [8][8];
 
 	public boolean setFigure(int x, int y, final char figure) {
 		x--; y--;
