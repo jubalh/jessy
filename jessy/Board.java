@@ -48,7 +48,8 @@ public final class Board {
 		return ' '; //TODO: not correct. get back error or throw exception
 	}
 
-	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew, final char figure) {
+	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew) {
+		char figure = getFigure(xOld, yOld);
 		boolean ret = setFigure(xOld, xOld, ' ');
 		if (ret) {
 			ret = setFigure(xNew, xNew, figure);

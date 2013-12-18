@@ -21,8 +21,7 @@ public final class Chess {
 
 			if(input.length() > 0) {
 //				board.parse(input);
-//				board.moveFigure(1,1,3,3,Figures.PAWN);
-				System.out.println("Figure: "+ board.getFigure(3,3));
+				board.moveFigure(1,1,3,3);
 			}
 			board.drawBoard();
 		}
