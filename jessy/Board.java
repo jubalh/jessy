@@ -40,13 +40,41 @@ public final class Board {
 	}
 
 	public void drawBoard() {
+		System.out.print("   ");
+		for (int i = 0; i < 8; i++ ) {
+			char c = (char)('A'+i);
+			System.out.print(" "+ c + "  ");
+		}
+		System.out.printf("%n   ");
+		for (int i = 0; i < 8; i++ ) {
+			System.out.print("____");
+		}
+		System.out.println();
+
+		int colCount = 8;
+		// go through columns
 		for ( char[] col : matrix ) {
+			// print column number
+			System.out.print( colCount-- + "| " );
+			// go through rows
 			for ( char row : col ) {
 				if (row == '\0') { row = ' '; }
 				System.out.print("[" + row + " ]");
 			}
 			System.out.println();
 		}
+
+		System.out.printf("   ");
+		for (int i = 0; i < 8; i++ ) {
+			System.out.print("____");
+		}
+		System.out.println();
+		System.out.print("   ");
+		for (int i = 0; i < 8; i++ ) {
+			char c = (char)('A'+i);
+			System.out.print(" "+ c + "  ");
+		}
+		System.out.println();
 	}
 
 	// style: Nf8
