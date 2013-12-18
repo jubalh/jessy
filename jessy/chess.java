@@ -20,7 +20,8 @@ public final class Chess {
 			String input = SCANNER.nextLine();
 
 			if(input.length() > 0) {
-				board.parse(input);
+//				board.parse(input);
+				board.moveFigure(1,1,3,3,Figures.PAWN);
 			}
 			board.drawBoard();
 		}

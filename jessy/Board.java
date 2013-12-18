@@ -39,6 +39,14 @@ public final class Board {
 		return false;
 	}
 
+	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew, final char figure) {
+		boolean ret = setFigure(xOld, xOld, ' ');
+		if (ret) {
+			ret = setFigure(xNew, xNew, figure);
+		}
+		return ret;
+	}
+
 	public void drawBoard() {
 		// upper border
 		drawColumns();
