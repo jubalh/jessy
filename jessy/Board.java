@@ -6,6 +6,25 @@ public final class Board {
 
 	private char [][] matrix = new char [8][8];
 
+	public void init() {
+		int y=2;
+		for(int x=1; x <= matrix.length; x++ ) {
+			setFigure(x,y,Figures.PAWN);
+		}
+		y=7;
+		for(int x=1; x <= matrix.length; x++ ) {
+			setFigure(x,y,Figures.PAWN);
+		}
+		parse("Ra1"); parse("Ra8");
+		parse("Rh1"); parse("Rh8");
+		parse("Nb1"); parse("Nb8");
+		parse("Ng1"); parse("Ng8");
+		parse("Bc1"); parse("Bc8");
+		parse("Bf1"); parse("Bf8");
+		parse("Qd1"); parse("Qd8");
+		parse("Ke1"); parse("Ke8");
+	}
+
 	public boolean setFigure(int x, int y, final char figure) {
 		x--; y--;
 		if ( x >= 0 && x < matrix.length
