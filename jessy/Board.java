@@ -39,6 +39,15 @@ public final class Board {
 		return false;
 	}
 
+	public char getFigure(int x, int y) {
+		y = Math.abs(y - matrix[--x].length); //TODO: move in method
+		if ( x >= 0 && x < matrix.length
+				&& y >= 0 && y < matrix[x].length ) {
+			return matrix[x][y];
+		}
+		return ' '; //TODO: not correct. get back error or throw exception
+	}
+
 	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew, final char figure) {
 		boolean ret = setFigure(xOld, xOld, ' ');
 		if (ret) {
