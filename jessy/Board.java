@@ -26,7 +26,11 @@ public final class Board {
 	}
 
 	public boolean setFigure(int x, int y, final char figure) {
-		x--; y--;
+		// checkboard has 8 on top row
+		// turn numbers, so they correspond checkboard<->array
+		// and then both minus one to be arrays indizes
+		y = Math.abs(y - matrix[--x].length);
+		//set
 		if ( x >= 0 && x < matrix.length
 				&& y >= 0 && y < matrix[x].length ) {
 			matrix[y][x] = figure;
