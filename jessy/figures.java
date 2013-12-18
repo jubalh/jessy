@@ -24,6 +24,6 @@ public final class Figures {
 		case 'K':
 			return KING;
 		}
-		return PAWN;
+		return ' ';
 	}
 }

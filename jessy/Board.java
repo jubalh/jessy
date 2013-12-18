@@ -86,6 +86,8 @@ public final class Board {
 		// figure
 		if( isUpperCase(c) ) {
 			figure = Figures.getFigureByChar(c);
+			if (figure == ' ')
+				return;
 			index++;
 		} else {
 			figure = Figures.PAWN;
@@ -93,11 +95,15 @@ public final class Board {
 
 		// x
 		c = text.charAt(index);
+		if (!(c >= 'a' && c <= 'h'))
+			return;
 		int x = (int)c - (int)'a' + 1;
 		index++;
 
 		// y
 		c = text.charAt(index);
+		if (!(c >= '1' && c <= '8'))
+			return;
 		int y = c - (int)'0';
 
 		// out
