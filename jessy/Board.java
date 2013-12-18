@@ -111,7 +111,7 @@ public final class Board {
 		setFigure(x, y, figure);
 	}
 
-	public boolean isUpperCase(char c) {
+	private boolean isUpperCase(char c) {
 		int v = (int)c;
 		if( v >= (int)'A' && v <= (int)'Z') {
 			return true;
