@@ -1,6 +1,7 @@
 package jessy;
 
 public final class Figures {
+	public static final char EMPTY  = ' ';
 	public static final char PAWN = '\u2659';
 	public static final char KNIGHT  = '\u2658';
 	public static final char BISHOP  = '\u2657';
@@ -24,6 +25,6 @@ public final class Figures {
 		case 'K':
 			return KING;
 		}
-		return ' ';
+		return EMPTY;
 	}
 }

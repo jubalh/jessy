@@ -45,12 +45,12 @@ public final class Board {
 				&& y >= 0 && y < matrix[x].length ) {
 			return matrix[x][y];
 		}
-		return ' '; //TODO: not correct. get back error or throw exception
+		return Figure.EMPTY; //TODO: not correct. get back error or throw exception
 	}
 
 	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew) {
 		char figure = getFigure(xOld, yOld);
-		boolean ret = setFigure(xOld, xOld, ' ');
+		boolean ret = setFigure(xOld, xOld, Figures.EMPTY);
 		if (ret) {
 			ret = setFigure(xNew, xNew, figure);
 		}
@@ -71,7 +71,7 @@ public final class Board {
 			// go through rows
 			for ( char row : col ) {
 				// print field
-				if (row == '\0') { row = ' '; }
+				if (row == '\0') { row = Figures.EMPTY; }
 				System.out.print("[" + row + " ]");
 			}
 			System.out.println();
@@ -108,8 +108,8 @@ public final class Board {
 		// figure
 		if( isUpperCase(c) ) {
 			figure = Figures.getFigureByChar(c);
-			if (figure == ' ')
-				return;
+			if (figure == Figures.EMPTY)
+				return;//TODO: return doesnt seem right, check this
 			index++;
 		} else {
 			figure = Figures.PAWN;
