@@ -88,8 +88,7 @@ public final class Board {
 			// go through rows
 			for ( Figures row : col ) {
 				// print field
-//TODO: kann weg?				if (row == '\0') { row = Figures.nullEMPTY; }
-				System.out.print("[" + row + " ]");
+				System.out.print("[" + (row==null ? " " : row.toString()) + " ]");
 			}
 			System.out.println();
 		}
