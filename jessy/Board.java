@@ -1,20 +1,22 @@
 package jessy;
 
 import jessy.Figures;
+import jessy.Pawn;
 import jessy.NotAField;
 
 public final class Board {
 
-	private char [][] matrix = new char [8][8];
+	private Figures [][] matrix = new Figures [8][8];
 
 	public void init() {
+		System.out.println("well to here");
 		int y=2;
 		for(int x=1; x <= matrix.length; x++ ) {
-			setFigure(x,y,Figures.PAWN);
+			setFigure(x,y,(Figures)(new Pawn()));
 		}
 		y=7;
 		for(int x=1; x <= matrix.length; x++ ) {
-			setFigure(x,y,Figures.PAWN);
+			setFigure(x,y,(Figures)(new Pawn()));
 		}
 		parse("Ra1"); parse("Ra8");
 		parse("Rh1"); parse("Rh8");
@@ -30,7 +32,6 @@ public final class Board {
 			// checkboard has 8 on top row
 			// turn numbers, so they correspond checkboard<->array
 			// and then both minus one to be arrays indizes
-			y = Math.abs(y - matrix[--x].length);
 			if ( x >= 0 && x < matrix.length
 					&& y >= 0 && y < matrix[x].length ) {
 				return true;
@@ -38,7 +39,7 @@ public final class Board {
 			return false;
 	}
 
-	public boolean setFigure(int x, int y, final char figure) {
+	public boolean setFigure(int x, int y, final Figures figure) {
 		if ( checkBoundaries(x, y) ) {
 			matrix[y][x] = figure;
 			return true;
@@ -46,22 +47,21 @@ public final class Board {
 		return false;
 	}
 
-	public char getFigure(int x, int y) throws NotAField {
+	public Figures getFigure(int x, int y) throws NotAField {
 		if ( checkBoundaries(x, y) ) {
 			return matrix[x][y];
 		} else {
 			throw new NotAField(x,y);
-			return ' ';
 		}
 	}
 
 	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew) {
-		char figure;
+		Figures figure;
 		boolean ret = false;
 
 		try {
 			figure = getFigure(xOld, yOld);
-			ret = setFigure(xOld, xOld, Figures.EMPTY);
+			ret = setFigure(xOld, xOld, null);
 			if (ret) {
 				ret = setFigure(xNew, xNew, figure);
 			}
@@ -79,13 +79,13 @@ public final class Board {
 
 		int colCount = 8;
 		// go through columns
-		for ( char[] col : matrix ) {
+		for ( Figures[] col : matrix ) {
 			// left border
 			System.out.print( colCount-- + "| " );
 			// go through rows
-			for ( char row : col ) {
+			for ( Figures row : col ) {
 				// print field
-				if (row == '\0') { row = Figures.EMPTY; }
+//TODO: kann weg?				if (row == '\0') { row = Figures.nullEMPTY; }
 				System.out.print("[" + row + " ]");
 			}
 			System.out.println();
@@ -113,20 +113,39 @@ public final class Board {
 		System.out.println();
 	}
 
+	private Figures getFigureByChar( final char c ) {
+		switch (c) {
+		case 'P':
+		case '\0':
+			return new Pawn();
+		case 'N':
+			return new Knight();
+		case 'B':
+			return new Bishop();
+		case 'R':
+			return new Rook();
+		case 'Q':
+			return new Queen();
+		case 'K':
+			return new King();
+		}
+		return null;
+	}
+
 	// style: Nf8
 	public void parse(String text) {
-		char figure;
+		Figures figure;
 		int index=0;
 		char c = text.charAt(index);
 
 		// figure
 		if( isUpperCase(c) ) {
-			figure = Figures.getFigureByChar(c);
-			if (figure == Figures.EMPTY)
+			figure = getFigureByChar(c);
+			if (figure == null)
 				return;//TODO: return doesnt seem right, check this
 			index++;
 		} else {
-			figure = Figures.PAWN;
+			figure = new Pawn();
 		}
 
 		// x
