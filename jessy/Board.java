@@ -32,6 +32,7 @@ public final class Board {
 			// checkboard has 8 on top row
 			// turn numbers, so they correspond checkboard<->array
 			// and then both minus one to be arrays indizes
+			y = Math.abs(y - matrix[--x].length);
 			if ( x >= 0 && x < matrix.length
 					&& y >= 0 && y < matrix[x].length ) {
 				return true;
@@ -41,6 +42,7 @@ public final class Board {
 
 	public boolean setFigure(int x, int y, final Figures figure) {
 		if ( checkBoundaries(x, y) ) {
+			y = Math.abs(y - matrix[--x].length);//TODO: check this
 			matrix[y][x] = figure;
 			return true;
 		}
@@ -49,6 +51,7 @@ public final class Board {
 
 	public Figures getFigure(int x, int y) throws NotAField {
 		if ( checkBoundaries(x, y) ) {
+			y = Math.abs(y - matrix[--x].length);//TODO: check this
 			return matrix[x][y];
 		} else {
 			throw new NotAField(x,y);
