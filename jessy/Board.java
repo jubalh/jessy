@@ -1,6 +1,7 @@
 package jessy;
 
 import jessy.Figures;
+import jessy.NotAField;
 
 public final class Board {
 
@@ -39,20 +40,28 @@ public final class Board {
 		return false;
 	}
 
-	public char getFigure(int x, int y) {
-		y = Math.abs(y - matrix[--x].length); //TODO: move in method
-		if ( x >= 0 && x < matrix.length
-				&& y >= 0 && y < matrix[x].length ) {
-			return matrix[x][y];
-		}
-		return Figure.EMPTY; //TODO: not correct. get back error or throw exception
+	public char getFigure(int x, int y) throws NotAField {
+			y = Math.abs(y - matrix[--x].length); //TODO: move in method
+			if ( x >= 0 && x < matrix.length
+					&& y >= 0 && y < matrix[x].length ) {
+				return matrix[x][y];
+			} else {
+				throw new NotAField(x,y);
+			}
 	}
 
 	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew) {
-		char figure = getFigure(xOld, yOld);
-		boolean ret = setFigure(xOld, xOld, Figures.EMPTY);
-		if (ret) {
-			ret = setFigure(xNew, xNew, figure);
+		char figure;
+		boolean ret = false;
+
+		try {
+			figure = getFigure(xOld, yOld);
+			ret = setFigure(xOld, xOld, Figures.EMPTY);
+			if (ret) {
+				ret = setFigure(xNew, xNew, figure);
+			}
+		} catch (Exception ex) {
+			//log
 		}
 		return ret;
 	}
