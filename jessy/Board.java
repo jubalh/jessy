@@ -26,14 +26,20 @@ public final class Board {
 		parse("Ke1"); parse("Ke8");
 	}
 
+	private boolean checkBoundaries(int x, int y) {
+			// checkboard has 8 on top row
+			// turn numbers, so they correspond checkboard<->array
+			// and then both minus one to be arrays indizes
+			y = Math.abs(y - matrix[--x].length);
+			if ( x >= 0 && x < matrix.length
+					&& y >= 0 && y < matrix[x].length ) {
+				return true;
+			}
+			return false;
+	}
+
 	public boolean setFigure(int x, int y, final char figure) {
-		// checkboard has 8 on top row
-		// turn numbers, so they correspond checkboard<->array
-		// and then both minus one to be arrays indizes
-		y = Math.abs(y - matrix[--x].length);
-		//set
-		if ( x >= 0 && x < matrix.length
-				&& y >= 0 && y < matrix[x].length ) {
+		if ( checkBoundaries(x, y) ) {
 			matrix[y][x] = figure;
 			return true;
 		}
@@ -41,13 +47,12 @@ public final class Board {
 	}
 
 	public char getFigure(int x, int y) throws NotAField {
-			y = Math.abs(y - matrix[--x].length); //TODO: move in method
-			if ( x >= 0 && x < matrix.length
-					&& y >= 0 && y < matrix[x].length ) {
-				return matrix[x][y];
-			} else {
-				throw new NotAField(x,y);
-			}
+		if ( checkBoundaries(x, y) ) {
+			return matrix[x][y];
+		} else {
+			throw new NotAField(x,y);
+			return ' ';
+		}
 	}
 
 	public boolean moveFigure(final int xOld, final int yOld, final int xNew, final int yNew) {
