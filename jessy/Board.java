@@ -144,7 +144,7 @@ public final class Board {
 		if( isUpperCase(c) ) {
 			figure = getFigureByChar(c);
 			if (figure == null)
-				return;//TODO: return doesnt seem right, check this
+				return;
 			index++;
 		} else {
 			figure = new Pawn();
