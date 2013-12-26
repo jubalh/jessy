@@ -3,7 +3,6 @@ package jessy;
 import jessy.Color;
 
 public abstract class Figures {
-	//public abstract boolean move();
 	protected final int BLACK_SUMMAND = 6;
 	private Color color;
 
@@ -37,4 +36,5 @@ public abstract class Figures {
 
 	// force to implement this
 	protected abstract char getBasicUnicode();
+	public abstract boolean move(Coord coordOld, Coord coordNew);
 }
