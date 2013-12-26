@@ -15,4 +15,8 @@ public class Knight extends Figures {
 	protected char getBasicUnicode() {
 		return '\u2658';
 	}
+
+	public boolean move(Coord coordOld, Coord coordNew) {
+		return true; //edit here for issue #1
+	}
 }

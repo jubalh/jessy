@@ -16,4 +16,7 @@ public class Pawn extends Figures {
 		return '\u2659';
 	}
 
+	public boolean move(Coord coordOld, Coord coordNew) {
+		return true; //edit here for issue #1
+	}
 }
