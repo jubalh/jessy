@@ -5,6 +5,7 @@ import jessy.Pawn;
 import jessy.NotAField;
 import jessy.Coord;
 import jessy.Color;
+import jessy.ParseHelper;
 
 public final class Board {
 
@@ -78,9 +79,9 @@ public final class Board {
 
 		try {
 			figure = getFigure(xOld, yOld);
-			ret = setFigure(xOld, xOld, null);
+			ret = setFigure(xOld, yOld, null);
 			if (ret) {
-				ret = setFigure(xNew, xNew, figure);
+				ret = setFigure(xNew, yNew, figure);
 			}
 		} catch (Exception ex) {
 			//log
@@ -148,38 +149,60 @@ public final class Board {
 		return null;
 	}
 
-	// style: Nf8
-	public void parse(String text) {
-		Figures figure;
+	private int parseFigurePos(String text, ParseHelper pa) {
 		int index=0;
 		char c = text.charAt(index);
 
 		// figure
 		if( isUpperCase(c) ) {
-			figure = getFigureByChar(c);
-			if (figure == null)
-				return;
+			pa.figure = getFigureByChar(c);
+			if (pa.figure == null)
+				return index; //TODO Exception
 			index++;
 		} else {
-			figure = new Pawn();
+			pa.figure = new Pawn();
 		}
+
+		pa.coord = new Coord();
 
 		// x
 		c = text.charAt(index);
 		if (!(c >= 'a' && c <= 'h'))
-			return;
-		int x = (int)c - (int)'a' + 1;
+			return index; //TODO Exception
+		pa.coord.x = (int)c - (int)'a' + 1;
 		index++;
 
 		// y
 		c = text.charAt(index);
 		if (!(c >= '1' && c <= '8'))
-			return;
-		int y = c - (int)'0';
+			return index; //TODO Exception
+		pa.coord.y = c - (int)'0';
+		index++;
+		return index;
+	}
 
-		// out
-		System.out.println("x: "+x+" y: "+y+" figure: "+figure);
-		setFigure(x, y, figure);
+	// style: Nf8
+	public void parse(String text) {
+		ParseHelper pa = new ParseHelper();
+		int index;
+
+		index = parseFigurePos(text, pa);
+
+		if ( text.length() <= index ) {
+			System.out.println("x: "+pa.coord.x
+					+" y: "+pa.coord.y
+					+" figure: "+pa.figure);
+			setFigure(pa.coord.x, pa.coord.y, pa.figure);
+			return;
+		}
+
+		char c = text.charAt(index);
+		if (c == '-' ) {
+			String sub = text.substring(++index);
+			ParseHelper pa2 = new ParseHelper();
+			index = parseFigurePos(sub, pa2);
+			moveFigure(pa.coord.x, pa.coord.y, pa2.coord.x, pa2.coord.y );
+		}
 	}
 
 	private boolean isUpperCase(char c) {
