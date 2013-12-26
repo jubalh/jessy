@@ -11,14 +11,17 @@ public final class Board {
 	private Figures [][] matrix = new Figures [8][8];
 
 	public void init() {
-		int y=7;
+		// white pawns
+		int y=2;
 		for(int x=1; x <= matrix.length; x++ ) {
 			setFigure(x,y,(Figures)(new Pawn()));
 		}
-		y=2;
+		// black pawns
+		y=7;
 		for(int x=1; x <= matrix.length; x++ ) {
 			setFigure(x,y,(Figures)(new Pawn(Color.BLACK)));
 		}
+		// create rest of figures
 		parse("Ra1"); parse("Ra8");
 		parse("Rh1"); parse("Rh8");
 		parse("Nb1"); parse("Nb8");
@@ -27,6 +30,16 @@ public final class Board {
 		parse("Bf1"); parse("Bf8");
 		parse("Qd1"); parse("Qd8");
 		parse("Ke1"); parse("Ke8");
+		// make figures figures black
+		try {
+			for( int x=1; x <= matrix.length; x++ ) {
+				Figures figure;
+				figure = getFigure(x, 8);
+				figure.setColor(Color.BLACK);
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		}
 	}
 
 	private boolean checkBoundaries(Coord cor) {
