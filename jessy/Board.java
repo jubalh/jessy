@@ -3,13 +3,13 @@ package jessy;
 import jessy.Figures;
 import jessy.Pawn;
 import jessy.NotAField;
+import jessy.Coord;
 
 public final class Board {
 
 	private Figures [][] matrix = new Figures [8][8];
 
 	public void init() {
-		System.out.println("well to here");
 		int y=2;
 		for(int x=1; x <= matrix.length; x++ ) {
 			setFigure(x,y,(Figures)(new Pawn()));
@@ -28,33 +28,33 @@ public final class Board {
 		parse("Ke1"); parse("Ke8");
 	}
 
-	private boolean checkBoundaries(int x, int y) {
+	private boolean checkBoundaries(Coord cor) {
 			// checkboard has 8 on top row
 			// turn numbers, so they correspond checkboard<->array
 			// and then both minus one to be arrays indizes
-			y = Math.abs(y - matrix[--x].length);
-			if ( x >= 0 && x < matrix.length
-					&& y >= 0 && y < matrix[x].length ) {
+			cor.y = Math.abs(cor.y - matrix[--cor.x].length);
+			if ( cor.x >= 0 && cor.x < matrix.length
+					&& cor.y >= 0 && cor.y < matrix[cor.x].length ) {
 				return true;
 			}
 			return false;
 	}
 
-	public boolean setFigure(int x, int y, final Figures figure) {
-		if ( checkBoundaries(x, y) ) {
-			y = Math.abs(y - matrix[--x].length);//TODO: check this
-			matrix[y][x] = figure;
+	public boolean setFigure(final int x, final int y, final Figures figure) {
+		Coord cor = new Coord(x,y);
+		if ( checkBoundaries(cor) ) {
+			matrix[cor.y][cor.x] = figure;
 			return true;
 		}
 		return false;
 	}
 
-	public Figures getFigure(int x, int y) throws NotAField {
-		if ( checkBoundaries(x, y) ) {
-			y = Math.abs(y - matrix[--x].length);//TODO: check this
-			return matrix[x][y];
+	public Figures getFigure(final int x, final int y) throws NotAField {
+		Coord cor = new Coord(x,y);
+		if ( checkBoundaries(cor) ) {
+			return matrix[cor.y][cor.x];
 		} else {
-			throw new NotAField(x,y);
+			throw new NotAField(cor.x,cor.y);
 		}
 	}
 
