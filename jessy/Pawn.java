@@ -4,7 +4,16 @@ import jessy.Figures;
 
 public class Pawn extends Figures {
 
-	public  String toString() {
-		return "\u2659";
+	public Pawn() {
+		super();
 	}
+
+	public Pawn(Color color) {
+		super(color);
+	}
+
+	protected char getBasicUnicode() {
+		return '\u2659';
+	}
+
 }

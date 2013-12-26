@@ -4,7 +4,7 @@ import jessy.Figures;
 
 public class Bishop extends Figures {
 
-	public  String toString() {
-		return "\u2657";
+	protected char getBasicUnicode() {
+		return '\u2657';
 	}
 }

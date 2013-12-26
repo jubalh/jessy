@@ -4,7 +4,7 @@ import jessy.Figures;
 
 public class Knight extends Figures {
 
-	public  String toString() {
-		return "\u2658";
+	protected char getBasicUnicode() {
+		return '\u2658';
 	}
 }

@@ -4,19 +4,20 @@ import jessy.Figures;
 import jessy.Pawn;
 import jessy.NotAField;
 import jessy.Coord;
+import jessy.Color;
 
 public final class Board {
 
 	private Figures [][] matrix = new Figures [8][8];
 
 	public void init() {
-		int y=2;
+		int y=7;
 		for(int x=1; x <= matrix.length; x++ ) {
 			setFigure(x,y,(Figures)(new Pawn()));
 		}
-		y=7;
+		y=2;
 		for(int x=1; x <= matrix.length; x++ ) {
-			setFigure(x,y,(Figures)(new Pawn()));
+			setFigure(x,y,(Figures)(new Pawn(Color.BLACK)));
 		}
 		parse("Ra1"); parse("Ra8");
 		parse("Rh1"); parse("Rh8");

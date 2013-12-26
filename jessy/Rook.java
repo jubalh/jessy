@@ -4,7 +4,7 @@ import jessy.Figures;
 
 public class Rook extends Figures {
 
-	public  String toString() {
-		return "\u2656";
+	protected char getBasicUnicode() {
+		return '\u2656';
 	}
 }
