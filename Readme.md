@@ -11,6 +11,8 @@ I never intended to build a complete chess program.
 
 So you can put pieces on the board and move them around.
 
+![Example](https://raw.github.com/jubalh/jessy/master/example.gif)
+
 ## Bootstrapping ##
 
 Get it: `git clone https://github.com/jubalh/jessy`
