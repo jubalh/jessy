@@ -112,9 +112,11 @@ public final class Board {
 
 		try {
 			figure = getFigure(xOld, yOld);
-			ret = setFigure(xOld, yOld, null);
-			if (ret) {
-				ret = setFigure(xNew, yNew, figure);
+			if (figure.move(new Coord(xOld, yOld), new Coord(xNew, yNew))) {
+				ret = setFigure(xOld, yOld, null);
+				if (ret) {
+					ret = setFigure(xNew, yNew, figure);
+				}
 			}
 		} catch (Exception ex) {
 			// log ###ask someone for advice whether i use exception alright here.
@@ -204,7 +206,6 @@ public final class Board {
 	 * @param text text in form "Ka1"
 	 * @param pa ParseHelper object, to return figure and position
 	 * @return number of characters that got passed, length of the string if proper.
-	 * TODO: ParseHelper final, pa.figure = asf; work anyway? o_O
 	 */
 	private int parseFigurePos(final String text, final ParseHelper pa) {
 		int index = 0;
