@@ -90,6 +90,16 @@ public final class Board {
 	 */
 	public Figure getFigure(final int x, final int y) throws NotAField {
 		Coord cor = new Coord(x, y);
+		return getFigure(cor);
+	}
+	
+	/**
+	 * Gets the figure that is at position.
+	 * @param cor coordinate
+	 * @return Figure that sits at position
+	 * @throws NotAField if out of bound
+	 */
+	public Figure getFigure(final Coord cor) throws NotAField {
 		if (checkBoundaries(cor)) {
 			return matrix[cor.y][cor.x];
 		} else {
