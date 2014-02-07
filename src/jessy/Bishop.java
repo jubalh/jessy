@@ -1,8 +1,8 @@
 package jessy;
 
-import jessy.Figures;
+import jessy.Figure;
 
-public class Bishop extends Figures {
+public class Bishop extends Figure {
 
 	public Bishop() {
 		super();
@@ -17,6 +17,6 @@ public class Bishop extends Figures {
 	}
 
 	public boolean move(Coord coordOld, Coord coordNew) {
-		return true; //edit here for issue #1
+		return true; // edit here for issue #1
 	}
 }

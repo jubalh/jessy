@@ -1,8 +1,8 @@
 package jessy;
 
-import jessy.Figures;
+import jessy.Figure;
 
-public class Pawn extends Figures {
+public class Pawn extends Figure {
 
 	public Pawn() {
 		super();

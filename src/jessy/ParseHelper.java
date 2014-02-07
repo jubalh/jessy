@@ -1,9 +1,9 @@
 package jessy;
 
-import jessy.Figures;
+import jessy.Figure;
 import jessy.Coord;
 
 public class ParseHelper {
-	Figures figure;
+	Figure figure;
 	Coord coord;
 }
