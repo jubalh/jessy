@@ -16,14 +16,24 @@ public final class Pawn extends Figure {
 		return '\u2659';
 	}
 
-	public boolean move(Coord coordOld, Coord coordNew) {
-		// normal move
-		if ( ((coordNew.y == coordOld.y+1) || (coordOld.y == 2 && (coordNew.y == coordOld.y+2)) )
-					&& (coordOld.x == coordNew.x))
-			return true;
-		// attack move TODO: only if opponent stands there
-		if ( (coordNew.y == coordOld.y+1) && ((coordNew.x == coordOld.x+1) || (coordNew.x == coordOld.x-1)) )
-			return true;
+	public boolean move(Coord c, Coord n) {
+		if (n.x == c.x) {
+			int stepLength = 1;
+			// at start position, 2 steps are allowed
+			if (c.y == 2) {
+				stepLength++;
+			}
+			if (n.y > c.y && n.y <= c.y + stepLength) {
+				//TODO: check if field is empty
+				return true;
+			}
+		}
+		if ( (n.x == c.x + 1) || (n.x == c.x - 1) ) {
+			if (n.y == c.y + 1) {
+				//TODO: check if field is occupied by opponent
+				return true;
+			}
+		}
 		return false; //edit here for issue #1
 	}
 }
