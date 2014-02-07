@@ -2,7 +2,7 @@ package jessy;
 
 import jessy.Figure;
 
-public class Knight extends Figure {
+public final class Knight extends Figure {
 
 	public Knight() {
 		super();

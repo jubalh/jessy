@@ -28,22 +28,14 @@ public final class Board {
 		}
 
 		// create rest of figures
-		parse("Ra1");
-		parse("Ra8");
-		parse("Rh1");
-		parse("Rh8");
-		parse("Nb1");
-		parse("Nb8");
-		parse("Ng1");
-		parse("Ng8");
-		parse("Bc1");
-		parse("Bc8");
-		parse("Bf1");
-		parse("Bf8");
-		parse("Qd1");
-		parse("Qd8");
-		parse("Ke1");
-		parse("Ke8");
+		parse("Ra1"); parse("Ra8");
+		parse("Rh1"); parse("Rh8");
+		parse("Nb1"); parse("Nb8");
+		parse("Ng1"); parse("Ng8");
+		parse("Bc1"); parse("Bc8");
+		parse("Bf1"); parse("Bf8");
+		parse("Qd1"); parse("Qd8");
+		parse("Ke1"); parse("Ke8");
 		// make top figures figures black
 		try {
 			for (int x = 1; x <= matrix.length; x++) {
@@ -212,8 +204,9 @@ public final class Board {
 	 * @param text text in form "Ka1"
 	 * @param pa ParseHelper object, to return figure and position
 	 * @return number of characters that got passed, length of the string if proper.
+	 * TODO: ParseHelper final, pa.figure = asf; work anyway? o_O
 	 */
-	private int parseFigurePos(String text, ParseHelper pa) {
+	private int parseFigurePos(final String text, final ParseHelper pa) {
 		int index = 0;
 		char c = text.charAt(index);
 
