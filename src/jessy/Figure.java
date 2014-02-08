@@ -71,9 +71,10 @@ public abstract class Figure {
 	/**
 	 * Subclass needs to implement this according to movement abillities
 	 * of the figure.
+	 * @param board board model
 	 * @param coordOld current coordinates
 	 * @param coordNew new coordinates
 	 * @return true if successful.
 	 */
-	public abstract boolean move(Coord coordOld, Coord coordNew);
+	public abstract boolean move(Board board, Coord coordOld, Coord coordNew);
 }

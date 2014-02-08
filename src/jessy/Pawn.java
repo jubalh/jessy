@@ -16,7 +16,7 @@ public final class Pawn extends Figure {
 		return '\u2659';
 	}
 
-	public boolean move(Coord c, Coord n) {
+	public boolean move(Board board, Coord c, Coord n) {
 		if (n.x == c.x) {
 			int stepLength = 1;
 			// at start position, 2 steps are allowed
@@ -24,13 +24,29 @@ public final class Pawn extends Figure {
 				stepLength++;
 			}
 			if (n.y > c.y && n.y <= c.y + stepLength) {
-				//TODO: check if field is empty
-				return true;
+				try {
+					if ( board.getFigure(n) == null ) {
+						return true;
+					}
+				} catch (NotAField ex) {
+					//TODO: say something
+				}
 			}
 		}
 		if ( (n.x == c.x + 1) || (n.x == c.x - 1) ) {
 			if (n.y == c.y + 1) {
-				//TODO: check if field is occupied by opponent
+				try {
+					// field must be occupied by opponent
+					Figure figureOnNewField = board.getFigure(n);
+					if (figureOnNewField != null) {
+						if (figureOnNewField.getColor() != this.getColor()) {
+							// TODO: note that opponent got catched
+							return true;
+						}
+					}
+				} catch (NotAField ex) {
+					//TODO: say something
+				}
 				return true;
 			}
 		}
