@@ -20,6 +20,7 @@ public final class Chess {
      */
     public static void main(final String[] args) {
 		Board board = new Board();
+		CmdLine cmdBoard = new CmdLine(board);
 
 		board.init();
 
@@ -27,9 +28,9 @@ public final class Chess {
 			String input = SCANNER.nextLine();
 
 			if(input.length() > 0) {
-				board.parse(input);
+				cmdBoard.parse(input);
 			}
-			board.drawBoard();
+			cmdBoard.drawBoard();
 		}
     }
 }
