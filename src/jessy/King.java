@@ -16,7 +16,7 @@ public final class King extends Figure {
 		return '\u2654';
 	}
 
-	public boolean move(Board board, Coord coordOld, Coord coordNew) {
+	public boolean canMove(Board board, Coord coordOld, Coord coordNew) {
 		return true; //edit here for issue #1
 	}
 }

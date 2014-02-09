@@ -29,7 +29,7 @@ public final class Bishop extends Figure {
 		return true;
 	}
 
-	public boolean move(final Board board, Coord coordCurrent, Coord coordNew) {
+	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
 		try {
 			// up-right diagonal
 			if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {

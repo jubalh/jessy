@@ -88,5 +88,5 @@ public abstract class Figure {
 	 * @param coordNew new coordinates
 	 * @return true if successful.
 	 */
-	public abstract boolean move(Board board, Coord coordOld, Coord coordNew);
+	public abstract boolean canMove(Board board, Coord coordOld, Coord coordNew);
 }

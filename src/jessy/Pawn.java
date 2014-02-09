@@ -16,7 +16,7 @@ public final class Pawn extends Figure {
 		return '\u2659';
 	}
 
-	public boolean move(Board board, Coord c, Coord n) {
+	public boolean canMove(Board board, Coord c, Coord n) {
 		if (n.getX() == c.getX()) {
 			int stepLength = 1;
 			// at start position, 2 steps are allowed

@@ -129,7 +129,7 @@ public final class Board {
 
 		try {
 			figure = getFigure(coordOld);
-			if (figure.move(this, coordOld, coordNew)) {
+			if (figure.canMove(this, coordOld, coordNew)) {
 				ret = setFigure(coordOld, null);
 				if (ret) {
 					ret = setFigure(coordNew, figure);
