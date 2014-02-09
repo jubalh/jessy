@@ -48,6 +48,18 @@ public abstract class Figure {
 	public boolean isBlack() {
 		return this.color == Color.BLACK;
 	}
+	
+	/**
+	 * Checks if are from the same color.
+	 * @param figure to compare with
+	 * @return true if not the same color
+	 */
+	public boolean isOpponent(Figure figure) {
+		if (this.getColor() != figure.getColor()) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Prints figure according to color.
