@@ -98,7 +98,7 @@ public final class Coord {
 	}
 	
 	/**
-	 *  Decrase x and y coordinate by amount.
+	 *  Decrease x and y coordinate by amount.
 	 * @param amount
 	 */
 	public void decrease(final int amount) {

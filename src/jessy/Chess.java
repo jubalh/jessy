@@ -10,19 +10,10 @@ import java.awt.event.KeyListener;
  */
 import java.util.Scanner;
 
-public final class Chess implements KeyListener {
+public final class Chess {
     private Chess() { }
 
     private static final Scanner SCANNER = new Scanner(in);
-
-    public void keyPressed(KeyEvent ke) {
-    		}
-    public void keyTyped(KeyEvent ke) { 
-    		    if (ke.getKeyCode() == KeyEvent.VK_UP) {
-    		    	System.out.println("hey");
-    		    } }
-    public void keyReleased(KeyEvent ke) { }
-    
 
     /**
      * Start.
