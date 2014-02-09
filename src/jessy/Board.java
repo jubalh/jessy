@@ -57,9 +57,9 @@ public final class Board {
 		// checkboard has 8 on top row
 		// turn numbers, so they correspond checkboard<->array
 		// and then both minus one to be arrays indizes
-		cor.y = Math.abs(cor.y - matrix[--cor.x].length);
-		if (cor.x >= 0 && cor.x < matrix.length && cor.y >= 0
-				&& cor.y < matrix[cor.x].length) {
+		cor.setY(Math.abs(cor.getY() - matrix[cor.decreaseX(1)].length));
+		if (cor.getX() >= 0 && cor.getX() < matrix.length && cor.getY() >= 0
+				&& cor.getY() < matrix[cor.getX()].length) {
 			return true;
 		}
 		return false;
@@ -74,8 +74,18 @@ public final class Board {
 	 */
 	public boolean setFigure(final int x, final int y, final Figure figure) {
 		Coord cor = new Coord(x, y);
-		if (checkBoundaries(cor)) {
-			matrix[cor.y][cor.x] = figure;
+		return setFigure(cor, figure);
+	}
+
+	/**
+	 * Sets Figure on the board.
+	 * @param coord coordinate
+	 * @param figure Figure
+	 * @return true when not out of bound.
+	 */
+	public boolean setFigure(final Coord coord, final Figure figure) {
+		if (checkBoundaries(coord)) {
+			matrix[coord.getY()][coord.getX()] = figure;
 			return true;
 		}
 		return false;
@@ -101,31 +111,28 @@ public final class Board {
 	 */
 	public Figure getFigure(final Coord cor) throws NotAField {
 		if (checkBoundaries(cor)) {
-			return matrix[cor.y][cor.x];
+			return matrix[cor.getY()][cor.getX()];
 		} else {
-			throw new NotAField(cor.x, cor.y);
+			throw new NotAField(cor.getX(), cor.getY());
 		}
 	}
 
 	/**
 	 * Moves Figure from old position to new position.
-	 * @param xOld Current x-coordinate
-	 * @param yOld Current y-coordinate
-	 * @param xNew New x-coordinate
-	 * @param yNew New y-coordinate
+	 * @param coordOld current coordinates
+	 * @param coordNew distination
 	 * @return true if successfully set. false if out of bound.
 	 */
-	public boolean moveFigure(final int xOld, final int yOld, final int xNew,
-			final int yNew) {
+	public boolean moveFigure(final Coord coordOld, final Coord coordNew) {
 		Figure figure;
 		boolean ret = false;
 
 		try {
-			figure = getFigure(xOld, yOld);
-			if (figure.move(this, new Coord(xOld, yOld), new Coord(xNew, yNew))) {
-				ret = setFigure(xOld, yOld, null);
+			figure = getFigure(coordOld);
+			if (figure.move(this, coordOld, coordNew)) {
+				ret = setFigure(coordOld, null);
 				if (ret) {
-					ret = setFigure(xNew, yNew, figure);
+					ret = setFigure(coordNew, figure);
 				}
 			}
 		} catch (Exception ex) {

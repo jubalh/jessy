@@ -115,14 +115,14 @@ public class CmdLine {
 		c = text.charAt(index);
 		if (!(c >= 'a' && c <= 'h'))
 			return index; // TODO Exception
-		pa.coord.x = (int) c - (int) 'a' + 1;
+		pa.coord.setX((int) c - (int) 'a' + 1);
 		index++;
 
 		// y
 		c = text.charAt(index);
 		if (!(c >= '1' && c <= '8'))
 			return index; // TODO Exception
-		pa.coord.y = c - (int) '0';
+		pa.coord.setY(c - (int) '0');
 		index++;
 		return index;
 	}
@@ -142,7 +142,8 @@ public class CmdLine {
 
 		// if there is no more, just set the figure on the field
 		if (text.length() <= index) {
-			board.setFigure(pa.coord.x, pa.coord.y, pa.figure);
+			board.setFigure(pa.coord, pa.figure);
+
 			return;
 		}
 
@@ -154,7 +155,7 @@ public class CmdLine {
 			// get second figure + position
 			index = parseFigurePos(sub, pa2);
 			// move it there
-			board.moveFigure(pa.coord.x, pa.coord.y, pa2.coord.x, pa2.coord.y);
+			board.moveFigure(pa.coord, pa2.coord);
 		}
 	}
 

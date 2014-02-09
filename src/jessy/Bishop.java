@@ -32,8 +32,8 @@ public final class Bishop extends Figure {
 	public boolean move(final Board board, Coord coordCurrent, Coord coordNew) {
 		try {
 			// up-right diagonal
-			if (coordNew.x > coordCurrent.x && coordNew.y > coordCurrent.y) {
-				while (coordNew.x > coordCurrent.x && coordNew.y > coordCurrent.y) {
+			if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
+				while (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
 					coordCurrent.increase(1);
 					if (!isAllowedMove(board, coordCurrent, coordNew)) {
 						return false;
@@ -42,8 +42,8 @@ public final class Bishop extends Figure {
 				return true;
 			}
 			// up-left diagonal
-			else if (coordNew.x < coordCurrent.x && coordNew.y > coordCurrent.y) {
-				while (coordNew.x < coordCurrent.x && coordNew.y > coordCurrent.y) {
+			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
+				while (coordNew.getX() < coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
 					coordCurrent.increaseY(1);
 					coordCurrent.decreaseX(1);
 					if (!isAllowedMove(board, coordCurrent, coordNew)) {
@@ -53,8 +53,8 @@ public final class Bishop extends Figure {
 				return true;
 			}
 			// down-left diagonal
-			else if (coordNew.x < coordCurrent.x && coordNew.y < coordCurrent.y) {
-				while (coordNew.x < coordCurrent.x && coordNew.y < coordCurrent.y) {
+			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
+				while (coordNew.getX() < coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
 					coordCurrent.decreaseY(1);
 					coordCurrent.decreaseX(1);
 					if (!isAllowedMove(board, coordCurrent, coordNew)) {
@@ -64,8 +64,8 @@ public final class Bishop extends Figure {
 				return true;
 			}
 			// down-right diagonal
-			else if (coordNew.x > coordCurrent.x && coordNew.y < coordCurrent.y) {
-				while (coordNew.x > coordCurrent.x && coordNew.y < coordCurrent.y) {
+			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
+				while (coordNew.getX() > coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
 					coordCurrent.decreaseY(1);
 					coordCurrent.increaseX(1);
 					if (!isAllowedMove(board, coordCurrent, coordNew)) {

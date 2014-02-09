@@ -1,8 +1,8 @@
 package jessy;
 
 public final class Coord {
-	int x;
-	int y;
+	private int x;
+	private int y;
 
 	/**
 	 * Empty Constructor.

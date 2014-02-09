@@ -17,13 +17,13 @@ public final class Pawn extends Figure {
 	}
 
 	public boolean move(Board board, Coord c, Coord n) {
-		if (n.x == c.x) {
+		if (n.getX() == c.getX()) {
 			int stepLength = 1;
 			// at start position, 2 steps are allowed
-			if (c.y == 2) {
+			if (c.getY() == 2) {
 				stepLength++;
 			}
-			if (n.y > c.y && n.y <= c.y + stepLength) {
+			if (n.getY() > c.getY() && n.getY() <= c.getY() + stepLength) {
 				try {
 					if ( board.getFigure(n) == null ) {
 						return true;
@@ -33,8 +33,8 @@ public final class Pawn extends Figure {
 				}
 			}
 		}
-		if ( (n.x == c.x + 1) || (n.x == c.x - 1) ) {
-			if (n.y == c.y + 1) {
+		if ( (n.getX() == c.getX() + 1) || (n.getX() == c.getX() - 1) ) {
+			if (n.getY() == c.getY() + 1) {
 				try {
 					// field must be occupied by opponent
 					Figure figureOnNewField = board.getFigure(n);
