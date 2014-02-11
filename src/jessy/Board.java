@@ -1,8 +1,11 @@
 package jessy;
 
 public final class Board {
+	
+	private static final int BOARD_ROWS = 8;
+	private static final int BOARD_COLUMNS = 8;
 
-	private Figure[][] matrix = new Figure[8][8];
+	private Figure[][] matrix = new Figure[BOARD_ROWS][BOARD_COLUMNS];
 
 	/**
 	 * Places figures in the array (on the board).
