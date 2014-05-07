@@ -17,11 +17,13 @@ So you can put pieces on the board and move them around.
 
 Get it: `git clone https://github.com/jubalh/jessy`
 
-Change directory: `cd jessy`
+Change directory: `cd jessy/src`
 
 Compile: `javac jessy/*.java`
 
 Run: `java jessy.Chess` 
+
+Or open it with Eclipse.
 
 ## Use ##
 
