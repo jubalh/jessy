@@ -29,7 +29,7 @@ public final class Rook extends Figure {
 		return true;
 	}
 
-	public boolean canMove(Board board, Coord coordCurrent, Coord coordNew) {
+	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
 		try {
 			//up
 			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
