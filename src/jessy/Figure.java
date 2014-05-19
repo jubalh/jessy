@@ -72,24 +72,6 @@ public abstract class Figure {
 		return c + "";
 	}
 
-	// force to implement this
-	
-	/**
-	 * Subclass needs to implement this to get return the unicode character of the white figure.
-	 * @return unicode character of white figure
-	 */
-	protected abstract char getBasicUnicode();
-
-	/**
-	 * Subclass needs to implement this according to movement abillities
-	 * of the figure.
-	 * @param board board model
-	 * @param coordOld current coordinates
-	 * @param coordNew new coordinates
-	 * @return true if successful.
-	 */
-	public abstract boolean canMove(Board board, Coord coordOld, Coord coordNew);
-	
 	/**
 	 * Checks Figure independent constraints like is the destination field empty
 	 * or is it occupied by opponents figure. Doesn't check how a certain figure can move.
@@ -111,4 +93,22 @@ public abstract class Figure {
 		}
 		return true;
 	}
+
+	// force to implement this
+	
+	/**
+	 * Subclass needs to implement this to get return the unicode character of the white figure.
+	 * @return unicode character of white figure
+	 */
+	protected abstract char getBasicUnicode();
+
+	/**
+	 * Subclass needs to implement this according to movement abillities
+	 * of the figure.
+	 * @param board board model
+	 * @param coordOld current coordinates
+	 * @param coordNew new coordinates
+	 * @return true if successful.
+	 */
+	public abstract boolean canMove(Board board, Coord coordOld, Coord coordNew);
 }
