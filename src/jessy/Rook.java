@@ -16,7 +16,65 @@ public final class Rook extends Figure {
 		return '\u2656';
 	}
 
-	public boolean canMove(Board board, Coord coordOld, Coord coordNew) {
-		return true; //edit here for issue #1
+	private boolean isAllowedMove(final Board board, final Coord coordCurrent,
+			final Coord coordNew) throws NotAField {
+		if (!board.isEmptyField(coordCurrent)) {
+			if (coordCurrent.equals(coordNew)) {
+				if (board.isOpponentField(coordCurrent, this)) {
+					return true;//catching opponent
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+
+	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
+		try {
+			//up
+			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
+				while(coordNew.getY() > coordCurrent.getY()) {
+					coordCurrent.increaseY(1);
+					if (!isAllowedMove(board, coordCurrent, coordNew)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			//right
+			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
+				while(coordNew.getX() > coordCurrent.getX()) {
+					coordCurrent.increaseX(1);
+					if (!isAllowedMove(board, coordCurrent, coordNew)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			//down
+			else if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
+				while(coordNew.getY() < coordCurrent.getY()) {
+					coordCurrent.decreaseY(1);
+					if (!isAllowedMove(board, coordCurrent, coordNew)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			//left
+			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
+				while(coordNew.getX() < coordCurrent.getX()) {
+					coordCurrent.decreaseY(1);
+					if (!isAllowedMove(board, coordCurrent, coordNew)) {
+						return false;
+					}
+				}
+				return true;
+			}
+	    } catch (NotAField ex) {
+			// TODO
+		}
+
+		return false;
 	}
 }
