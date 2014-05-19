@@ -89,4 +89,26 @@ public abstract class Figure {
 	 * @return true if successful.
 	 */
 	public abstract boolean canMove(Board board, Coord coordOld, Coord coordNew);
+	
+	/**
+	 * Checks Figure independent constraints like is the destination field empty
+	 * or is it occupied by opponents figure. Doesn't check how a certain figure can move.
+	 * @param board board model
+	 * @param coordCurrent
+	 * @param coordNew
+	 * @return true is move is allowed
+	 * @throws NotAField
+	 */
+	public boolean isAllowedMove(final Board board, final Coord coordCurrent,
+			final Coord coordNew) throws NotAField {
+		if (!board.isEmptyField(coordCurrent)) {
+			if (coordCurrent.equals(coordNew)) {
+				if (board.isOpponentField(coordCurrent, this)) {
+					return true;//catching opponent
+				}
+			}
+			return false;
+		}
+		return true;
+	}
 }

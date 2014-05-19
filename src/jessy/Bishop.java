@@ -16,19 +16,6 @@ public final class Bishop extends Figure {
 		return '\u2657';
 	}
 
-	private boolean isAllowedMove(final Board board, final Coord coordCurrent,
-			final Coord coordNew) throws NotAField {
-		if (!board.isEmptyField(coordCurrent)) {
-			if (coordCurrent.equals(coordNew)) {
-				if (board.isOpponentField(coordCurrent, this)) {
-					return true;//catching opponent
-				}
-			}
-			return false;
-		}
-		return true;
-	}
-
 	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
 		try {
 			// up-right diagonal
