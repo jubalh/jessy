@@ -83,15 +83,10 @@ public abstract class Figure {
 	 */
 	public boolean isAllowedMove(final Board board, final Coord coordCurrent,
 			final Coord coordNew) throws NotAField {
-		if (!board.isEmptyField(coordCurrent)) {
-			if (coordCurrent.equals(coordNew)) {
-				if (board.isOpponentField(coordCurrent, this)) {
-					return true;//catching opponent
-				}
-			}
-			return false;
+		if(board.isEmptyField(coordNew) || board.isOpponentField(coordNew, this)) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	// force to implement this
