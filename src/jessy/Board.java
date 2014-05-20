@@ -19,6 +19,7 @@ public final class Board {
 
 		// rest of white figures
 		setFigure(1, 1, new Rook());
+
 		setFigure(8, 1, new Rook());
 		setFigure(2, 1, new Knight());
 		setFigure(7, 1, new Knight());
@@ -151,7 +152,7 @@ public final class Board {
 	 * @throws NotAField
 	 */
 	public boolean isEmptyField(final Coord coord) throws NotAField {
-		if ( getFigure(coord) == null)
+		if (getFigure(coord) == null)
 			return true;
 		return false;
 	}
