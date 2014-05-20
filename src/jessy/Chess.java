@@ -2,8 +2,9 @@ package jessy;
 
 import static java.lang.System.in;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import jessy.Board;
+import jessy.CmdLine;
+
 /**
  * Console Chess.
  * @author Michael Vetter
@@ -20,7 +21,6 @@ public final class Chess {
      * @param args cmdline params
      */
     public static void main(final String[] args) {
-//    	Chess c = new Chess();
 		Board board = new Board();
 		CmdLine cmdBoard = new CmdLine(board);
 
