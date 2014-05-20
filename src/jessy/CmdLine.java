@@ -115,7 +115,7 @@ public class CmdLine {
 			return index; // TODO Exception
 
 		pa.coord = new Coord();
-		String sub = text.substring(index);
+		String sub = text.substring(index, index+2);
 		if (pa.coord.setFromString(sub) ) {
 			index += 2;
 		}
