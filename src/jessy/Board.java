@@ -123,7 +123,7 @@ public final class Board {
 	/**
 	 * Moves Figure from old position to new position.
 	 * @param coordOld current coordinates
-	 * @param coordNew distination
+	 * @param coordNew destination
 	 * @return true if successfully set. false if out of bound.
 	 */
 	public boolean moveFigure(final Coord coordOld, final Coord coordNew) {
@@ -139,7 +139,7 @@ public final class Board {
 				}
 			}
 		} catch (Exception ex) {
-			// log ###ask someone for advice whether i use exception allright here.
+			// log ###ask someone for advice whether i use exception alright here.
 		}
 		return ret;
 	}
@@ -170,5 +170,23 @@ public final class Board {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns the number of columns the matrix has.
+	 * Should always be 8.
+	 * @return column count
+	 */
+	public static int getColumnsCount() {
+		return BOARD_COLUMNS;
+	}
+
+	/**
+	 * Returns the number of rows the matrix has.
+	 * Should always be 8.
+	 * @return row count
+	 */
+	public static int getRowsCount() {
+		return BOARD_ROWS;
 	}
 }
