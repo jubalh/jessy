@@ -109,21 +109,17 @@ public class CmdLine {
 			pa.figure = new Pawn();
 		}
 
+		c = text.charAt(index);
+
+		if (!((c >= 'a' && c <= 'h') || (c >= '1' && c <= '8')))
+			return index; // TODO Exception
+
 		pa.coord = new Coord();
+		String sub = text.substring(index);
+		if (pa.coord.setFromString(sub) ) {
+			index += 2;
+		}
 
-		// x
-		c = text.charAt(index);
-		if (!(c >= 'a' && c <= 'h'))
-			return index; // TODO Exception
-		pa.coord.setX((int) c - (int) 'a' + 1);
-		index++;
-
-		// y
-		c = text.charAt(index);
-		if (!(c >= '1' && c <= '8'))
-			return index; // TODO Exception
-		pa.coord.setY(c - (int) '0');
-		index++;
 		return index;
 	}
 

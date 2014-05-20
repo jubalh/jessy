@@ -19,6 +19,29 @@ public final class Coord {
 		setX(x);
 		setY(y);
 	}
+	
+	/**
+	 * Parses a String from format "A1" - "H8" into the correct coordinates.
+	 * Doesn't matter if letters are lower or upper case.
+	 * @param s String to parse
+	 */
+	public boolean setFromString(String s) {
+		s = s.toUpperCase();
+		if (s.length() == 2) {
+			if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
+				if (s.charAt(1) <= '8' && s.charAt(1) >= '1') {
+					int x = (int)s.charAt(0) - (int) 'A';
+					int y = (int)s.charAt(1) - (int) '0';
+					// turn around (because array 0-7 -> check board 8-1)
+					y = Math.abs(y - Board.getRowsCount());
+					setX(x);
+					setY(y);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Sets X coordinate.
