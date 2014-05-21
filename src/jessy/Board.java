@@ -53,17 +53,24 @@ public final class Board {
 	}
 
 	/**
+	 * checkboard has 8 on top row
+	 * turn numbers, so they correspond checkboard<->array
+	 * and then both minus one to be arrays indizes
+	 * @param cor checkboard notation
+	 * @return coordinates in matrix notation
+	 */
+	private static Coord transformToMatrixNotation(final Coord cor) {
+		return new Coord(cor.getX() -1, Math.abs(cor.getY() - BOARD_COLUMNS));
+	}
+
+	/**
 	 * Checks if coordinates are in range of the board.
 	 * @param cor coordinates
 	 * @return true when they fit
 	 */
-	private boolean checkBoundaries(Coord cor) {
-		// checkboard has 8 on top row
-		// turn numbers, so they correspond checkboard<->array
-		// and then both minus one to be arrays indizes
-		cor.setY(Math.abs(cor.getY() - matrix[cor.decreaseX(1)].length));
-		if (cor.getX() >= 0 && cor.getX() < matrix.length && cor.getY() >= 0
-				&& cor.getY() < matrix[cor.getX()].length) {
+	private static boolean checkBoundaries(final Coord cor) {
+		if (cor.getX() >= 1 && cor.getX() <= BOARD_COLUMNS && cor.getY() >= 1
+				&& cor.getY() <= BOARD_ROWS) {
 			return true;
 		}
 		return false;
@@ -87,8 +94,9 @@ public final class Board {
 	 * @param figure Figure
 	 * @return true when not out of bound.
 	 */
-	public boolean setFigure(final Coord coord, final Figure figure) {
+	public boolean setFigure(Coord coord, final Figure figure) {
 		if (checkBoundaries(coord)) {
+			coord = transformToMatrixNotation(coord);
 			matrix[coord.getY()][coord.getX()] = figure;
 			return true;
 		}
@@ -113,8 +121,9 @@ public final class Board {
 	 * @return Figure that sits at position
 	 * @throws NotAField if out of bound
 	 */
-	public Figure getFigure(final Coord cor) throws NotAField {
+	public Figure getFigure(Coord cor) throws NotAField {
 		if (checkBoundaries(cor)) {
+			cor = transformToMatrixNotation(cor);
 			return matrix[cor.getY()][cor.getX()];
 		} else {
 			throw new NotAField(cor.getX(), cor.getY());
