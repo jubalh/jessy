@@ -55,8 +55,10 @@ public abstract class Figure {
 	 * @return true if not the same color
 	 */
 	public boolean isOpponent(Figure figure) {
-		if (this.getColor() != figure.getColor()) {
-			return true;
+		if (figure != null) {
+			if (this.getColor() != figure.getColor()) {
+				return true;
+			}
 		}
 		return false;
 	}

@@ -33,16 +33,16 @@ public final class Pawn extends Figure {
 				}
 			}
 		}
+		// error TODO
 		if ( (n.getX() == c.getX() + 1) || (n.getX() == c.getX() - 1) ) {
 			if (n.getY() == c.getY() + 1) {
 				try {
 					// field must be occupied by opponent
 					Figure figureOnNewField = board.getFigure(n);
-					if (figureOnNewField != null) {
-						if (figureOnNewField.getColor() != this.getColor()) {
-							// TODO: note that opponent got catched
-							return true;
-						}
+					if (this.isOpponent(figureOnNewField))
+					{
+						// TODO: note that opponent got caught
+						return true;
 					}
 				} catch (NotAField ex) {
 					//TODO: say something
