@@ -47,7 +47,6 @@ public final class Pawn extends Figure {
 				} catch (NotAField ex) {
 					//TODO: say something
 				}
-				return true;
 			}
 		}
 		return false; //edit here for issue #1
