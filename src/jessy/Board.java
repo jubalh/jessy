@@ -133,6 +133,9 @@ public final class Board {
 
 		try {
 			figure = getFigure(coordOld);
+			/* TODO: coordOld gets transformed in matrix way (in getFigure() -> checkBoundaries())
+			 * but coordNew is still in checkboard way
+			 */
 			if (figure.canMove(this, coordOld, coordNew)) {
 				ret = setFigure(coordOld, null);
 				if (ret) {
