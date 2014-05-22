@@ -1,5 +1,11 @@
 package jessy;
 
+/**
+ * 
+ * Commandline interface for chess game
+ * @author Michael Vetter
+ *
+ */
 public class CmdLine {
 
 	private Board board;
@@ -66,7 +72,7 @@ public class CmdLine {
 	/**
 	 * Writes columns A -Z to stdout.
 	 */
-	private void drawColumns() {
+	private static void drawColumns() {
 		System.out.print("   ");
 		for (int i = 0; i < 8; i++) {
 			char c = (char) ('A' + i);
@@ -78,7 +84,7 @@ public class CmdLine {
 	 * Writes separator line.
 	 * Separator between A-Z and actual board.
 	 */
-	private void drawSpace() {
+	private static void drawSpace() {
 		System.out.print("   ");
 		for (int i = 0; i < 8; i++) {
 			System.out.print("____");
@@ -92,7 +98,7 @@ public class CmdLine {
 	 * @param c character
 	 * @return subclass of Figure, depending on character. null if doesn't fit.
 	 */
-	private Figure getFigureByChar(final char c) {
+	private static Figure getFigureByChar(final char c) {
 		switch (c) {
 		case 'P':
 		case '\0':
@@ -185,7 +191,7 @@ public class CmdLine {
 	 * @param c character
 	 * @return true if upper case.
 	 */
-	private boolean isUpperCase(char c) {
+	private static boolean isUpperCase(char c) {
 		int v = (int) c;
 		if (v >= (int) 'A' && v <= (int) 'Z') {
 			return true;

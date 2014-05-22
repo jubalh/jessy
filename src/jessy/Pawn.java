@@ -2,6 +2,12 @@ package jessy;
 
 import jessy.Figure;
 
+/**
+ * 
+ * Pawn
+ * @author Michael Vetter
+ *
+ */
 public final class Pawn extends Figure {
 
 	public Pawn() {

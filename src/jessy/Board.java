@@ -2,6 +2,12 @@ package jessy;
 
 import java.io.IOException;
 
+/**
+ * 
+ * Models a check board
+ * @author Michael Vetter
+ *
+ */
 public final class Board {
 	
 	private static final int BOARD_ROWS = 8;
