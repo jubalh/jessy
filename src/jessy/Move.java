@@ -6,6 +6,7 @@ package jessy;
  * @author Michael Vetter
  *
  */
+//TODO: remove some doulbe coordinate functions with a 1 move one.
 public class Move {
 
 	private Coord origin;
@@ -35,5 +36,22 @@ public class Move {
 	 */
 	public Coord getDestination() {
 		return destination;
+	}
+	
+	private static char fieldnumberToChar(int number) {
+		return (char)(number-1+(int)'a');
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+
+		s.append( fieldnumberToChar(origin.getX()) );
+		s.append(origin.getY());
+		s.append("-");
+		s.append( fieldnumberToChar(destination.getX()) );
+		s.append(destination.getY());
+		
+		return s.toString();
 	}
 }

@@ -1,12 +1,29 @@
 package jessy;
 
+import java.io.IOException;
+
 public final class Board {
 	
 	private static final int BOARD_ROWS = 8;
 	private static final int BOARD_COLUMNS = 8;
 	private Move lastMove;
+	private Recorder recorder;
 
 	private Figure[][] matrix = new Figure[BOARD_ROWS][BOARD_COLUMNS];
+
+	/**
+	 * Constructor
+	 */
+	public Board() {
+	}
+	
+	/**
+	 * Constructor, which also sets recorder
+	 * @param recorder
+	 */
+	public Board(Recorder recorder) {
+		setRecorder(recorder);
+	}
 
 	/**
 	 * Places figures in the array (on the board).
@@ -155,8 +172,32 @@ public final class Board {
 		// figure successfully set; save last move
 		if(ret) {
 			lastMove = new Move(coordOld, coordNew);
+
+			/*
+			 * TODO: wenn auch figure abgespeichert werden soll:
+			 * figure in Move merken? oder in recordmove() einmal
+			 * move und einmal figure übergeben
+			*/
+			
+			// and record it
+			recordMove(lastMove);
 		}
 		return ret;
+	}
+	
+	/**
+	 * Adds a move for recording
+	 * @param move to add
+	 */
+	private void recordMove(Move move) {
+		if (recorder!=null) {
+			try {
+				recorder.record(move);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -211,5 +252,13 @@ public final class Board {
 	 */
 	public Move getLastMove() {
 		return lastMove;
+	}
+	
+	/**
+	 * Set the recorder, to record moves
+	 * @param recorder
+	 */
+	public void setRecorder(Recorder recorder) {
+		this.recorder = recorder;
 	}
 }

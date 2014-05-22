@@ -6,6 +6,7 @@ public class CmdLine {
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
+	private boolean active = true;
 
 	/**
 	 * Constructor
@@ -154,6 +155,9 @@ public class CmdLine {
 		ParseHelper pa = new ParseHelper();
 		int index;
 
+		if(text.equals("exit")) {
+			
+		}
 		// assuming it starts with ex "Ka1", get the figure at field.
 		index = parseFigurePos(text, pa);
 
@@ -187,5 +191,13 @@ public class CmdLine {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Checks if should continue running or a halt is intended
+	 * @return true if is running
+	 */
+	public boolean isActive() {
+		return active;
 	}
 }
