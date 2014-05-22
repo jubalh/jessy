@@ -4,6 +4,7 @@ public final class Board {
 	
 	private static final int BOARD_ROWS = 8;
 	private static final int BOARD_COLUMNS = 8;
+	private Move lastMove;
 
 	private Figure[][] matrix = new Figure[BOARD_ROWS][BOARD_COLUMNS];
 
@@ -142,9 +143,6 @@ public final class Board {
 
 		try {
 			figure = getFigure(coordOld);
-			/* TODO: coordOld gets transformed in matrix way (in getFigure() -> checkBoundaries())
-			 * but coordNew is still in checkboard way
-			 */
 			if (figure.canMove(this, coordOld, coordNew)) {
 				ret = setFigure(coordOld, null);
 				if (ret) {
@@ -153,6 +151,10 @@ public final class Board {
 			}
 		} catch (Exception ex) {
 			// log ###ask someone for advice whether i use exception alright here.
+		}
+		// figure successfully set; save last move
+		if(ret) {
+			lastMove = new Move(coordOld, coordNew);
 		}
 		return ret;
 	}
@@ -201,5 +203,13 @@ public final class Board {
 	 */
 	public static int getRowsCount() {
 		return BOARD_ROWS;
+	}
+	
+	/**
+	 * Returns the last successful move made
+	 * @return last move
+	 */
+	public Move getLastMove() {
+		return lastMove;
 	}
 }

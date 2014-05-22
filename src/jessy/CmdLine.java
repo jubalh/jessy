@@ -3,6 +3,8 @@ package jessy;
 public class CmdLine {
 
 	private Board board;
+	private static final String COLOR_LAST_MOVE= "\u001B[31m";
+	private static final String COLOR_RESET = "\u001B[0m";
 
 	/**
 	 * Constructor
@@ -28,9 +30,25 @@ public class CmdLine {
 			System.out.print(colCount-- + "| ");
 			// go through rows
 			for (Figure row : col) {
+				boolean bWasLastMove=false;
+				try {
+					Move lastMove = board.getLastMove();
+					if(lastMove != null) {
+						if(row == board.getFigure(lastMove.getDestination())) {
+							bWasLastMove = true;
+							System.out.print(COLOR_LAST_MOVE);
+						}
+					}
+				} catch (NotAField ex) {
+					//TODO: say something
+				}
 				// print field
 				System.out.print("[" + (row == null ? " " : row.toString())
 						+ " ]");
+				if(bWasLastMove) {
+					System.out.print(COLOR_RESET);
+					bWasLastMove = false;
+				}
 			}
 			System.out.println();
 		}
