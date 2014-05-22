@@ -3,7 +3,8 @@ package jessy;
 public class CmdLine {
 
 	private Board board;
-	private static final String COLOR_LAST_MOVE= "\u001B[31m";
+	// ANSI escape sequences for color
+	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
 
 	/**
@@ -32,6 +33,7 @@ public class CmdLine {
 			for (Figure row : col) {
 				boolean bWasLastMove=false;
 				try {
+					// mark last move
 					Move lastMove = board.getLastMove();
 					if(lastMove != null) {
 						if(row == board.getFigure(lastMove.getDestination())) {
@@ -45,6 +47,7 @@ public class CmdLine {
 				// print field
 				System.out.print("[" + (row == null ? " " : row.toString())
 						+ " ]");
+				// close marking of move
 				if(bWasLastMove) {
 					System.out.print(COLOR_RESET);
 					bWasLastMove = false;
