@@ -10,7 +10,6 @@ import jessy.pieces.Pawn;
 import jessy.pieces.Queen;
 import jessy.pieces.Rook;
 
-
 /**
  * 
  * Command line interface for chess game
@@ -20,11 +19,15 @@ import jessy.pieces.Rook;
 public class CmdLine {
 
 	private Board board;
-    private static final Scanner SCANNER = new Scanner(in);
 	private boolean active = true;
+	private boolean lastMoveWasOkay = false;
+    private static final Scanner SCANNER = new Scanner(in);
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
+	
+	private static final char PROMPT_TICK = '\u2713';
+	private static final char PROMPT_CROSS = '\u2717';
 
 	/**
 	 * Constructor
@@ -53,6 +56,7 @@ public class CmdLine {
 				break;
 
 			this.drawBoard();
+			this.printPrompt();
 		}
 	}
 
@@ -124,6 +128,18 @@ public class CmdLine {
 			System.out.print("____");
 		}
 		System.out.println();
+	}
+	
+	/**
+	 * Print prompt.
+	 */
+	private void printPrompt() {
+		char status = this.PROMPT_CROSS;
+
+		if (lastMoveWasOkay) {
+			status = this.PROMPT_TICK;
+		}
+		System.out.print(status+":");
 	}
 
 	/**
@@ -216,7 +232,7 @@ public class CmdLine {
 			// get second figure + position
 			index = parseFigurePos(sub, pa2);
 			// move it there
-			board.moveFigure(pa.coord, pa2.coord);
+			this.lastMoveWasOkay = board.moveFigure(pa.coord, pa2.coord);
 		}
 	}
 
