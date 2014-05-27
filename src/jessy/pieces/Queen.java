@@ -33,7 +33,7 @@ public final class Queen extends Figure {
 				return true;
 			}
 			// up-right diagonal
-			if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
+			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
 				while (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
 					coordCurrent.increase(1);
 					if (!isAllowedMove(board, coordCurrent, coordNew)) {
