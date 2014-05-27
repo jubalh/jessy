@@ -22,6 +22,8 @@ public class CmdLine {
 	private boolean active = true;
 	private boolean gameRunning = false;
 	private boolean lastMoveWasOkay = false;
+	private boolean whiteDraws = true;
+	private StringBuilder messageToUser = new StringBuilder();
     private static final Scanner SCANNER = new Scanner(in);
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
@@ -141,6 +143,20 @@ public class CmdLine {
 	 */
 	private void printPrompt() {
 		char status = CmdLine.PROMPT_CROSS;
+		String userMessage = this.getUserMessage();
+
+		if (!userMessage.isEmpty()) {
+			System.out.println("# "+userMessage+" #");
+			this.clearUserMessage();
+		}
+
+		if (gameRunning) {
+			if (whiteDraws) {
+				System.out.println("white draws");
+			} else {
+				System.out.println("black draws");
+			}
+		}
 
 		if (lastMoveWasOkay) {
 			status = CmdLine.PROMPT_TICK;
@@ -148,6 +164,9 @@ public class CmdLine {
 		System.out.print(status+":");
 	}
 	
+	/**
+	 * Print Welcome message.
+	 */
 	private static void printIntro() {
 		System.out.println("*** jessy ***");
 		System.out.println("a totally kafkaesque chess game");
@@ -249,8 +268,23 @@ public class CmdLine {
 			ParseHelper pa2 = new ParseHelper();
 			// get second figure + position
 			index = parseFigurePos(sub, pa2);
-			// move it there
-			this.lastMoveWasOkay = board.moveFigure(pa.coord, pa2.coord);
+			try {
+				if ( (whiteDraws && !(board.getFigure(pa.coord).isBlack())) || (!whiteDraws && (board.getFigure(pa.coord).isBlack())) ) {
+					this.lastMoveWasOkay = board.moveFigure(pa.coord, pa2.coord);
+					if(this.lastMoveWasOkay) {
+						this.whiteDraws = !this.whiteDraws;
+					} else {
+						setUserMessage("Move not allowed");
+					}
+				} else {
+					this.lastMoveWasOkay = false;
+					setUserMessage("It's not your turn");
+				}
+			} catch (NotAField e) {
+				// TODO Auto-generated catch block
+				// should be safe here...
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -273,6 +307,29 @@ public class CmdLine {
 	 */
 	public boolean isActive() {
 		return this.active;
+	}
+	
+	/**
+	 * 
+	 * @param text
+	 */
+	private void setUserMessage(String text) {
+		messageToUser.append(text);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getUserMessage() {
+		return this.messageToUser.toString();
+	}
+	
+	/**
+	 * 
+	 */
+	private void clearUserMessage() {
+		this.messageToUser = new StringBuilder();
 	}
 	
 }
