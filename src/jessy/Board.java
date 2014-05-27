@@ -2,6 +2,14 @@ package jessy;
 
 import java.io.IOException;
 
+import jessy.pieces.Bishop;
+import jessy.pieces.Figure;
+import jessy.pieces.King;
+import jessy.pieces.Knight;
+import jessy.pieces.Pawn;
+import jessy.pieces.Queen;
+import jessy.pieces.Rook;
+
 /**
  * 
  * Models a check board
@@ -182,7 +190,7 @@ public final class Board {
 			/*
 			 * TODO: wenn auch figure abgespeichert werden soll:
 			 * figure in Move merken? oder in recordmove() einmal
-			 * move und einmal figure übergeben
+			 * move und einmal figure uebergeben
 			*/
 			
 			// and record it
@@ -222,7 +230,7 @@ public final class Board {
 	 * Checks if field is occupied by opponent.
 	 * @param coord coordinates
 	 * @param figure Figure to compare with figure on the field.
-	 * @return
+	 * @return true if opponent sits on that field
 	 */
 	public boolean isOpponentField(final Coord coord, final Figure figure) throws NotAField {
 		Figure figureOnField = getFigure(coord);

@@ -1,6 +1,8 @@
 package jessy;
 
 import static org.junit.Assert.*;
+import jessy.pieces.Figure;
+import jessy.pieces.King;
 
 import org.junit.Test;
 

@@ -1,5 +1,14 @@
 package jessy;
 
+import jessy.pieces.Bishop;
+import jessy.pieces.Figure;
+import jessy.pieces.King;
+import jessy.pieces.Knight;
+import jessy.pieces.Pawn;
+import jessy.pieces.Queen;
+import jessy.pieces.Rook;
+
+
 /**
  * 
  * Commandline interface for chess game

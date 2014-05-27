@@ -1,7 +1,7 @@
 package jessy;
 
-import jessy.Figure;
 import jessy.Coord;
+import jessy.pieces.Figure;
 
 public class ParseHelper {
 	Figure figure;
