@@ -25,7 +25,7 @@ public class CmdLine {
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
-	
+	// prompt unicode characters
 	private static final char PROMPT_TICK = '\u2713';
 	private static final char PROMPT_CROSS = '\u2717';
 
@@ -53,7 +53,7 @@ public class CmdLine {
 
 			// if game should end
 			if (!this.isActive())
-				break;
+				return;
 
 			this.drawBoard();
 			this.printPrompt();
@@ -212,8 +212,9 @@ public class CmdLine {
 		int index;
 
 		if(text.equals("exit")) {
-			
+			this.active = false;
 		}
+
 		// assuming it starts with ex "Ka1", get the figure at field.
 		index = parseFigurePos(text, pa);
 
@@ -254,6 +255,7 @@ public class CmdLine {
 	 * @return true if is running
 	 */
 	public boolean isActive() {
-		return active;
+		return this.active;
 	}
+	
 }
