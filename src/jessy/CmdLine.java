@@ -1,5 +1,7 @@
 package jessy;
 
+import static java.lang.System.in;
+import java.util.Scanner;
 import jessy.pieces.Bishop;
 import jessy.pieces.Figure;
 import jessy.pieces.King;
@@ -11,17 +13,18 @@ import jessy.pieces.Rook;
 
 /**
  * 
- * Commandline interface for chess game
+ * Command line interface for chess game
  * @author Michael Vetter
  *
  */
 public class CmdLine {
 
 	private Board board;
+    private static final Scanner SCANNER = new Scanner(in);
+	private boolean active = true;
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
-	private boolean active = true;
 
 	/**
 	 * Constructor
@@ -29,6 +32,28 @@ public class CmdLine {
 	 */
 	public CmdLine(Board board) {
 		this.board = board;
+	}
+	
+	/**
+	 * Handles command line input
+	 * and generally runs the command line board
+	 */
+	public void run() {
+		board.init();
+
+		while(SCANNER.hasNextLine()) {
+			String input = SCANNER.nextLine();
+
+			if(input.length() > 0) {
+				this.parse(input);
+			}
+
+			// if game should end
+			if (!this.isActive())
+				break;
+
+			this.drawBoard();
+		}
 	}
 
 	/**
@@ -132,7 +157,7 @@ public class CmdLine {
 	 * @param pa ParseHelper object, to return figure and position
 	 * @return number of characters that got passed, length of the string if proper.
 	 */
-	private int parseFigurePos(final String text, final ParseHelper pa) {
+	private static int parseFigurePos(final String text, final ParseHelper pa) {
 		int index = 0;
 		char c = text.charAt(index);
 

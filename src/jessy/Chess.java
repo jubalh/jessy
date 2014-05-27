@@ -1,10 +1,8 @@
 package jessy;
 
-import static java.lang.System.in;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Scanner;
 
 /**
  * Console Chess.
@@ -12,8 +10,6 @@ import java.util.Scanner;
  */
 public final class Chess {
     private Chess() { }
-
-    private static final Scanner SCANNER = new Scanner(in);
 
     /**
      * Start.
@@ -36,22 +32,7 @@ public final class Chess {
     	}
 
 		CmdLine cmdBoard = new CmdLine(board);
-
-		board.init();
-
-		while(SCANNER.hasNextLine()) {
-			String input = SCANNER.nextLine();
-
-			if(input.length() > 0) {
-				cmdBoard.parse(input);
-			}
-
-			// if game should end
-			if (!cmdBoard.isActive())
-				break;
-
-			cmdBoard.drawBoard();
-		}
+		cmdBoard.run();
 
 		try {
 			recorder.save();
