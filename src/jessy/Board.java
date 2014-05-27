@@ -23,12 +23,13 @@ public final class Board {
 	private Move lastMove;
 	private Recorder recorder;
 
-	private Figure[][] matrix = new Figure[BOARD_ROWS][BOARD_COLUMNS];
+	private Figure[][] matrix;
 
 	/**
 	 * Constructor
 	 */
 	public Board() {
+		reset();
 	}
 	
 	/**
@@ -36,7 +37,15 @@ public final class Board {
 	 * @param recorder
 	 */
 	public Board(Recorder recorder) {
+		reset();
 		setRecorder(recorder);
+	}
+
+	/**
+	 * Reset the matrix.
+	 */
+	public void reset() {
+		matrix = new Figure[BOARD_ROWS][BOARD_COLUMNS];
 	}
 
 	/**

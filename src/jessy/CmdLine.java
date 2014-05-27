@@ -20,6 +20,7 @@ public class CmdLine {
 
 	private Board board;
 	private boolean active = true;
+	private boolean gameRunning = false;
 	private boolean lastMoveWasOkay = false;
     private static final Scanner SCANNER = new Scanner(in);
 	// ANSI escape sequences for color
@@ -42,7 +43,9 @@ public class CmdLine {
 	 * and generally runs the command line board
 	 */
 	public void run() {
+		CmdLine.printIntro();
 		board.init();
+		this.printPrompt();
 
 		while(SCANNER.hasNextLine()) {
 			String input = SCANNER.nextLine();
@@ -64,6 +67,9 @@ public class CmdLine {
 	 * Draws the chess board on stdout.
 	 */
 	public void drawBoard() {
+		if (!this.gameRunning)
+			return;
+
 		// upper border
 		drawColumns();
 		System.out.println();
@@ -134,12 +140,18 @@ public class CmdLine {
 	 * Print prompt.
 	 */
 	private void printPrompt() {
-		char status = this.PROMPT_CROSS;
+		char status = CmdLine.PROMPT_CROSS;
 
 		if (lastMoveWasOkay) {
-			status = this.PROMPT_TICK;
+			status = CmdLine.PROMPT_TICK;
 		}
 		System.out.print(status+":");
+	}
+	
+	private static void printIntro() {
+		System.out.println("*** jessy ***");
+		System.out.println("a totally kafkaesque chess game");
+		System.out.println();
 	}
 
 	/**
@@ -213,6 +225,11 @@ public class CmdLine {
 
 		if(text.equals("exit")) {
 			this.active = false;
+		} else if(text.equals("start")) {
+			//TODO: if already running, ask if abort
+			board.reset();
+			board.init();
+			this.gameRunning = true;
 		}
 
 		// assuming it starts with ex "Ka1", get the figure at field.
