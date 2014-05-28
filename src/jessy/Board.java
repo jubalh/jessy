@@ -190,6 +190,7 @@ public final class Board {
 			}
 		} catch (Exception ex) {
 			// log ###ask someone for advice whether i use exception alright here.
+			System.out.println(ex);
 		}
 		// figure successfully set; save last move
 		if(ret) {
