@@ -3,6 +3,7 @@ package jessy.pieces;
 import jessy.Board;
 import jessy.Color;
 import jessy.Coord;
+import jessy.NotAField;
 import jessy.pieces.Figure;
 
 public final class King extends Figure {
