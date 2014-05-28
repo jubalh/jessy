@@ -268,7 +268,7 @@ public class CmdLine {
 			// get second figure + position
 			index = parseFigurePos(sub, pa2);
 			try {
-				if ( board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
+				if (!board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
 					game.setValidMove( board.moveFigure(pa.coord, pa2.coord) );
 					if(game.wasValidMove()) {
 						game.nextPlayer();
