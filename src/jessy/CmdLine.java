@@ -19,10 +19,8 @@ import jessy.pieces.Rook;
 public class CmdLine {
 
 	private Board board;
+	private Game game;
 	private boolean active = true;
-	private boolean gameRunning = false;
-	private boolean lastMoveWasOkay = false;
-	private boolean whiteDraws = true;
 	private StringBuilder messageToUser = new StringBuilder();
     private static final Scanner SCANNER = new Scanner(in);
 	// ANSI escape sequences for color
@@ -38,6 +36,7 @@ public class CmdLine {
 	 */
 	public CmdLine(Board board) {
 		this.board = board;
+		this.game = new Game(); //TODO
 	}
 	
 	/**
@@ -69,7 +68,7 @@ public class CmdLine {
 	 * Draws the chess board on stdout.
 	 */
 	public void drawBoard() {
-		if (!this.gameRunning)
+		if (!game.isRunning())
 			return;
 
 		// upper border
@@ -150,15 +149,15 @@ public class CmdLine {
 			this.clearUserMessage();
 		}
 
-		if (gameRunning) {
-			if (whiteDraws) {
+		if (game.isRunning()) {
+			if (game.getCurrentPlayer() == Color.WHITE) {
 				System.out.println("white draws");
 			} else {
 				System.out.println("black draws");
 			}
 		}
 
-		if (lastMoveWasOkay) {
+		if (game.wasValidMove()) {
 			status = CmdLine.PROMPT_TICK;
 		}
 		System.out.print(status+":");
@@ -248,7 +247,7 @@ public class CmdLine {
 			//TODO: if already running, ask if abort
 			board.reset();
 			board.init();
-			this.gameRunning = true;
+			game.setRunning(true);
 		}
 
 		// assuming it starts with ex "Ka1", get the figure at field.
@@ -269,15 +268,15 @@ public class CmdLine {
 			// get second figure + position
 			index = parseFigurePos(sub, pa2);
 			try {
-				if ( (whiteDraws && !(board.getFigure(pa.coord).isBlack())) || (!whiteDraws && (board.getFigure(pa.coord).isBlack())) ) {
-					this.lastMoveWasOkay = board.moveFigure(pa.coord, pa2.coord);
-					if(this.lastMoveWasOkay) {
-						this.whiteDraws = !this.whiteDraws;
+				if ( board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
+					game.setValidMove( board.moveFigure(pa.coord, pa2.coord) );
+					if(game.wasValidMove()) {
+						game.nextPlayer();
 					} else {
 						setUserMessage("Move not allowed");
 					}
 				} else {
-					this.lastMoveWasOkay = false;
+					game.setValidMove(false);
 					setUserMessage("It's not your turn");
 				}
 			} catch (NotAField e) {

@@ -65,6 +65,15 @@ public abstract class Figure {
 		}
 		return false;
 	}
+	
+	/**
+	 * Checks if are from the same color.
+	 * @param color to compare with
+	 * @return true if not the same color
+	 */
+	public boolean isOpponent(Color color) {
+		return (color != this.getColor());
+	}
 
 	/**
 	 * Prints figure according to color.

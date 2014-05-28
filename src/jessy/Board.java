@@ -18,11 +18,10 @@ import jessy.pieces.Rook;
  */
 public final class Board {
 	
-	private static final int BOARD_ROWS = 8;
-	private static final int BOARD_COLUMNS = 8;
 	private Move lastMove;
 	private Recorder recorder;
-
+	private static final int BOARD_ROWS = 8;
+	private static final int BOARD_COLUMNS = 8;
 	private Figure[][] matrix;
 
 	/**
