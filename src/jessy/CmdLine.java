@@ -309,23 +309,26 @@ public class CmdLine {
 	}
 	
 	/**
-	 * 
-	 * @param text
+	 * Add a a message to the String which will be displayed after drawing the board
+	 * Some kind of information for the user
+	 * @param text to add
 	 */
 	private void setUserMessage(String text) {
 		messageToUser.append(text);
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Get all messages in one string
+	 * One message per line
+	 * @return user messages
 	 */
 	private String getUserMessage() {
 		return this.messageToUser.toString();
 	}
 	
 	/**
-	 * 
+	 * Delete all user messages
+	 * Ready for new ones
 	 */
 	private void clearUserMessage() {
 		this.messageToUser = new StringBuilder();
