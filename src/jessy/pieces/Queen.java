@@ -20,7 +20,10 @@ public final class Queen extends Figure {
 		return '\u2655';
 	}
 
-	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
+	public boolean canMove(final Board board, final Coord current, final Coord cnew) {
+		Coord coordCurrent = new Coord(current.getX(), current.getY());
+		Coord coordNew = new Coord(cnew.getX(), cnew.getY());
+
         try {
 			// up
 			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {

@@ -20,8 +20,11 @@ public final class King extends Figure {
 		return '\u2654';
 	}
 
-	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
-       try {
+	public boolean canMove(final Board board, Coord current, Coord cnew) {
+		Coord coordCurrent = new Coord(current.getX(), current.getY());
+		Coord coordNew = new Coord(cnew.getX(), cnew.getY());
+
+		try {
 			// up
 			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
 				coordCurrent.increaseY(1);

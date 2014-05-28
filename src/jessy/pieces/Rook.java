@@ -20,7 +20,11 @@ public final class Rook extends Figure {
 		return '\u2656';
 	}
 
-	public boolean canMove(final Board board, Coord coordCurrent, Coord coordNew) {
+	//TODO: is there a way to make sure parameters dont get changed even with methods? probably only cloning?
+	public boolean canMove(final Board board, final Coord current, final Coord cnew) {
+		Coord coordCurrent = new Coord(current.getX(), current.getY()); //TODO: read about cloning
+		Coord coordNew = new Coord(cnew.getX(), cnew.getY()); //TODO: read about cloning
+
 		try {
 			//up
 			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
