@@ -15,13 +15,15 @@ So you can put pieces on the board and move them around.
 
 ## Bootstrapping ##
 
+You should have [Maven](https://maven.apache.org/) installed.
+
 Get it: `git clone https://github.com/jubalh/jessy`
 
-Change directory: `cd jessy/src`
+Change directory: `cd jessy`
 
-Compile: `javac jessy/*.java`
+Compile: `mvn package`
 
-Run: `java jessy.Chess` 
+Run: `java -jar target/jessy-0.0.1-SNAPSHOT.jar` 
 
 Or open it with Eclipse.
 
