@@ -12,6 +12,11 @@
       <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+	  <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>2.11</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -36,6 +41,19 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+      <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>com.github.jubalh.jessy.Chess</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+    </plugin>
     </plugins>
   </build>
 </project>

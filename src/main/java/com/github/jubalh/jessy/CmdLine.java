@@ -1,7 +1,10 @@
 package com.github.jubalh.jessy;
 
-import static java.lang.System.in;
-import java.util.Scanner;
+import java.io.IOException;
+
+import jline.console.ConsoleReader;
+import jline.console.completer.StringsCompleter;
+
 import com.github.jubalh.jessy.pieces.Bishop;
 import com.github.jubalh.jessy.pieces.Figure;
 import com.github.jubalh.jessy.pieces.King;
@@ -22,7 +25,7 @@ public class CmdLine {
 	private Game game;
 	private boolean active = true;
 	private StringBuilder messageToUser = new StringBuilder();
-    private static final Scanner SCANNER = new Scanner(in);
+	private static ConsoleReader reader;
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
@@ -38,7 +41,7 @@ public class CmdLine {
 		this.board = board;
 		this.game = new Game(); //TODO
 	}
-	
+
 	/**
 	 * Handles command line input
 	 * and generally runs the command line board
@@ -46,21 +49,32 @@ public class CmdLine {
 	public void run() {
 		CmdLine.printIntro();
 		board.init();
-		this.printPrompt();
 
-		while(SCANNER.hasNextLine()) {
-			String input = SCANNER.nextLine();
+		try {
+			reader = new ConsoleReader();
+			reader.setPrompt(this.composePrompt());
 
-			if(input.length() > 0) {
-				this.parse(input);
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "exit");
+			reader.addCompleter(commandsCompleter);
+
+			String input;
+			while((input = reader.readLine()) != null) {
+				if(input.length() > 0) {
+					this.parse(input);
+				}
+
+				//TODO: multiline prompt
+				reader.setPrompt(this.composePrompt());
+
+				// if game should end
+				if (!this.isActive())
+					return;
+
+				this.drawBoard();
 			}
-
-			// if game should end
-			if (!this.isActive())
-				return;
-
-			this.drawBoard();
-			this.printPrompt();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -136,33 +150,36 @@ public class CmdLine {
 		}
 		System.out.println();
 	}
-	
+
 	/**
 	 * Print prompt.
 	 */
-	private void printPrompt() {
+	private String composePrompt() {
 		char status = CmdLine.PROMPT_CROSS;
 		String userMessage = this.getUserMessage();
+		StringBuilder result = new StringBuilder("");
 
 		if (!userMessage.isEmpty()) {
-			System.out.println("# "+userMessage+" #");
+			result.append("# "+userMessage+" #");
 			this.clearUserMessage();
 		}
 
 		if (game.isRunning()) {
 			if (game.getCurrentPlayer() == Color.WHITE) {
-				System.out.println("white draws");
+				result.append("white draws");
 			} else {
-				System.out.println("black draws");
+				result.append("black draws");
 			}
 		}
 
 		if (game.wasValidMove()) {
 			status = CmdLine.PROMPT_TICK;
 		}
-		System.out.print(status+":");
+		result.append(status+":");
+
+		return result.toString();
 	}
-	
+
 	/**
 	 * Print Welcome message.
 	 */
@@ -237,6 +254,7 @@ public class CmdLine {
 	 * Should move the _K_ing from a1 to a2.
 	 * @param text to be parsed
 	 */
+	//TODO: check Pa9-Pa9 out of bound
 	public void parse(String text) {
 		ParseHelper pa = new ParseHelper();
 		int index;
@@ -299,7 +317,7 @@ public class CmdLine {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks if should continue running or a halt is intended
 	 * @return true if is running
@@ -307,7 +325,7 @@ public class CmdLine {
 	public boolean isActive() {
 		return this.active;
 	}
-	
+
 	/**
 	 * Add a a message to the String which will be displayed after drawing the board
 	 * Some kind of information for the user
@@ -316,7 +334,7 @@ public class CmdLine {
 	private void setUserMessage(String text) {
 		messageToUser.append(text);
 	}
-	
+
 	/**
 	 * Get all messages in one string
 	 * One message per line
@@ -325,7 +343,7 @@ public class CmdLine {
 	private String getUserMessage() {
 		return this.messageToUser.toString();
 	}
-	
+
 	/**
 	 * Delete all user messages
 	 * Ready for new ones
@@ -333,5 +351,5 @@ public class CmdLine {
 	private void clearUserMessage() {
 		this.messageToUser = new StringBuilder();
 	}
-	
+
 }
