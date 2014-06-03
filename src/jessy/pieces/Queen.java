@@ -33,7 +33,6 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// up-right diagonal
 			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
@@ -43,7 +42,6 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// right
 			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
@@ -53,7 +51,6 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// down-right diagonal
 			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
@@ -64,7 +61,6 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// down
 			else if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
@@ -74,7 +70,6 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// down-left diagonal
 			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
@@ -85,17 +80,15 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// left
 			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
 				while(coordNew.getX() < coordCurrent.getX()) {
-					coordCurrent.decreaseY(1);
+					coordCurrent.decreaseX(1);
 					if (!isAllowedMove(board, coordCurrent, coordNew)) {
 						return false;
 					}
 				}
-				return true;
 			}
 			// up-left diagonal
 			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
@@ -106,6 +99,8 @@ public final class Queen extends Figure {
 						return false;
 					}
 				}
+			}
+			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
 				return true;
 			}
 		} catch (NotAField ex) {

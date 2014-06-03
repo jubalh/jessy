@@ -33,7 +33,6 @@ public final class Bishop extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// up-left diagonal
 			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
@@ -44,7 +43,6 @@ public final class Bishop extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// down-left diagonal
 			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
@@ -55,7 +53,6 @@ public final class Bishop extends Figure {
 						return false;
 					}
 				}
-				return true;
 			}
 			// down-right diagonal
 			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
@@ -66,6 +63,8 @@ public final class Bishop extends Figure {
 						return false;
 					}
 				}
+			}
+			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
 				return true;
 			}
 		} catch (NotAField ex) {

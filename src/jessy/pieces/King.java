@@ -24,74 +24,30 @@ public final class King extends Figure {
 		Coord coordCurrent = new Coord(current.getX(), current.getY());
 		Coord coordNew = new Coord(cnew.getX(), cnew.getY());
 
-		try {
-			// up
-			if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
-				coordCurrent.increaseY(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
+        try {
+            // up and down
+            if (coordNew.getX() == coordCurrent.getX() && Math.abs(coordNew.getY() - coordCurrent.getY()) == 1) {
+            	if (!isAllowedMove(board, coordCurrent, coordNew)) {
 					return false;
 				}
 				return true;
 			}
-			// up-right diagonal
-			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
-				coordCurrent.increase(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
+
+            // left and right
+            if (coordNew.getY() == coordCurrent.getY() && Math.abs(coordNew.getX()- coordCurrent.getX()) == 1) {
+                if (!isAllowedMove(board, coordCurrent, coordNew)) {
 					return false;
 				}
 				return true;
-			}
-			// right
-			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
-				coordCurrent.increaseX(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
+            }
+
+            // diagonal
+            if (Math.abs(coordNew.getX() - coordCurrent.getX()) == 1 && Math.abs(coordNew.getY() - coordCurrent.getY()) == 1) {
+            	if (!isAllowedMove(board, coordCurrent, coordNew)) {
 					return false;
 				}
 				return true;
-			}
-			// down-right diagonal
-			else if (coordNew.getX() > coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
-				coordCurrent.decreaseY(1);
-				coordCurrent.increaseX(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
-					return false;
-				}
-				return true;
-			}
-			// down
-			else if (coordNew.getX() == coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
-				coordCurrent.decreaseY(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
-					return false;
-				}
-				return true;
-			}
-			// down-left diagonal
-			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() < coordCurrent.getY()) {
-				coordCurrent.decreaseY(1);
-				coordCurrent.decreaseX(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
-					return false;
-				}
-				return true;
-			}
-			// left
-			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() == coordCurrent.getY()) {
-				coordCurrent.decreaseY(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
-					return false;
-				}
-				return true;
-			}
-			// up-left diagonal
-			else if (coordNew.getX() < coordCurrent.getX() && coordNew.getY() > coordCurrent.getY()) {
-				coordCurrent.increaseY(1);
-				coordCurrent.decreaseX(1);
-				if (!isAllowedMove(board, coordCurrent, coordNew)) {
-					return false;
-				}
-				return true;
-			}
+            }
 		} catch (NotAField ex) {
 			// TODO
 		}
