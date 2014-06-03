@@ -21,9 +21,9 @@ Get it: `git clone https://github.com/jubalh/jessy`
 
 Change directory: `cd jessy`
 
-Compile: `mvn package`
+Compile: `mvn assembly:single`
 
-Run: `java -jar target/jessy-0.0.1-SNAPSHOT.jar` 
+Run: `java -jar target/jessy-0.0.1-SNAPSHOT-jar-with-dependencies.jar` 
 
 Or open it with Eclipse.
 

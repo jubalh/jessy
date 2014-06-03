@@ -1,3 +1,4 @@
+/*
 package com.jubalh.jessy;
 
 import static org.junit.Assert.*;
@@ -37,3 +38,4 @@ public class BoardTest {
 	}
 
 }
+*/
