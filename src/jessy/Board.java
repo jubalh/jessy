@@ -195,6 +195,11 @@ public final class Board {
 		// figure successfully set; save last move
 		if(ret) {
 			lastMove = new Move(coordOld, coordNew);
+			/*
+			 * TODO: observe and send signal here or:
+			 * make CmdLine::moveFigure() which calls board.moveFigure
+			 * and also saves lastMove in Game and records
+			 */
 
 			/*
 			 * TODO: wenn auch figure abgespeichert werden soll:
