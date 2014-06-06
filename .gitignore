@@ -1,4 +1,9 @@
+jessy_record.txt
 *.class
 *.swp
 *.DS_Store
+.project
+.classpath
 .settings/
+build/
+repos/
