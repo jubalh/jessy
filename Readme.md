@@ -15,17 +15,17 @@ So you can put pieces on the board and move them around.
 
 ## Bootstrapping ##
 
-You should have [Maven](https://maven.apache.org/) installed.
+You should have [Gradle](http://www.gradle.org/) installed.
 
 Get it: `git clone https://github.com/jubalh/jessy`
 
 Change directory: `cd jessy`
 
-Compile: `mvn assembly:single`
+Compile: `gradle installApp`
 
-Run: `java -jar target/jessy-0.0.1-SNAPSHOT-jar-with-dependencies.jar` 
+Run: `./build/install/jessy/bin/jessy` 
 
-Or open it with Eclipse.
+To create an Eclipse project type `gradle eclipse` and add it to your workspace.
 
 ## Use ##
 
