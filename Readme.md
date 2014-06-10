@@ -18,6 +18,7 @@ So you can put pieces on the board and move them around.
 You should have [Gradle](http://www.gradle.org/) installed.
 
 Get it: `git clone https://github.com/jubalh/jessy`
+`cd flux; git submodule init; git submodule update`
 
 Change directory: `cd jessy`
 
