@@ -4,10 +4,15 @@ apply plugin: 'eclipse'
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'http://maven.fluxchess.com/release'
+	}
 }
 
 dependencies {
 	compile group: 'jline', name: 'jline', version: '2.11'
+	compile 'com.fluxchess:jcpi:1.4.+'
+	compile project(':flux')
 	testCompile group: 'junit', name: 'junit', version: '4.8.1'
 }
 
