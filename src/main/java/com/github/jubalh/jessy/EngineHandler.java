@@ -121,7 +121,6 @@ public class EngineHandler implements IProtocolHandler {
     return hex88Board.getBoard();
   }
 
-  @Override
   public IEngineCommand receive() throws IOException {
     IEngineCommand command = null;
     try {
@@ -133,16 +132,13 @@ public class EngineHandler implements IProtocolHandler {
     return command;
   }
 
-  @Override
   public void send(ProtocolInitializeAnswerCommand command) {
     System.out.format("Engine initialized: %s%n", command.name);
   }
 
-  @Override
   public void send(ProtocolReadyAnswerCommand command) {
   }
 
-  @Override
   public void send(ProtocolBestMoveCommand command) {
     if (command.bestMove != null) {
       try {
@@ -155,7 +151,6 @@ public class EngineHandler implements IProtocolHandler {
     }
   }
 
-  @Override
   public void send(ProtocolInformationCommand command) {
     // TODO: Maybe print the current pv here
 
