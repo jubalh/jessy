@@ -228,7 +228,7 @@ public class CmdLine {
 	 * @param pa ParseHelper object, to return figure and position
 	 * @return number of characters that got passed, length of the string if proper.
 	 */
-	private static int parseFigurePos(final String text, final ParseHelper pa) {
+	private static int parseFigurePos(final String text, final ParseHelper pa) throws NotAField {
 		int index = 0;
 		char c = text.charAt(index);
 
@@ -245,13 +245,16 @@ public class CmdLine {
 		c = text.charAt(index);
 
 		if (!((c >= 'a' && c <= 'h') || (c >= '1' && c <= '8')))
-			return index; // TODO Exception
+			throw new NotAField();
 
 		pa.coord = new Coord();
 		String sub = text.substring(index, index+2);
 		if (pa.coord.setFromString(sub) ) {
 			index += 2;
+		} else {
+			throw new NotAField();
 		}
+
 
 		return index;
 	}
@@ -265,7 +268,7 @@ public class CmdLine {
 	//TODO: check Pa9-Pa9 out of bound
 	public void parse(String text) {
 		ParseHelper pa = new ParseHelper();
-		int index;
+		int index = 0;
 
 		if(text.equals("exit")) {
 			this.active = false;
@@ -278,7 +281,12 @@ public class CmdLine {
 		}
 
 		// assuming it starts with ex "Ka1", get the figure at field.
-		index = parseFigurePos(text, pa);
+		try {
+			index = parseFigurePos(text, pa);
+		} catch (NotAField e1) {
+			setUserMessage("Not a valid field");
+			return;
+		}
 
 		// if there is no more, just set the figure on the field
 		if (text.length() <= index) {
@@ -293,11 +301,18 @@ public class CmdLine {
 			String sub = text.substring(++index);
 			ParseHelper pa2 = new ParseHelper();
 			// get second figure + position
-			index = parseFigurePos(sub, pa2);
+			try {
+				index = parseFigurePos(sub, pa2);
+			} catch (NotAField e1) {
+				setUserMessage("Not a valid field");
+				return;
+			}
 			try {
 				if (!board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
-					game.setValidMove( board.moveFigure(pa.coord, pa2.coord) );
+					Move move = new Move(pa.coord, pa2.coord);
+					game.setValidMove(engineHandler.isValidMove(move));
 					if(game.wasValidMove()) {
+						board.moveFigure(move);
 						engineHandler.makeMove(new GenericMove(
 								GenericPosition.valueOf(
 										GenericFile.values()[pa.coord.getX() - 1],
@@ -309,7 +324,7 @@ public class CmdLine {
 							setUserMessage("Checkmate!");
 						} else {
 							game.nextPlayer();
-							engineHandler.compute(game, board);
+//							engineHandler.compute(game, board);
 						}
 					} else {
 						setUserMessage("Move not allowed");

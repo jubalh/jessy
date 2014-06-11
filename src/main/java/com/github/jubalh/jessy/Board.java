@@ -171,6 +171,15 @@ public final class Board {
 
 	/**
 	 * Moves Figure from old position to new position.
+	 * @param move move to be made.
+	 * @return true if successfully set. false if out of bound.
+	 */
+	public boolean moveFigure(final Move move) {
+		return moveFigure(move.getOrigin(), move.getDestination());
+	}
+
+	/**
+	 * Moves Figure from old position to new position.
 	 * @param coordOld current coordinates
 	 * @param coordNew destination
 	 * @return true if successfully set. false if out of bound.
@@ -181,7 +190,8 @@ public final class Board {
 
 		try {
 			figure = getFigure(coordOld);
-			if (figure.canMove(this, coordOld, coordNew)) {
+			//if (figure.canMove(this, coordOld, coordNew))
+			{
 				ret = setFigure(coordOld, null);
 				if (ret) {
 					ret = setFigure(coordNew, figure);

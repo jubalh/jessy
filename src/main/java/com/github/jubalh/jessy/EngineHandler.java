@@ -6,6 +6,9 @@ import com.fluxchess.flux.move.IntMove;
 import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
+import com.fluxchess.jcpi.models.GenericPosition;
+import com.fluxchess.jcpi.models.GenericRank;
+import com.fluxchess.jcpi.models.GenericFile;
 import com.fluxchess.jcpi.protocols.IProtocolHandler;
 import com.fluxchess.jcpi.utils.MoveGenerator;
 
@@ -55,13 +58,24 @@ public class EngineHandler implements IProtocolHandler {
 		moves.clear();
 	}
 
+	public boolean isValidMove(GenericMove move) {
+		return isValid(getCurrentBoard(), move);
+	}
+
+	public boolean isValidMove(Move move) {
+		Coord origin = move.getOrigin();
+		Coord dest = move.getDestination();
+		GenericMove genMove = new GenericMove(
+				GenericPosition.valueOf( GenericFile.values()[origin.getX() - 1], GenericRank.values()[origin.getY() - 1]),
+				GenericPosition.valueOf( GenericFile.values()[dest.getX() - 1], GenericRank.values()[dest.getY() - 1]));
+		return isValid(getCurrentBoard(), genMove);
+	}
+
 	// Make the player's move
 	public void makeMove(GenericMove move) {
-		// Validate the player's move
-		if (isValid(getCurrentBoard(), move)) {
+		if (isValidMove(move)) {
 			moves.add(move);
 		} else {
-			// This is a illegal move, do something!
 			throw new IllegalArgumentException();
 		}
 	}
