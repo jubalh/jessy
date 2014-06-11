@@ -1,4 +1,3 @@
-/*
 package com.github.jubalh.jessy;
 
 import com.fluxchess.flux.Flux;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Exchanger;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class EngineHandler implements IProtocolHandler {
@@ -25,6 +25,7 @@ public class EngineHandler implements IProtocolHandler {
 
   // Save all player's moves in a list
   private final List<GenericMove> moves = new ArrayList<GenericMove>();
+  private final Exchanger<GenericMove> bestMove = new Exchanger<GenericMove>();
 
   public void start() {
     if (!thread.isAlive()) {
@@ -38,10 +39,13 @@ public class EngineHandler implements IProtocolHandler {
     newGame();
   }
 
-  public void stop() throws InterruptedException {
+  public void stop() {
     if (thread.isAlive()) {
       commandQueue.add(new EngineQuitCommand());
-      thread.join(3000);
+      try {
+        thread.join(3000);
+      } catch (InterruptedException e) {
+      }
     }
   }
 
@@ -68,11 +72,31 @@ public class EngineHandler implements IProtocolHandler {
   }
 
   // It's the engine's turn
-  public void compute() {
+  public void compute(Game game, Board board) {
     commandQueue.add(new EngineAnalyzeCommand(new GenericBoard(GenericBoard.STANDARDSETUP), moves));
     EngineStartCalculatingCommand startCommand = new EngineStartCalculatingCommand();
-    startCommand.setMoveTime(5000L);
+    startCommand.setMoveTime(2000L);
     commandQueue.add(startCommand);
+
+    try {
+      GenericMove move = bestMove.exchange(null);
+      makeMove(move);
+
+      Coord originSquare = new Coord(move.from.file.ordinal() + 1, move.from.rank.ordinal() + 1);
+      Coord targetSquare = new Coord(move.to.file.ordinal() + 1, move.to.rank.ordinal() + 1);
+      game.setValidMove(board.moveFigure(originSquare, targetSquare));
+      if (isMate()) {
+        System.out.format("Checkmate!%n");
+      } else {
+        game.nextPlayer();
+      }
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public boolean isMate() {
+    return MoveGenerator.getGenericMoves(getCurrentBoard()).length == 0;
   }
 
   // Verify the player's move. Use the nice JCPI MoveGenerator.
@@ -111,18 +135,21 @@ public class EngineHandler implements IProtocolHandler {
 
   @Override
   public void send(ProtocolInitializeAnswerCommand command) {
-    // TODO: Handle the command. Maybe print author and name.
+    System.out.format("Engine initialized: %s%n", command.name);
   }
 
   @Override
   public void send(ProtocolReadyAnswerCommand command) {
-    // TODO: Probably you don't have to do anything here.
   }
 
   @Override
   public void send(ProtocolBestMoveCommand command) {
     if (command.bestMove != null) {
-      // Send the best move to the gui
+      try {
+        bestMove.exchange(command.bestMove);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     } else {
       // There is no best move. Do something!
     }
@@ -143,4 +170,3 @@ public class EngineHandler implements IProtocolHandler {
   }
 
 }
-*/
