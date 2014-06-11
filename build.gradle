@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'eclipse'
+allprojects {
+	apply plugin: 'eclipse'
+}
 
 repositories {
 	mavenCentral()
