@@ -18,150 +18,150 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class EngineHandler implements IProtocolHandler {
 
-  // Launch Flux in a separate thread
-  private final Flux engine = new Flux(this);
-  private Thread thread = new Thread(engine);
-  private final BlockingQueue<IEngineCommand> commandQueue = new LinkedBlockingQueue<IEngineCommand>();
+	// Launch Flux in a separate thread
+	private final Flux engine = new Flux(this);
+	private Thread thread = new Thread(engine);
+	private final BlockingQueue<IEngineCommand> commandQueue = new LinkedBlockingQueue<IEngineCommand>();
 
-  // Save all player's moves in a list
-  private final List<GenericMove> moves = new ArrayList<GenericMove>();
-  private final Exchanger<GenericMove> bestMove = new Exchanger<GenericMove>();
+	// Save all player's moves in a list
+	private final List<GenericMove> moves = new ArrayList<GenericMove>();
+	private final Exchanger<GenericMove> bestMove = new Exchanger<GenericMove>();
 
-  public void start() {
-    if (!thread.isAlive()) {
-      thread = new Thread(engine);
-      thread.start();
-    }
+	public void start() {
+		if (!thread.isAlive()) {
+			thread = new Thread(engine);
+			thread.start();
+		}
 
-    commandQueue.clear();
-    commandQueue.add(new EngineInitializeRequestCommand());
+		commandQueue.clear();
+		commandQueue.add(new EngineInitializeRequestCommand());
 
-    newGame();
-  }
+		newGame();
+	}
 
-  public void stop() {
-    if (thread.isAlive()) {
-      commandQueue.add(new EngineQuitCommand());
-      try {
-        thread.join(3000);
-      } catch (InterruptedException e) {
-      }
-    }
-  }
+	public void stop() {
+		if (thread.isAlive()) {
+			commandQueue.add(new EngineQuitCommand());
+			try {
+				thread.join(3000);
+			} catch (InterruptedException e) {
+			}
+		}
+	}
 
-  // If you create a new game, issue a new game command and reset your move list
-  public void newGame() {
-    commandQueue.add(new EngineNewGameCommand());
-    moves.clear();
-  }
+	// If you create a new game, issue a new game command and reset your move list
+	public void newGame() {
+		commandQueue.add(new EngineNewGameCommand());
+		moves.clear();
+	}
 
-  // Make the player's move
-  public void makeMove(GenericMove move) {
-    // Validate the player's move
-    if (isValid(getCurrentBoard(), move)) {
-      moves.add(move);
-    } else {
-      // This is a illegal move, do something!
-      throw new IllegalArgumentException();
-    }
-  }
+	// Make the player's move
+	public void makeMove(GenericMove move) {
+		// Validate the player's move
+		if (isValid(getCurrentBoard(), move)) {
+			moves.add(move);
+		} else {
+			// This is a illegal move, do something!
+			throw new IllegalArgumentException();
+		}
+	}
 
-  // Just remove the last move from the list
-  public void undoMove() {
-    moves.remove(moves.size() - 1);
-  }
+	// Just remove the last move from the list
+	public void undoMove() {
+		moves.remove(moves.size() - 1);
+	}
 
-  // It's the engine's turn
-  public void compute(Game game, Board board) {
-    commandQueue.add(new EngineAnalyzeCommand(new GenericBoard(GenericBoard.STANDARDSETUP), moves));
-    EngineStartCalculatingCommand startCommand = new EngineStartCalculatingCommand();
-    startCommand.setMoveTime(2000L);
-    commandQueue.add(startCommand);
+	// It's the engine's turn
+	public void compute(Game game, Board board) {
+		commandQueue.add(new EngineAnalyzeCommand(new GenericBoard(GenericBoard.STANDARDSETUP), moves));
+		EngineStartCalculatingCommand startCommand = new EngineStartCalculatingCommand();
+		startCommand.setMoveTime(2000L);
+		commandQueue.add(startCommand);
 
-    try {
-      GenericMove move = bestMove.exchange(null);
-      makeMove(move);
+		try {
+			GenericMove move = bestMove.exchange(null);
+			makeMove(move);
 
-      Coord originSquare = new Coord(move.from.file.ordinal() + 1, move.from.rank.ordinal() + 1);
-      Coord targetSquare = new Coord(move.to.file.ordinal() + 1, move.to.rank.ordinal() + 1);
-      game.setValidMove(board.moveFigure(originSquare, targetSquare));
-      if (isMate()) {
-        System.out.format("Checkmate!%n");
-      } else {
-        game.nextPlayer();
-      }
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
+			Coord originSquare = new Coord(move.from.file.ordinal() + 1, move.from.rank.ordinal() + 1);
+			Coord targetSquare = new Coord(move.to.file.ordinal() + 1, move.to.rank.ordinal() + 1);
+			game.setValidMove(board.moveFigure(originSquare, targetSquare));
+			if (isMate()) {
+				System.out.format("Checkmate!%n");
+			} else {
+				game.nextPlayer();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
-  public boolean isMate() {
-    return MoveGenerator.getGenericMoves(getCurrentBoard()).length == 0;
-  }
+	public boolean isMate() {
+		return MoveGenerator.getGenericMoves(getCurrentBoard()).length == 0;
+	}
 
-  // Verify the player's move. Use the nice JCPI MoveGenerator.
-  private boolean isValid(GenericBoard board, GenericMove move) {
-    for (GenericMove validMove : MoveGenerator.getGenericMoves(board)) {
-      if (move.equals(validMove)) {
-        return true;
-      }
-    }
+	// Verify the player's move. Use the nice JCPI MoveGenerator.
+	private boolean isValid(GenericBoard board, GenericMove move) {
+		for (GenericMove validMove : MoveGenerator.getGenericMoves(board)) {
+			if (move.equals(validMove)) {
+				return true;
+			}
+		}
 
-    return false;
-  }
+		return false;
+	}
 
-  // Make all the moves in the list from the start position
-  private GenericBoard getCurrentBoard() {
-    Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
-    for (GenericMove genericMove : moves) {
-      int move = IntMove.convertMove(genericMove, hex88Board);
-      hex88Board.makeMove(move);
-    }
+	// Make all the moves in the list from the start position
+	private GenericBoard getCurrentBoard() {
+		Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
+		for (GenericMove genericMove : moves) {
+			int move = IntMove.convertMove(genericMove, hex88Board);
+			hex88Board.makeMove(move);
+		}
 
-    return hex88Board.getBoard();
-  }
+		return hex88Board.getBoard();
+	}
 
-  public IEngineCommand receive() throws IOException {
-    IEngineCommand command = null;
-    try {
-      command = this.commandQueue.take();
-    } catch (InterruptedException e) {
-      // We've got interrupted. Do something!
-    }
+	public IEngineCommand receive() throws IOException {
+		IEngineCommand command = null;
+		try {
+			command = this.commandQueue.take();
+		} catch (InterruptedException e) {
+			// We've got interrupted. Do something!
+		}
 
-    return command;
-  }
+		return command;
+	}
 
-  public void send(ProtocolInitializeAnswerCommand command) {
-    System.out.format("Engine initialized: %s%n", command.name);
-  }
+	public void send(ProtocolInitializeAnswerCommand command) {
+		System.out.format("Engine initialized: %s%n", command.name);
+	}
 
-  public void send(ProtocolReadyAnswerCommand command) {
-  }
+	public void send(ProtocolReadyAnswerCommand command) {
+	}
 
-  public void send(ProtocolBestMoveCommand command) {
-    if (command.bestMove != null) {
-      try {
-        bestMove.exchange(command.bestMove);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    } else {
-      // There is no best move. Do something!
-    }
-  }
+	public void send(ProtocolBestMoveCommand command) {
+		if (command.bestMove != null) {
+			try {
+				bestMove.exchange(command.bestMove);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else {
+			// There is no best move. Do something!
+		}
+	}
 
-  public void send(ProtocolInformationCommand command) {
-    // TODO: Maybe print the current pv here
+	public void send(ProtocolInformationCommand command) {
+		// TODO: Maybe print the current pv here
 
-    if (command.getMate() != null) {
-      // Flux has seen a mate
-      int mateDistance = command.getMate();
-      // TODO: Print mate distance
-    } else if (command.getCentipawns() != null) {
-      int value = command.getCentipawns();
-      // TODO: Print current evaluation. value == 0 means this situation is probably draw.
-    }
-  }
+		if (command.getMate() != null) {
+			// Flux has seen a mate
+			int mateDistance = command.getMate();
+			// TODO: Print mate distance
+		} else if (command.getCentipawns() != null) {
+			int value = command.getCentipawns();
+			// TODO: Print current evaluation. value == 0 means this situation is probably draw.
+		}
+	}
 
 }
