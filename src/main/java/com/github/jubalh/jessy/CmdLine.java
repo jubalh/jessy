@@ -2,6 +2,10 @@ package com.github.jubalh.jessy;
 
 import java.io.IOException;
 
+import com.fluxchess.jcpi.models.GenericFile;
+import com.fluxchess.jcpi.models.GenericMove;
+import com.fluxchess.jcpi.models.GenericPosition;
+import com.fluxchess.jcpi.models.GenericRank;
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 
@@ -23,6 +27,7 @@ public class CmdLine {
 
 	private Board board;
 	private Game game;
+	private final EngineHandler engineHandler = new EngineHandler();
 	private boolean active = true;
 	private StringBuilder messageToUser = new StringBuilder();
 	private static ConsoleReader reader;
@@ -48,6 +53,7 @@ public class CmdLine {
 	 */
 	public void run() {
 		CmdLine.printIntro();
+		engineHandler.start();
 		board.init();
 
 		try {
@@ -75,6 +81,8 @@ public class CmdLine {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			engineHandler.stop();
 		}
 	}
 
@@ -263,6 +271,7 @@ public class CmdLine {
 			this.active = false;
 		} else if(text.equals("start")) {
 			//TODO: if already running, ask if abort
+			engineHandler.newGame();
 			board.reset();
 			board.init();
 			game.setRunning(true);
@@ -289,7 +298,19 @@ public class CmdLine {
 				if (!board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
 					game.setValidMove( board.moveFigure(pa.coord, pa2.coord) );
 					if(game.wasValidMove()) {
-						game.nextPlayer();
+						engineHandler.makeMove(new GenericMove(
+								GenericPosition.valueOf(
+										GenericFile.values()[pa.coord.getX() - 1],
+										GenericRank.values()[pa.coord.getY() - 1]),
+								GenericPosition.valueOf(
+										GenericFile.values()[pa2.coord.getX() - 1],
+										GenericRank.values()[pa2.coord.getY() - 1])));
+						if (engineHandler.isMate()) {
+							setUserMessage("Checkmate!");
+						} else {
+							game.nextPlayer();
+							engineHandler.compute(game, board);
+						}
 					} else {
 						setUserMessage("Move not allowed");
 					}
