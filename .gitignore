@@ -7,3 +7,6 @@ jessy_record.txt
 .settings/
 build/
 repos/
+.gradle/
+bin/
+buildSrc/
