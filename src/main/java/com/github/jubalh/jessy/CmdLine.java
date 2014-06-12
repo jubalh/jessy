@@ -292,8 +292,10 @@ public class CmdLine {
 				startGame();
 			}
 		} else if(text.matches("stop\\s?")) {
-			System.out.println("Game stopped");
-			game.setRunning(false);
+			if (game.isRunning()) {
+				System.out.println("Game stopped");
+				game.setRunning(false);
+			}
 		// Movement
 		} else {
 			if (game.isRunning()) {
