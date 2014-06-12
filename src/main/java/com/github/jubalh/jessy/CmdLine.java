@@ -42,9 +42,9 @@ public class CmdLine {
 	 * Constructor
 	 * @param board model
 	 */
-	public CmdLine(Board board) {
+	public CmdLine(Board board, Game game) {
 		this.board = board;
-		this.game = new Game(); //TODO
+		this.game = game;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class CmdLine {
 				this.drawBoard();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Jline: Error while creation/reading");
 			e.printStackTrace();
 		} finally {
 			engineHandler.stop();
@@ -116,7 +116,9 @@ public class CmdLine {
 						}
 					}
 				} catch (NotAField ex) {
-					//TODO: say something
+					// shouldn't occur since lastMove should be save already
+					System.err.println("Illegal field");
+					ex.printStackTrace();
 				}
 				// print field
 				System.out.print("[" + (row == null ? " " : row.toString())
@@ -323,7 +325,7 @@ public class CmdLine {
 								setUserMessage("Checkmate!");
 							} else {
 								game.nextPlayer();
-								//							engineHandler.compute(game, board);
+								//engineHandler.compute(game, board);
 							}
 						} else {
 							setUserMessage("Move not allowed");
@@ -333,8 +335,8 @@ public class CmdLine {
 						setUserMessage("It's not your turn");
 					}
 				} catch (NotAField e) {
-					// TODO Auto-generated catch block
-					// should be safe here...
+					// should not occur, since it gets already checked in parseFigurePos
+					System.err.println("Illegal field");
 					e.printStackTrace();
 				}
 			}

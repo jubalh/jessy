@@ -17,26 +17,27 @@ public final class Chess {
     public static void main(final String[] args) {
 		Recorder recorder = null;
 		Board board = new Board();
+		Game game = new Game();
 
     	try {
 			recorder = new Recorder();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error creating Recorder:");
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Error creating Recorder:");
 			e.printStackTrace();
 		} finally {
 			board.setRecorder(recorder);
     	}
 
-		CmdLine cmdBoard = new CmdLine(board);
+		CmdLine cmdBoard = new CmdLine(board, game);
 		cmdBoard.run();
 
 		try {
 			recorder.save();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("Recorder: Error when saving file:");
 			e.printStackTrace();
 		}
     }

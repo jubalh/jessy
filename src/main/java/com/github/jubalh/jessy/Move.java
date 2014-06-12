@@ -6,7 +6,6 @@ package com.github.jubalh.jessy;
  * @author Michael Vetter
  *
  */
-//TODO: remove some doulbe coordinate functions with a 1 move one.
 public class Move {
 
 	private Coord origin;
@@ -38,6 +37,12 @@ public class Move {
 		return destination;
 	}
 	
+	/**
+	 * Converts the columns of a checkboard which are in numbers to their
+	 * corresponding letters
+	 * @param number of column
+	 * @return char corresponding
+	 */
 	private static char fieldnumberToChar(int number) {
 		return (char)(number-1+(int)'a');
 	}
