@@ -325,30 +325,35 @@ public class CmdLine {
 						return;
 					}
 					try {
-						if (!board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
-							Move move = new Move(pa.coord, pa2.coord);
-							game.setValidMove(engineHandler.isValidMove(move));
-							if(game.wasValidMove()) {
-								board.moveFigure(move);
-								engineHandler.makeMove(new GenericMove(
-										GenericPosition.valueOf(
-												GenericFile.values()[pa.coord.getX() - 1],
-												GenericRank.values()[pa.coord.getY() - 1]),
-												GenericPosition.valueOf(
-														GenericFile.values()[pa2.coord.getX() - 1],
-														GenericRank.values()[pa2.coord.getY() - 1])));
-								if (engineHandler.isMate()) {
-									setUserMessage("Checkmate!");
+						Figure figureToMove = board.getFigure(pa.coord);
+						if (figureToMove == null) {
+							setUserMessage("Wrong coordinates");
+						} else {
+							if (!figureToMove.isOpponent(game.getCurrentPlayer()) ) {
+								Move move = new Move(pa.coord, pa2.coord);
+								game.setValidMove(engineHandler.isValidMove(move));
+								if(game.wasValidMove()) {
+									board.moveFigure(move);
+									engineHandler.makeMove(new GenericMove(
+											GenericPosition.valueOf(
+													GenericFile.values()[pa.coord.getX() - 1],
+													GenericRank.values()[pa.coord.getY() - 1]),
+													GenericPosition.valueOf(
+															GenericFile.values()[pa2.coord.getX() - 1],
+															GenericRank.values()[pa2.coord.getY() - 1])));
+									if (engineHandler.isMate()) {
+										setUserMessage("Checkmate!");
+									} else {
+										game.nextPlayer();
+										//engineHandler.compute(game, board);
+									}
 								} else {
-									game.nextPlayer();
-									//engineHandler.compute(game, board);
+									setUserMessage("Move not allowed");
 								}
 							} else {
-								setUserMessage("Move not allowed");
+								game.setValidMove(false);
+								setUserMessage("It's not your turn");
 							}
-						} else {
-							game.setValidMove(false);
-							setUserMessage("It's not your turn");
 						}
 					} catch (NotAField e) {
 						// should not occur, since it gets already checked in parseFigurePos
