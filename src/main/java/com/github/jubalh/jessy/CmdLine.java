@@ -85,6 +85,17 @@ public class CmdLine {
 			engineHandler.stop();
 		}
 	}
+	
+	/**
+	 * Starts a new game.
+	 * Initializes EngineHandler, Board and sets game running
+	 */
+	private void startGame() {
+		engineHandler.newGame();
+		board.reset();
+		board.init();
+		game.setRunning(true);
+	}
 
 	/**
 	 * Draws the chess board on stdout.
@@ -271,73 +282,79 @@ public class CmdLine {
 		ParseHelper pa = new ParseHelper();
 		int index = 0;
 
+		// Commands
 		if(text.matches("exit\\s?")) {
 			this.active = false;
 		} else if(text.matches("start\\s?")) {
-			//TODO: if already running, ask if abort
-			engineHandler.newGame();
-			board.reset();
-			board.init();
-			game.setRunning(true);
+			if (game.isRunning()) {
+				System.out.println("Game is already running");
+			} else {
+				startGame();
+			}
+		} else if(text.matches("stop\\s?")) {
+			System.out.println("Game stopped");
+			game.setRunning(false);
+		// Movement
 		} else {
-
-			// assuming it starts with ex "Ka1", get the figure at field.
-			try {
-				index = parseFigurePos(text, pa);
-			} catch (NotAField e1) {
-				setUserMessage("No comprendo");
-				return;
-			}
-
-			// if there is no more, just set the figure on the field
-			if (text.length() <= index) {
-				board.setFigure(pa.coord, pa.figure);
-
-				return;
-			}
-
-			// "-"  = move figure
-			char c = text.charAt(index);
-			if (c == '-') {
-				String sub = text.substring(++index);
-				ParseHelper pa2 = new ParseHelper();
-				// get second figure + position
+			if (game.isRunning()) {
+				// assuming it starts with "Ka1" (example), get the figure at field.
 				try {
-					index = parseFigurePos(sub, pa2);
+					index = parseFigurePos(text, pa);
 				} catch (NotAField e1) {
-					setUserMessage("No Comprendo");
+					setUserMessage("No comprendo");
 					return;
 				}
-				try {
-					if (!board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
-						Move move = new Move(pa.coord, pa2.coord);
-						game.setValidMove(engineHandler.isValidMove(move));
-						if(game.wasValidMove()) {
-							board.moveFigure(move);
-							engineHandler.makeMove(new GenericMove(
-									GenericPosition.valueOf(
-											GenericFile.values()[pa.coord.getX() - 1],
-											GenericRank.values()[pa.coord.getY() - 1]),
-											GenericPosition.valueOf(
-													GenericFile.values()[pa2.coord.getX() - 1],
-													GenericRank.values()[pa2.coord.getY() - 1])));
-							if (engineHandler.isMate()) {
-								setUserMessage("Checkmate!");
+
+				// if there is no more, just set the figure on the field
+				if (text.length() <= index) {
+					board.setFigure(pa.coord, pa.figure);
+
+					return;
+				}
+
+				// "-"  = move figure
+				char c = text.charAt(index);
+				if (c == '-') {
+					String sub = text.substring(++index);
+					ParseHelper pa2 = new ParseHelper();
+					// get second figure + position
+					try {
+						index = parseFigurePos(sub, pa2);
+					} catch (NotAField e1) {
+						setUserMessage("No Comprendo");
+						return;
+					}
+					try {
+						if (!board.getFigure(pa.coord).isOpponent(game.getCurrentPlayer()) ) {
+							Move move = new Move(pa.coord, pa2.coord);
+							game.setValidMove(engineHandler.isValidMove(move));
+							if(game.wasValidMove()) {
+								board.moveFigure(move);
+								engineHandler.makeMove(new GenericMove(
+										GenericPosition.valueOf(
+												GenericFile.values()[pa.coord.getX() - 1],
+												GenericRank.values()[pa.coord.getY() - 1]),
+												GenericPosition.valueOf(
+														GenericFile.values()[pa2.coord.getX() - 1],
+														GenericRank.values()[pa2.coord.getY() - 1])));
+								if (engineHandler.isMate()) {
+									setUserMessage("Checkmate!");
+								} else {
+									game.nextPlayer();
+									//engineHandler.compute(game, board);
+								}
 							} else {
-								game.nextPlayer();
-								//engineHandler.compute(game, board);
+								setUserMessage("Move not allowed");
 							}
 						} else {
-							setUserMessage("Move not allowed");
+							game.setValidMove(false);
+							setUserMessage("It's not your turn");
 						}
-					} else {
-						game.setValidMove(false);
-						setUserMessage("It's not your turn");
+					} catch (NotAField e) {
+						// should not occur, since it gets already checked in parseFigurePos
+						System.err.println("Illegal field");
+						e.printStackTrace();
 					}
-				} catch (NotAField e) {
-					// should not occur, since it gets already checked in parseFigurePos
-					System.err.println("Illegal field");
-					e.printStackTrace();
 				}
 			}
 		}

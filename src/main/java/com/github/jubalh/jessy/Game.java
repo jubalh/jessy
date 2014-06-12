@@ -20,6 +20,7 @@ public class Game {
 	 */
 	public void setRunning(boolean status) {
 		this.running = status;
+		currentPlayer = Color.WHITE;
 	}
 	
 	/**

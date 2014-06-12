@@ -44,6 +44,7 @@ public final class Board {
 	 */
 	public void reset() {
 		matrix = new Figure[BOARD_ROWS][BOARD_COLUMNS];
+		lastMove = null;
 	}
 
 	/**
