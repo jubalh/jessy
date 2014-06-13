@@ -188,16 +188,16 @@ public final class Board {
 	public boolean moveFigure(final Coord coordOld, final Coord coordNew) {
 		Figure figure;
 		boolean ret = false;
-
+		
 		try {
 			figure = getFigure(coordOld);
 			ret = setFigure(coordOld, null);
 			if (ret) {
 				ret = setFigure(coordNew, figure);
 			}
-		} catch (Exception ex) {
-			// log ###ask someone for advice whether i use exception alright here.
-			System.out.println(ex);
+		} catch(NotAField e) {
+			System.err.println("Can't move Figure from"+coordOld.toString()+" to "+coordNew.toString());
+			ret = false;
 		}
 		// figure successfully set; save last move
 		if(ret) {

@@ -140,6 +140,10 @@ public final class Coord {
 			return true;
 		}
 		return false;
-		
+	}
+	
+	@Override
+	public String toString() {
+		return "x: " + this.getX() + " y: " + this.getY();
 	}
 }
