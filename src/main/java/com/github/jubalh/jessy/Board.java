@@ -208,12 +208,6 @@ public final class Board {
 			 * and also saves lastMove in Game and records
 			 */
 
-			/*
-			 * TODO: wenn auch figure abgespeichert werden soll:
-			 * figure in Move merken? oder in recordmove() einmal
-			 * move und einmal figure uebergeben
-			*/
-			
 			// and record it
 			recordMove(lastMove);
 		}
@@ -229,7 +223,7 @@ public final class Board {
 			try {
 				recorder.record(move);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("Recorder: Error while writing");
 				e.printStackTrace();
 			}
 		}

@@ -249,7 +249,7 @@ public class CmdLine {
 		if (isUpperCase(c)) {
 			pa.figure = getFigureByChar(c);
 			if (pa.figure == null)
-				return index; // TODO Exception
+				return index; // TODO Exception?
 			index++;
 		} else {
 			pa.figure = new Pawn();
