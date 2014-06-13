@@ -60,7 +60,7 @@ public class CmdLine {
 			reader = new ConsoleReader();
 			reader.setPrompt(this.composePrompt());
 
-			StringsCompleter commandsCompleter = new StringsCompleter("start", "exit");
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "exit", "stop");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
