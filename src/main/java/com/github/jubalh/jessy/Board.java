@@ -290,4 +290,12 @@ public final class Board {
 	public void setRecorder(Recorder recorder) {
 		this.recorder = recorder;
 	}
+	
+	/**
+	 * Returns Recorder
+	 * @return recorder
+	 */
+	public Recorder getRecorder() {
+		return this.recorder;
+	}
 }

@@ -17,6 +17,7 @@ public class Recorder {
 	private BufferedWriter writer;
 	private static final String ENCODING = "utf-8";
 	private String filename = "jessy_record.txt";
+	private boolean isRecording = false;
 
 	/**
 	 * Constructor
@@ -38,8 +39,10 @@ public class Recorder {
 	 * @throws IOException problem writing to buffer/file
 	 */
 	public void record(Move move) throws IOException {
-		writer.write(move.toString());
-		writer.newLine();
+		if (this.isRecording) {
+			writer.write(move.toString());
+			writer.newLine();
+		}
 	}
 	
 	/**
@@ -48,5 +51,21 @@ public class Recorder {
 	 */
 	public void save() throws IOException {
 		writer.close();
+	}
+	
+	/**
+	 * Sets recorder state
+	 * @param status true = active
+	 */
+	public void setState(boolean status) {
+		this.isRecording = true;
+	}
+	
+	/**
+	 * Get recorder state
+	 * @return true if should recording
+	 */
+	public boolean getState() {
+		return this.isRecording;
 	}
 }

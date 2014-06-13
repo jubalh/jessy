@@ -60,7 +60,7 @@ public class CmdLine {
 			reader = new ConsoleReader();
 			reader.setPrompt(this.composePrompt());
 
-			StringsCompleter commandsCompleter = new StringsCompleter("start", "exit", "stop");
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "exit", "stop", "recorderStart", "recorderStop");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
@@ -296,8 +296,13 @@ public class CmdLine {
 				System.out.println("Game stopped");
 				game.setRunning(false);
 			}
+		} else if(text.matches("recorderStart\\s?")) {
+			board.getRecorder().setState(true);
+		} else if(text.matches("recorderStop\\s?")) {
+			board.getRecorder().setState(false);
+		}
 		// Movement
-		} else {
+		else {
 			if (game.isRunning()) {
 				// assuming it starts with "Ka1" (example), get the figure at field.
 				try {
