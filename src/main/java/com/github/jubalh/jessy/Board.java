@@ -191,12 +191,9 @@ public final class Board {
 
 		try {
 			figure = getFigure(coordOld);
-			//if (figure.canMove(this, coordOld, coordNew))
-			{
-				ret = setFigure(coordOld, null);
-				if (ret) {
-					ret = setFigure(coordNew, figure);
-				}
+			ret = setFigure(coordOld, null);
+			if (ret) {
+				ret = setFigure(coordNew, figure);
 			}
 		} catch (Exception ex) {
 			// log ###ask someone for advice whether i use exception alright here.
