@@ -1,7 +1,10 @@
 package com.github.jubalh.jessy;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+
+import free.freechess.FreechessConnection;
 
 /**
  * Console Chess.
@@ -13,11 +16,15 @@ public final class Chess {
     /**
      * Start.
      * @param args cmdline params
+     * @throws FileNotFoundException 
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws FileNotFoundException {
 		Recorder recorder = null;
 		Board board = new Board();
 		Game game = new Game();
+		
+		FreechessConnection con = new FreechessConnection("guest", "", new PrintStream("free.txt") );
+		con.initiateConnect(hostname, port);
 
     	try {
 			recorder = new Recorder();
