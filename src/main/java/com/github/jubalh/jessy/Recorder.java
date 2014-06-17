@@ -68,4 +68,12 @@ public class Recorder {
 	public boolean getState() {
 		return this.isRecording;
 	}
+	
+	/**
+	 * Returns the filename in which the record will be saved.
+	 * @return filename of record.
+	 */
+	public String getFilename() {
+		return this.getFilename();
+	}
 }

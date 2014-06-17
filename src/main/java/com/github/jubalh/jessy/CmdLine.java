@@ -306,13 +306,15 @@ public class CmdLine {
 			this.tryStartGame(true);
 		} else if(text.matches("stop\\s?")) {
 			if (game.isRunning()) {
-				System.out.println("Game stopped");
+				this.setUserMessage("Game stopped");
 				game.setRunning(false);
 			}
 		} else if(text.matches("recorderStart\\s?")) {
 			board.getRecorder().setState(true);
+			this.setUserMessage("Recording game into file: " + board.getRecorder().getFilename());
 		} else if(text.matches("recorderStop\\s?")) {
 			board.getRecorder().setState(false);
+			this.setUserMessage("Stopped recording");
 		}
 		// Movement
 		else {
