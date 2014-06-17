@@ -60,7 +60,7 @@ public class CmdLine {
 			reader = new ConsoleReader();
 			reader.setPrompt(this.composePrompt());
 
-			StringsCompleter commandsCompleter = new StringsCompleter("start", "exit", "stop", "recorderStart", "recorderStop");
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer", "exit", "stop", "recorderStart", "recorderStop");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
@@ -90,11 +90,26 @@ public class CmdLine {
 	 * Starts a new game.
 	 * Initializes EngineHandler, Board and sets game running
 	 */
-	private void startGame() {
+	private void startGame(boolean isComputerGame) {
 		engineHandler.newGame();
 		board.reset();
 		board.init();
 		game.setRunning(true);
+		game.isComputerGame(isComputerGame);
+	}
+	
+	/**
+	 * Tries to start the game.
+	 * In case it's already running it will print out a message.
+	 * @param isComputerGame trying to start game against computer.
+	 */
+	private void tryStartGame(boolean isComputerGame) {
+		if (game.isRunning()) {
+			this.setUserMessage("Game is already running");
+//			System.out.println("Game is already running");
+		} else {
+			startGame(isComputerGame);
+		}
 	}
 
 	/**
@@ -286,11 +301,9 @@ public class CmdLine {
 		if(text.matches("exit\\s?")) {
 			this.active = false;
 		} else if(text.matches("start\\s?")) {
-			if (game.isRunning()) {
-				System.out.println("Game is already running");
-			} else {
-				startGame();
-			}
+			this.tryStartGame(false);
+		} else if(text.matches("start againstComputer\\s?")) {
+			this.tryStartGame(true);
 		} else if(text.matches("stop\\s?")) {
 			if (game.isRunning()) {
 				System.out.println("Game stopped");
@@ -352,7 +365,9 @@ public class CmdLine {
 										setUserMessage("Checkmate!");
 									} else {
 										game.nextPlayer();
-										//engineHandler.compute(game, board);
+										if (game.isComputerGame()) {
+											engineHandler.compute(game, board);
+										}
 									}
 								} else {
 									setUserMessage("Move not allowed");

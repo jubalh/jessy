@@ -4,6 +4,7 @@ public class Game {
 
 	private boolean running = false;
 	private boolean moveWasValid = false;
+	private boolean isComputerGame = false;
 	private Color currentPlayer = Color.WHITE;
 	
 	/**
@@ -63,5 +64,21 @@ public class Game {
 			this.currentPlayer = Color.BLACK;
 		else
 			this.currentPlayer = Color.WHITE;
+	}
+	
+	/**
+	 * Returns if game is played against computer
+	 * @return true if against computer
+	 */
+	public boolean isComputerGame() {
+		return isComputerGame;
+	}
+
+	/**
+	 * Sets if game is played against computer
+	 * @return true if against computer
+	 */
+	public void isComputerGame(boolean status) {
+		this.isComputerGame = status;
 	}
 }
