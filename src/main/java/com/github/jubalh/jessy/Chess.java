@@ -19,8 +19,11 @@ public final class Chess {
 		Board board = new Board();
 		Game game = new Game();
 
-    	try {
+    	//JAVA 7: try(recorder = new Recorder()) {
+		try {
 			recorder = new Recorder();
+    		CmdLine cmdBoard = new CmdLine(board, game);
+    		cmdBoard.run();
 		} catch (FileNotFoundException e) {
 			System.err.println("Error creating Recorder:");
 			e.printStackTrace();
@@ -31,11 +34,8 @@ public final class Chess {
 			board.setRecorder(recorder);
     	}
 
-		CmdLine cmdBoard = new CmdLine(board, game);
-		cmdBoard.run();
-
 		try {
-			recorder.save();
+			recorder.close();
 		} catch (IOException e) {
 			System.err.println("Recorder: Error when saving file:");
 			e.printStackTrace();

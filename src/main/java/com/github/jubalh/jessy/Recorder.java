@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
  * @author Michael Vetter
  *
  */
-public class Recorder {
+public class Recorder implements AutoCloseable{
 	private BufferedWriter writer;
 	private static final String ENCODING = "utf-8";
 	private String filename = "jessy_record.txt";
@@ -49,7 +49,7 @@ public class Recorder {
 	 * Saves the record in file
 	 * @throws IOException
 	 */
-	public void save() throws IOException {
+	public void close() throws IOException {
 		writer.close();
 	}
 	
