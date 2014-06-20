@@ -84,8 +84,10 @@ public final class Coord {
 	 * @return true if the same
 	 */
 	public boolean equals(final Coord coord) {
-		if (coord.x == this.x && coord.y == this.y) {
-			return true;
+		if (coord != null) {
+			if (coord.x == this.x && coord.y == this.y) {
+				return true;
+			}
 		}
 		return false;
 	}
