@@ -1,5 +1,7 @@
 package com.github.jubalh.jessy;
 
+import java.util.Locale;
+
 public final class Coord {
 	private int x;
 	private int y;
@@ -25,8 +27,8 @@ public final class Coord {
 	 * Doesn't matter if letters are lower or upper case.
 	 * @param s String to parse
 	 */
-	public boolean setFromString(String s) {
-		s = s.toUpperCase();
+	public Coord(String s) throws IllegalArgumentException {
+		s = s.toUpperCase(Locale.ROOT);
 		if (s.length() == 2) {
 			if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
 				if (s.charAt(1) <= '8' && s.charAt(1) >= '1') {
@@ -37,11 +39,11 @@ public final class Coord {
 					//y = Math.abs(y - Board.getRowsCount()); //without turning stuff
 					setX(x);
 					setY(y);
-					return true;
+					return;
 				}
 			}
 		}
-		return false;
+		throw new IllegalArgumentException();
 	}
 
 	/**

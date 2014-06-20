@@ -275,14 +275,13 @@ public class CmdLine {
 		if (!((c >= 'a' && c <= 'h') || (c >= '1' && c <= '8')))
 			throw new NotAField();
 
-		pa.coord = new Coord();
 		String sub = text.substring(index, index+2);
-		if (pa.coord.setFromString(sub) ) {
+		try {
+			pa.coord = new Coord(sub);
 			index += 2;
-		} else {
+		} catch (IllegalArgumentException e) {
 			throw new NotAField();
 		}
-
 
 		return index;
 	}
