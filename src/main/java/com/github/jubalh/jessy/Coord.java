@@ -27,7 +27,7 @@ public final class Coord {
 	 * Doesn't matter if letters are lower or upper case.
 	 * @param s String to parse
 	 */
-	public Coord(String s) throws IllegalArgumentException {
+	public Coord(String s) throws NotAField {
 		s = s.toUpperCase(Locale.ROOT);
 		if (s.length() == 2) {
 			if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
@@ -43,7 +43,7 @@ public final class Coord {
 				}
 			}
 		}
-		throw new IllegalArgumentException();
+		throw new NotAField();
 	}
 
 	/**

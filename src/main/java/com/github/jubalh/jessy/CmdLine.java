@@ -276,12 +276,8 @@ public class CmdLine {
 			throw new NotAField();
 
 		String sub = text.substring(index, index+2);
-		try {
-			pa.coord = new Coord(sub);
-			index += 2;
-		} catch (IllegalArgumentException e) {
-			throw new NotAField();
-		}
+		pa.coord = new Coord(sub);
+		index += 2;
 
 		return index;
 	}
