@@ -50,7 +50,7 @@ public final class Coord {
 	 * Sets X coordinate.
 	 * @param x coordinate
 	 */
-	public void setX(final int x) {
+	private void setX(final int x) {
 		this.x = x;
 	}
 
@@ -58,7 +58,7 @@ public final class Coord {
 	 * Sets y coordinate.
 	 * @param y coordinate
 	 */
-	public void setY(final int y) {
+	private void setY(final int y) {
 		this.y = y;
 	}
 	
@@ -78,60 +78,6 @@ public final class Coord {
 		return this.y;
 	}
 	
-	/**
-	 * Increase x coordinate by amount.
-	 * @param amount
-	 * @return new x value
-	 */
-	public int increaseX(final int amount) {
-		return this.x += amount;
-	}
-
-	/**
-	 * Increase y coordinate by amount.
-	 * @param amount
-	 * @return new y value
-	 */
-	public int increaseY(final int amount) {
-		return this.y += amount;
-	}
-	
-	/**
-	 * Increases X and Y by amount.
-	 * @param amount
-	 */
-	public void increase(final int amount) {
-		increaseX(amount);
-		increaseY(amount);
-	}
-
-	/**
-	 * Decreases x coordinate by amount.
-	 * @param amount
-	 * @return new x value
-	 */
-	public int decreaseX(final int amount) {
-		return this.x -= amount;
-	}
-
-	/**
-	 * Decreases y coordinate by amount.
-	 * @param amount
-	 * @return new y value
-	 */
-	public int decreaseY(final int amount) {
-		return this.y -= amount;
-	}
-	
-	/**
-	 *  Decrease x and y coordinate by amount.
-	 * @param amount
-	 */
-	public void decrease(final int amount) {
-		decreaseX(amount);
-		decreaseY(amount);
-	}
-
 	/**
 	 * Checks whether two coordinates are the same.
 	 * @param coord to check with oneself
