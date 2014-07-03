@@ -83,6 +83,32 @@ public abstract class Figure {
 		return c + "";
 	}
 
+	/**
+	 * Returns a object according to the of figure indicated by
+	 * upper case character.
+	 * @param c character
+	 * @return subclass of Figure, depending on character. null if doesn't fit.
+	 * TODO: right here?
+	 */
+	public static Figure getFigureByChar(final char c) {
+		switch (c) {
+		case 'P':
+		case '\0':
+			return new Pawn();
+		case 'N':
+			return new Knight();
+		case 'B':
+			return new Bishop();
+		case 'R':
+			return new Rook();
+		case 'Q':
+			return new Queen();
+		case 'K':
+			return new King();
+		}
+		return null;
+	}
+
 	// force to implement this
 	
 	/**
