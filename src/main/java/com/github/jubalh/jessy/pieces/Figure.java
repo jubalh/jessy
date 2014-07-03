@@ -69,7 +69,7 @@ public abstract class Figure {
 	 * @return true if not the same color
 	 */
 	public boolean isOpponent(Color color) {
-		return (color != this.getColor());
+		return color != this.getColor();
 	}
 
 	/**
