@@ -2,10 +2,6 @@ package com.github.jubalh.jessy;
 
 import java.io.IOException;
 
-import com.fluxchess.jcpi.models.GenericFile;
-import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.models.GenericPosition;
-import com.fluxchess.jcpi.models.GenericRank;
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 
@@ -25,9 +21,7 @@ import com.github.jubalh.jessy.pieces.Rook;
  */
 public class CmdLine {
 
-	private Board board;
 	private Game game;
-	private final EngineHandler engineHandler = new EngineHandler();
 	private boolean active = true;
 	private StringBuilder messageToUser = new StringBuilder();
 	private static ConsoleReader reader;
@@ -40,10 +34,9 @@ public class CmdLine {
 
 	/**
 	 * Constructor
-	 * @param board model
+	 * @param Game game
 	 */
-	public CmdLine(Board board, Game game) {
-		this.board = board;
+	public CmdLine(Game game) {
 		this.game = game;
 	}
 
@@ -53,8 +46,6 @@ public class CmdLine {
 	 */
 	public void run() {
 		CmdLine.printIntro();
-		engineHandler.start();
-		board.init();
 
 		try {
 			reader = new ConsoleReader();
@@ -81,8 +72,6 @@ public class CmdLine {
 		} catch (IOException e) {
 			System.err.println("Jline: Error while creation/reading");
 			e.printStackTrace();
-		} finally {
-			engineHandler.stop();
 		}
 	}
 	
@@ -91,9 +80,7 @@ public class CmdLine {
 	 * Initializes EngineHandler, Board and sets game running
 	 */
 	private void startGame(boolean isComputerGame) {
-		engineHandler.newGame();
-		board.reset();
-		board.init();
+		game.init();
 		game.setRunning(true);
 		game.isComputerGame(isComputerGame);
 	}
@@ -125,6 +112,7 @@ public class CmdLine {
 		drawSpace();
 
 		int colCount = 8;
+		Board board = game.getBoard();
 		// go through columns
 		for (Figure[] col : board.getMatrix()) {
 			// left border
@@ -248,11 +236,11 @@ public class CmdLine {
 				game.setRunning(false);
 			}
 		} else if(text.matches("recorderStart\\s?")) {
-			board.getRecorder().setState(true);
-			this.setUserMessage("Recording game into file: " + board.getRecorder().getFilename());
+			//TODO board.getRecorder().setState(true);
+			//TODO this.setUserMessage("Recording game into file: " + board.getRecorder().getFilename());
 		} else if(text.matches("recorderStop\\s?")) {
-			board.getRecorder().setState(false);
-			this.setUserMessage("Stopped recording");
+			//TODO board.getRecorder().setState(false);
+			//TODO this.setUserMessage("Stopped recording");
 		}
 		// Movement
 		else {
@@ -262,13 +250,6 @@ public class CmdLine {
 					index = NotationParser.parseFigurePos(text, pa);
 				} catch (NotAField e1) {
 					setUserMessage("No comprendo");
-					return;
-				}
-
-				// if there is no more, just set the figure on the field
-				if (text.length() <= index) {
-					board.setFigure(pa.coord, pa.figure);
-
 					return;
 				}
 
@@ -284,44 +265,8 @@ public class CmdLine {
 						setUserMessage("No Comprendo");
 						return;
 					}
-					try {
-						Figure figureToMove = board.getFigure(pa.coord);
-						if (figureToMove == null) {
-							setUserMessage("Wrong coordinates");
-						} else {
-							if (!figureToMove.isOpponent(game.getCurrentPlayer()) ) {
-								Move move = new Move(pa.coord, pa2.coord);
-								game.setValidMove(engineHandler.isValidMove(move));
-								if(game.wasValidMove()) {
-									board.moveFigure(move);
-									engineHandler.makeMove(new GenericMove(
-											GenericPosition.valueOf(
-													GenericFile.values()[pa.coord.getX() - 1],
-													GenericRank.values()[pa.coord.getY() - 1]),
-													GenericPosition.valueOf(
-															GenericFile.values()[pa2.coord.getX() - 1],
-															GenericRank.values()[pa2.coord.getY() - 1])));
-									if (engineHandler.isMate()) {
-										setUserMessage("Checkmate!");
-									} else {
-										game.nextPlayer();
-										if (game.isComputerGame()) {
-											engineHandler.compute(game, board);
-										}
-									}
-								} else {
-									setUserMessage("Move not allowed");
-								}
-							} else {
-								game.setValidMove(false);
-								setUserMessage("It's not your turn");
-							}
-						}
-					} catch (NotAField e) {
-						// should not occur, since it gets already checked in parseFigurePos
-						System.err.println("Illegal field");
-						e.printStackTrace();
-					}
+					TempHelpClass hc = game.trytomove(pa.coord, pa2.coord);
+					setUserMessage(hc.getText());
 				}
 			}
 		}

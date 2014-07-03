@@ -1,12 +1,43 @@
 package com.github.jubalh.jessy;
 
+import com.fluxchess.jcpi.models.GenericMove;
+import com.fluxchess.jcpi.models.GenericFile;
+import com.fluxchess.jcpi.models.GenericPosition;
+import com.fluxchess.jcpi.models.GenericRank;
+
+import com.github.jubalh.jessy.pieces.Figure;
+
 public class Game {
 
-	private boolean running = false;
-	private boolean moveWasValid = false;
-	private boolean isComputerGame = false;
-	private Color currentPlayer = Color.WHITE;
+	private EngineHandler engineHandler = null;
+	private Board board;
+	private boolean running;
+	private boolean moveWasValid;
+	private boolean isComputerGame;
+	private Color currentPlayer;
 	
+	/**
+	 * Constructor
+	 * @param board to use
+	 */
+	public Game(Board board) {
+		this.board = board;
+	}
+
+	public void init() {
+		board.reset();
+		board.init();
+		
+		engineHandler = new EngineHandler();
+		engineHandler.start();
+		engineHandler.newGame();
+
+		this.running = false;
+		this.moveWasValid = false;
+		this.isComputerGame = false;
+		this.currentPlayer = Color.WHITE;
+	}
+
 	/**
 	 * Gets game status.
 	 * @return true if runs
@@ -21,7 +52,9 @@ public class Game {
 	 */
 	public void setRunning(boolean status) {
 		this.running = status;
-		currentPlayer = Color.WHITE;
+		if(status == false) {
+			engineHandler.stop();//TODO: rather in destructor?
+		}
 	}
 	
 	/**
@@ -81,4 +114,58 @@ public class Game {
 	public void isComputerGame(boolean status) {
 		this.isComputerGame = status;
 	}
+	
+	/**
+	 * Returns board
+	 * @return board
+	 */
+	public Board getBoard() {
+		return board;
+	}
+	
+	public TempHelpClass trytomove(Coord origin, Coord destination) {
+		TempHelpClass hc = new TempHelpClass();
+
+		try {
+			Figure figureToMove = board.getFigure(origin);
+			if (figureToMove == null) {
+				hc.addText("Wrong coordinates");
+			} else {
+				//game.trytomove();
+				if (!figureToMove.isOpponent(this.getCurrentPlayer()) ) {
+					Move move = new Move(origin, destination);
+					this.setValidMove(engineHandler.isValidMove(move));
+					if(this.wasValidMove()) {
+						board.moveFigure(move);
+						engineHandler.makeMove(new GenericMove(
+								GenericPosition.valueOf(
+										GenericFile.values()[origin.getX() - 1],
+										GenericRank.values()[origin.getY() - 1]),
+										GenericPosition.valueOf(
+												GenericFile.values()[destination.getX() - 1],
+												GenericRank.values()[destination.getY() - 1])));
+						if (engineHandler.isMate()) {
+							hc.addText("Checkmate!");
+						} else {
+							this.nextPlayer();
+							if (this.isComputerGame()) {
+								engineHandler.compute(this, board);
+							}
+						}
+					} else {
+						hc.addText("Move not allowed");
+					}
+				} else {
+					this.setValidMove(false);
+					hc.addText("It's not your turn");
+				}
+			}
+		} catch (NotAField e) {
+			// should not occur, since it gets already checked in parseFigurePos
+			System.err.println("Illegal field");
+			e.printStackTrace();
+		}
+		return hc;
+	}
+
 }

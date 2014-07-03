@@ -1,4 +1,5 @@
 package com.github.jubalh.jessy;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -17,12 +18,12 @@ public final class Chess {
     public static void main(final String[] args) {
 		Recorder recorder = null;
 		Board board = new Board();
-		Game game = new Game();
+		Game game = new Game(board);
 
     	//JAVA 7: try(recorder = new Recorder()) {
 		try {
 			recorder = new Recorder();
-    		CmdLine cmdBoard = new CmdLine(board, game);
+    		CmdLine cmdBoard = new CmdLine(game);
     		cmdBoard.run();
 		} catch (FileNotFoundException e) {
 			System.err.println("Error creating Recorder:");
