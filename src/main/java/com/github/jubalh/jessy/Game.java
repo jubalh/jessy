@@ -123,27 +123,25 @@ public class Game {
 		return board;
 	}
 	
-	public TempHelpClass trytomove(Coord origin, Coord destination) {
+	public TempHelpClass trytomove(Move move) {
 		TempHelpClass hc = new TempHelpClass();
 
 		try {
-			Figure figureToMove = board.getFigure(origin);
+			Figure figureToMove = board.getFigure(move.getOrigin());
 			if (figureToMove == null) {
 				hc.addText("Wrong coordinates");
 			} else {
-				//game.trytomove();
 				if (!figureToMove.isOpponent(this.getCurrentPlayer()) ) {
-					Move move = new Move(origin, destination);
 					this.setValidMove(engineHandler.isValidMove(move));
 					if(this.wasValidMove()) {
 						board.moveFigure(move);
 						engineHandler.makeMove(new GenericMove(
 								GenericPosition.valueOf(
-										GenericFile.values()[origin.getX() - 1],
-										GenericRank.values()[origin.getY() - 1]),
+										GenericFile.values()[move.getOrigin().getX() - 1],
+										GenericRank.values()[move.getOrigin().getY() - 1]),
 										GenericPosition.valueOf(
-												GenericFile.values()[destination.getX() - 1],
-												GenericRank.values()[destination.getY() - 1])));
+												GenericFile.values()[move.getDestination().getX() - 1],
+												GenericRank.values()[move.getDestination().getY() - 1])));
 						if (engineHandler.isMate()) {
 							hc.addText("Checkmate!");
 						} else {

@@ -5,13 +5,9 @@ import java.io.IOException;
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 
-import com.github.jubalh.jessy.pieces.Bishop;
 import com.github.jubalh.jessy.pieces.Figure;
-import com.github.jubalh.jessy.pieces.King;
-import com.github.jubalh.jessy.pieces.Knight;
-import com.github.jubalh.jessy.pieces.Pawn;
-import com.github.jubalh.jessy.pieces.Queen;
-import com.github.jubalh.jessy.pieces.Rook;
+import parsers.JessyNotationParser;
+import parsers.NotationParser;
 
 /**
  * 
@@ -22,6 +18,7 @@ import com.github.jubalh.jessy.pieces.Rook;
 public class CmdLine {
 
 	private Game game;
+	private NotationParser notationParser = new JessyNotationParser();
 	private boolean active = true;
 	private StringBuilder messageToUser = new StringBuilder();
 	private static ConsoleReader reader;
@@ -220,11 +217,9 @@ public class CmdLine {
 	 * @param text to be parsed
 	 */
 	public void parse(String text) {
-		ParseHelper pa = new ParseHelper();
-		int index = 0;
-
 		// Commands
 		if(text.matches("exit\\s?")) {
+			game.setRunning(false);
 			this.active = false;
 		} else if(text.matches("start\\s?")) {
 			this.tryStartGame(false);
@@ -245,28 +240,13 @@ public class CmdLine {
 		// Movement
 		else {
 			if (game.isRunning()) {
-				// assuming it starts with "Ka1" (example), get the figure at field.
-				try {
-					index = NotationParser.parseFigurePos(text, pa);
-				} catch (NotAField e1) {
-					setUserMessage("No comprendo");
-					return;
-				}
 
-				// "-"  = move figure
-				char c = text.charAt(index);
-				if (c == '-') {
-					String sub = text.substring(++index);
-					ParseHelper pa2 = new ParseHelper();
-					// get second figure + position
-					try {
-						index = NotationParser.parseFigurePos(sub, pa2);
-					} catch (NotAField e1) {
-						setUserMessage("No Comprendo");
-						return;
-					}
-					TempHelpClass hc = game.trytomove(pa.coord, pa2.coord);
+				try {
+					Move userMove = notationParser.parse(text);
+					TempHelpClass hc = game.trytomove(userMove);
 					setUserMessage(hc.getText());
+				} catch (NotAField e) {
+					setUserMessage("No comprendo");
 				}
 			}
 		}

@@ -100,7 +100,7 @@ public class EngineHandler implements IProtocolHandler {
 			Coord targetSquare = new Coord(move.to.file.ordinal() + 1, move.to.rank.ordinal() + 1);
 			game.setValidMove(board.moveFigure(originSquare, targetSquare));
 			if (isMate()) {
-				System.out.format("Checkmate!%n");
+				//System.out.format("Checkmate!%n");//TODO:
 			} else {
 				game.nextPlayer();
 			}
@@ -147,7 +147,7 @@ public class EngineHandler implements IProtocolHandler {
 	}
 
 	public void send(ProtocolInitializeAnswerCommand command) {
-		System.out.format("Engine initialized: %s%n", command.name);
+		//System.out.format("Engine initialized: %s%n", command.name);//TODO
 	}
 
 	public void send(ProtocolReadyAnswerCommand command) {
