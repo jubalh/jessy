@@ -83,10 +83,14 @@ public final class Coord {
 	 * @param coord to check with oneself
 	 * @return true if the same
 	 */
-	public boolean equals(final Coord coord) {
-		if (coord != null) {
-			if (coord.x == this.x && coord.y == this.y) {
-				return true;
+	@Override
+	public boolean equals(Object coordinate) {
+		if (coordinate != null) {
+			if (coordinate instanceof Coord) {
+				Coord coord = (Coord)coordinate;
+				if (coord.x == this.x && coord.y == this.y) {
+					return true;
+				}
 			}
 		}
 		return false;
