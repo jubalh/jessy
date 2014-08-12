@@ -177,11 +177,12 @@ public class CmdLine {
 	 */
 	private String composePrompt() {
 		char status = CmdLine.PROMPT_CROSS;
+		final String SEPERATOR = " \u25AB ";
 		String userMessage = this.getUserMessage();
 		StringBuilder result = new StringBuilder("");
 
 		if (!userMessage.isEmpty()) {
-			result.append("# "+userMessage+" #");
+			result.append(userMessage + SEPERATOR);
 			this.clearUserMessage();
 		}
 
@@ -191,6 +192,7 @@ public class CmdLine {
 			} else {
 				result.append("black draws");
 			}
+			result.append(SEPERATOR);
 		}
 
 		if (game.wasValidMove()) {
