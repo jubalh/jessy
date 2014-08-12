@@ -52,7 +52,7 @@ public class Game {
 	 */
 	public void setRunning(boolean status) {
 		this.running = status;
-		if(status == false) {
+		if(status == false && engineHandler != null) {
 			engineHandler.stop();//TODO: rather in destructor?
 		}
 	}
