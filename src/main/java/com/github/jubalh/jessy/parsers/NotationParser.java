@@ -5,7 +5,7 @@
  *
  */
 
-package parsers;
+package com.github.jubalh.jessy.parsers;
 
 import com.github.jubalh.jessy.Move;
 import com.github.jubalh.jessy.NotAField;

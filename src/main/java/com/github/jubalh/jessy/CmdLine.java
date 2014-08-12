@@ -5,9 +5,9 @@ import java.io.IOException;
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 
+import com.github.jubalh.jessy.parsers.JessyNotationParser;
+import com.github.jubalh.jessy.parsers.NotationParser;
 import com.github.jubalh.jessy.pieces.Figure;
-import parsers.JessyNotationParser;
-import parsers.NotationParser;
 
 /**
  * 

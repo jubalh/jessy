@@ -3,4 +3,4 @@
  * @author Michael Vetter
  *
  */
-package parsers;
+package com.github.jubalh.jessy.parsers;
