@@ -17,18 +17,18 @@ So you can put pieces on the board and move them around.
 
 Previously you needed to have [Gradle](http://www.gradle.org/) installed.
 
-We added the Gradle wrapper now, so you don't need it anymore. It is already distributed with this sourcecode. In the following text we will assume that you use the gradle wrapper `gradlew` if that is not the case, you just have to substitute that command with `gradle`.
+We added the Gradle wrapper now, so you don't need it anymore. It is already distributed with this sourcecode. In the following text we will assume that you use the gradle wrapper `./gradlew` if that is not the case, you just have to substitute that command with `gradle`.
 
 Get it: `git clone https://github.com/jubalh/jessy`
 `cd flux; git submodule init; git submodule update`
 
 Change directory: `cd jessy`
 
-Compile: `gradlew installApp`
+Compile: `./gradlew installApp`
 
 Run: `./build/install/jessy/bin/jessy` 
 
-To create an Eclipse project type `gradlew eclipse` and add it to your workspace.
+To create an Eclipse project type `./gradlew eclipse` and add it to your workspace.
 
 ## Use ##
 
