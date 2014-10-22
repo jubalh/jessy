@@ -251,7 +251,7 @@ public class CmdLine {
 					setUserMessage("No comprendo");
 				}
 			} else {
-				System.out.println("Try to start the game.");
+				System.out.println("Yo Mister White! Shouldn't we get the game 'start'ed?");
 			}
 		}
 	}
