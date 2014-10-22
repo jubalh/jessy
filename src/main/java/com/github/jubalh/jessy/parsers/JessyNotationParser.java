@@ -10,7 +10,6 @@ package com.github.jubalh.jessy.parsers;
 import com.github.jubalh.jessy.Coord;
 import com.github.jubalh.jessy.Move;
 import com.github.jubalh.jessy.NotAField;
-import com.github.jubalh.jessy.ParseHelper;
 import com.github.jubalh.jessy.pieces.Figure;
 import com.github.jubalh.jessy.pieces.Pawn;
 

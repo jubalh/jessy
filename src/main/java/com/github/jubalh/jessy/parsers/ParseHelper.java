@@ -1,5 +1,6 @@
-package com.github.jubalh.jessy;
+package com.github.jubalh.jessy.parsers;
 
+import com.github.jubalh.jessy.Coord;
 import com.github.jubalh.jessy.pieces.Figure;
 
 public class ParseHelper {
