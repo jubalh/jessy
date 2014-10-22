@@ -250,6 +250,8 @@ public class CmdLine {
 				} catch (NotAField e) {
 					setUserMessage("No comprendo");
 				}
+			} else {
+				System.out.println("Try to start the game.");
 			}
 		}
 	}
