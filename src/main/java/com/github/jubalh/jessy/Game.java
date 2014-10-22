@@ -15,7 +15,7 @@ public class Game {
 	private boolean moveWasValid;
 	private boolean isComputerGame;
 	private Color currentPlayer;
-	
+
 	/**
 	 * Constructor
 	 * @param board to use
@@ -27,7 +27,7 @@ public class Game {
 	public void init() {
 		board.reset();
 		board.init();
-		
+
 		engineHandler = new EngineHandler();
 		engineHandler.start();
 		engineHandler.newGame();
@@ -45,7 +45,7 @@ public class Game {
 	public boolean isRunning() {
 		return this.running;
 	}
-	
+
 	/**
 	 * Sets game status
 	 * @param status
@@ -56,7 +56,7 @@ public class Game {
 			engineHandler.stop();//TODO: rather in destructor?
 		}
 	}
-	
+
 	/**
 	 * Get if last move was set to be okay.
 	 * @return true if was okay
@@ -64,7 +64,7 @@ public class Game {
 	public boolean wasValidMove() {
 		return this.moveWasValid;
 	}
-	
+
 	/**
 	 * Set if last move was okay
 	 * @param status
@@ -72,7 +72,7 @@ public class Game {
 	public void setValidMove(boolean status) {
 		this.moveWasValid = status;
 	}
-	
+
 	/**
 	 * Get Color of player whose turn it is
 	 * @return Color of current player
@@ -80,7 +80,7 @@ public class Game {
 	public Color getCurrentPlayer() {
 		return currentPlayer;
 	}
-	
+
 	/**
 	 * Define whose turn it is
 	 * @param currentPlayer color of player whose turn it is
@@ -88,7 +88,7 @@ public class Game {
 	public void setCurrentPlayer(Color currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
-	
+
 	/**
 	 * Next players turn.
 	 */
@@ -98,7 +98,7 @@ public class Game {
 		else
 			this.currentPlayer = Color.WHITE;
 	}
-	
+
 	/**
 	 * Returns if game is played against computer
 	 * @return true if against computer
@@ -114,7 +114,7 @@ public class Game {
 	public void isComputerGame(boolean status) {
 		this.isComputerGame = status;
 	}
-	
+
 	/**
 	 * Returns board
 	 * @return board
@@ -122,7 +122,7 @@ public class Game {
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	public TempHelpClass trytomove(Move move) {
 		TempHelpClass hc = new TempHelpClass();
 

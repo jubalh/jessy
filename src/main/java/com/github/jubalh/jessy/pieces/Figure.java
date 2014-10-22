@@ -48,7 +48,7 @@ public abstract class Figure {
 	public boolean isBlack() {
 		return this.color == Color.BLACK;
 	}
-	
+
 	/**
 	 * Checks if are from the same color.
 	 * @param figure to compare with
@@ -62,7 +62,7 @@ public abstract class Figure {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks if are from the same color.
 	 * @param color to compare with
@@ -110,7 +110,7 @@ public abstract class Figure {
 	}
 
 	// force to implement this
-	
+
 	/**
 	 * Subclass needs to implement this to get return the unicode character of the white figure.
 	 * @return unicode character of white figure

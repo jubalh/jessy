@@ -21,7 +21,7 @@ public final class Coord {
 		setX(x);
 		setY(y);
 	}
-	
+
 	/**
 	 * Parses a String from format "A1" - "H8" into the correct coordinates.
 	 * Doesn't matter if letters are lower or upper case.
@@ -61,7 +61,7 @@ public final class Coord {
 	private void setY(final int y) {
 		this.y = y;
 	}
-	
+
 	/**
 	 * Gets X coordinate.
 	 * @return x coordinate
@@ -77,7 +77,7 @@ public final class Coord {
 	public int getY() {
 		return this.y;
 	}
-	
+
 	/**
 	 * Checks whether two coordinates are the same.
 	 * @param coord to check with oneself
@@ -95,7 +95,7 @@ public final class Coord {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "x: " + this.getX() + " y: " + this.getY();

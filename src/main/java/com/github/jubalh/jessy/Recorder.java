@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- * 
+ *
  * Record the moves of the game
  * @author Michael Vetter
  *
@@ -27,12 +27,12 @@ public class Recorder implements AutoCloseable{
 	public Recorder() throws FileNotFoundException, UnsupportedEncodingException {
 		OutputStreamWriter osw;
 		FileOutputStream fos;
-		
+
 		fos = new FileOutputStream(filename);
 		osw = new OutputStreamWriter(fos, ENCODING);
 		writer = new BufferedWriter(osw);
 	}
-	
+
 	/**
 	 * Add a move to record
 	 * @param move move to add
@@ -44,7 +44,7 @@ public class Recorder implements AutoCloseable{
 			writer.newLine();
 		}
 	}
-	
+
 	/**
 	 * Saves the record in file
 	 * @throws IOException
@@ -52,7 +52,7 @@ public class Recorder implements AutoCloseable{
 	public void close() throws IOException {
 		writer.close();
 	}
-	
+
 	/**
 	 * Sets recorder state
 	 * @param status true = active
@@ -60,7 +60,7 @@ public class Recorder implements AutoCloseable{
 	public void setState(boolean status) {
 		this.isRecording = true;
 	}
-	
+
 	/**
 	 * Get recorder state
 	 * @return true if should recording
@@ -68,7 +68,7 @@ public class Recorder implements AutoCloseable{
 	public boolean getState() {
 		return this.isRecording;
 	}
-	
+
 	/**
 	 * Returns the filename in which the record will be saved.
 	 * @return filename of record.

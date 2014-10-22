@@ -1,7 +1,7 @@
 package com.github.jubalh.jessy;
 
 /**
- * 
+ *
  * A Move consists of a origin and destination coordinate
  * @author Michael Vetter
  *
@@ -20,7 +20,7 @@ public class Move {
 		this.origin = origin;
 		this.destination = destination;
 	}
-	
+
 	/**
 	 * Returns the origin coordinate
 	 * @return origin
@@ -36,7 +36,7 @@ public class Move {
 	public Coord getDestination() {
 		return destination;
 	}
-	
+
 	/**
 	 * Converts the columns of a checkboard which are in numbers to their
 	 * corresponding letters
@@ -56,7 +56,7 @@ public class Move {
 		s.append("-");
 		s.append( fieldnumberToChar(destination.getX()) );
 		s.append(destination.getY());
-		
+
 		return s.toString();
 	}
 }

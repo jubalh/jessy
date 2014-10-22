@@ -3,7 +3,7 @@ package com.github.jubalh.jessy.pieces;
 import com.github.jubalh.jessy.Color;
 
 /**
- * 
+ *
  * Pawn
  * @author Michael Vetter
  *

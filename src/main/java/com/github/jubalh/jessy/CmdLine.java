@@ -10,7 +10,7 @@ import com.github.jubalh.jessy.parsers.NotationParser;
 import com.github.jubalh.jessy.pieces.Figure;
 
 /**
- * 
+ *
  * Command line interface for chess game
  * @author Michael Vetter
  *
@@ -71,7 +71,7 @@ public class CmdLine {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Starts a new game.
 	 * Initializes EngineHandler, Board and sets game running
@@ -81,7 +81,7 @@ public class CmdLine {
 		game.setRunning(true);
 		game.isComputerGame(isComputerGame);
 	}
-	
+
 	/**
 	 * Tries to start the game.
 	 * In case it's already running it will print out a message.

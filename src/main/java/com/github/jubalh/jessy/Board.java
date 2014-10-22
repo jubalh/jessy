@@ -10,13 +10,13 @@ import com.github.jubalh.jessy.pieces.Rook;
 import com.github.jubalh.jessy.pieces.Bishop;
 
 /**
- * 
+ *
  * Models a check board
  * @author Michael Vetter
  *
  */
 public final class Board {
-	
+
 	private Move lastMove;
 	private Recorder recorder;
 	private static final int BOARD_ROWS = 8;
@@ -29,7 +29,7 @@ public final class Board {
 	public Board() {
 		reset();
 	}
-	
+
 	/**
 	 * Constructor, which also sets recorder
 	 * @param recorder
@@ -84,7 +84,7 @@ public final class Board {
 		setFigure(4, 8, new Queen(Color.BLACK));
 		setFigure(5, 8, new King(Color.BLACK));
 	}
-	
+
 	/**
 	 * @return the Array on which the figure are positioned
 	 */
@@ -154,7 +154,7 @@ public final class Board {
 		Coord cor = new Coord(x, y);
 		return getFigure(cor);
 	}
-	
+
 	/**
 	 * Gets the figure that is at position.
 	 * @param cor coordinate
@@ -188,7 +188,7 @@ public final class Board {
 	public boolean moveFigure(final Coord coordOld, final Coord coordNew) {
 		Figure figure;
 		boolean ret = false;
-		
+
 		try {
 			figure = getFigure(coordOld);
 			ret = setFigure(coordOld, null);
@@ -213,7 +213,7 @@ public final class Board {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Adds a move for recording
 	 * @param move to add
@@ -228,7 +228,7 @@ public final class Board {
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks if field is empty.
 	 * @param coord coordinates
@@ -240,7 +240,7 @@ public final class Board {
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Checks if field is occupied by opponent.
 	 * @param coord coordinates
@@ -256,7 +256,7 @@ public final class Board {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns the number of columns the matrix has.
 	 * Should always be 8.
@@ -274,7 +274,7 @@ public final class Board {
 	public static int getRowsCount() {
 		return BOARD_ROWS;
 	}
-	
+
 	/**
 	 * Returns the last successful move made
 	 * @return last move
@@ -282,7 +282,7 @@ public final class Board {
 	public Move getLastMove() {
 		return lastMove;
 	}
-	
+
 	/**
 	 * Set the recorder, to record moves
 	 * @param recorder
@@ -290,7 +290,7 @@ public final class Board {
 	public void setRecorder(Recorder recorder) {
 		this.recorder = recorder;
 	}
-	
+
 	/**
 	 * Returns Recorder
 	 * @return recorder

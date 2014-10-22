@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * Notation Parser for jessy format
  * @author Michael Vetter
  *

@@ -30,7 +30,7 @@ public class BoardTest {
 			}
 			assertEquals(col, 8);
 		}
-		
+
 		// check setting of figure
 		b.setFigure(new Coord(1,5), new King());
 		matrix = b.getMatrix();

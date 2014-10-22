@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * A Container to hold a Figure and Coord object which belong together.
  * @author Michael Vetter
  *

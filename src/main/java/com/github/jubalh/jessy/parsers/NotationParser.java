@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * Notation Parser
  * @author Michael Vetter
  *
