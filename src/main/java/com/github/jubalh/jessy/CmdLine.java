@@ -115,13 +115,13 @@ public class CmdLine {
 			// left border
 			System.out.print(colCount-- + "| ");
 			// go through rows
-			for (Figure row : col) {
+			for (Figure figure : col) {
 				boolean bWasLastMove=false;
 				try {
 					// mark last move
 					Move lastMove = board.getLastMove();
 					if(lastMove != null) {
-						if(row == board.getFigure(lastMove.getDestination())) {
+						if(figure == board.getFigure(lastMove.getDestination())) {
 							bWasLastMove = true;
 							System.out.print(COLOR_LAST_MOVE);
 						}
@@ -132,7 +132,7 @@ public class CmdLine {
 					ex.printStackTrace();
 				}
 				// print field
-				System.out.print("[" + (row == null ? " " : row.toString())
+				System.out.print("[" + (figure == null ? " " : figure.toString())
 						+ " ]");
 				// close marking of move
 				if(bWasLastMove) {
