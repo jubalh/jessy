@@ -33,10 +33,8 @@ public final class Coord {
 			if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
 				if (s.charAt(1) <= '8' && s.charAt(1) >= '1') {
 					int x = (int)s.charAt(0) - (int) 'A';
-					x+=1; //without turning stuff
+					x+=1;
 					int y = (int)s.charAt(1) - (int) '0';
-					// turn around (because array 0-7 -> check board 8-1)
-					//y = Math.abs(y - Board.getRowsCount()); //without turning stuff
 					setX(x);
 					setY(y);
 					return;
