@@ -34,20 +34,10 @@ To create an Eclipse project type `./gradlew eclipse` and add it to your workspa
 
 Start it.
 
-Type `Pd2-Pd4`  to move pawn from D2 to D4.
+Jessy supports command completion, so press <tab> to see a list of all commands.
 
-Abbreviations of figures:
-__P__ for pawn
+To start a game type `start` or `start againstComputer` depending against whom you want to play.
 
-__N__ for knight
+To move a figure just type the origing immediately followed by the destination. Like this: `a2a3`.
 
-__B__ for bishop
-
-__R__ for rook
-
-__Q__ for Queen
-
-__K__ for King
-
-As you see you need to type the letter in upper-case.
-Field letter in lower-case.
+Now play and have fun!
