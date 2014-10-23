@@ -8,8 +8,8 @@ import java.io.UnsupportedEncodingException;
  * Console Chess.
  * @author Michael Vetter
  */
-public final class Chess {
-    private Chess() { }
+public final class Main {
+    private Main() { }
 
     /**
      * Start.
