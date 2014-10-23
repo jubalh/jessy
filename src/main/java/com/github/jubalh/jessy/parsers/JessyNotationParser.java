@@ -1,6 +1,11 @@
 /**
  *
  * Notation Parser for jessy format
+ * 
+ * Notation is just "origindestination".
+ * For example: "a2a3" to move pawn from A2 to A3.
+ * Upper case letters are possible too.
+ * 
  * @author Michael Vetter
  *
  */
@@ -17,63 +22,12 @@ public class JessyNotationParser extends NotationParser {
 
 	@Override
 	public Move parse(String text) throws NotAField {
-		int index=0;
-		Move m = null;
-		FigureCoordContainer fc = new FigureCoordContainer();
-
-		index = parseFigurePos(text, fc);
-
-		// "-"  = move figure
-		char c = text.charAt(index);
-		if (c == '-') {
-			String sub = text.substring(++index);
-			FigureCoordContainer fc2 = new FigureCoordContainer();
-			// get second figure + position
-			index = parseFigurePos(sub, fc2);
-			m = new Move(fc.coord, fc2.coord);
-		} else {
+		if (text.length() != 4) {
 			throw new NotAField();
 		}
-		return m;
-	}
-
-	/**
-	 * Parses a single Figure+Position string.
-	 * @param text text in form "Ka1"
-	 * @param pa ParseHelper object, to return figure and position
-	 * @return number of characters that got passed, length of the string if proper.
-	 */
-	private int parseFigurePos(final String text, final FigureCoordContainer fc) throws NotAField {
-		if (text.length() < 2)
-			throw new NotAField();
-
-		int index = 0;
-		char c = text.charAt(index);
-
-		// figure
-		if (isUpperCase(c)) {
-			fc.figure = Figure.getFigureByChar(c);
-			if (fc.figure == null)
-				throw new NotAField();
-			index++;
-		} else {
-			fc.figure = new Pawn();
-		}
-
-		c = text.charAt(index);
-
-		if (!((c >= 'a' && c <= 'h') || (c >= '1' && c <= '8')))
-			throw new NotAField();
-
-		// if its shorter than "-a2"
-		if(text.length() < index+2)
-			throw new NotAField();
-
-		String sub = text.substring(index, index+2);
-		fc.coord = new Coord(sub);
-		index += 2;
-
-		return index;
+		String orig = text.substring(0,2);
+		String dest = text.substring(2,4);
+		return new Move(new Coord(orig), new Coord(dest));
 	}
 
 }

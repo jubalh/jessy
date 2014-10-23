@@ -214,8 +214,6 @@ public class CmdLine {
 
 	/**
 	 * Parses user input.
-	 * Example: "Ka1-Ka2"
-	 * Should move the _K_ing from a1 to a2.
 	 * @param text to be parsed
 	 */
 	public void parse(String text) {
