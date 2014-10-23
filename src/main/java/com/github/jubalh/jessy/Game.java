@@ -147,6 +147,10 @@ public class Game {
 						} else {
 							this.nextPlayer();
 							if (this.isComputerGame()) {
+								/*TODO: this should be done in a gameloop.
+								 * for sure after drawing the board so the user sees his last move first.
+								 * best would be in another thread so jessy doesnt freeze. 
+								 */
 								engineHandler.compute(this, board);
 							}
 						}
