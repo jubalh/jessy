@@ -66,7 +66,7 @@ public class JessyNotationParser extends NotationParser {
 			throw new NotAField();
 
 		// if its shorter than "-a2"
-		if(text.length() < index+3)
+		if(text.length() < index+2)
 			throw new NotAField();
 
 		String sub = text.substring(index, index+2);
