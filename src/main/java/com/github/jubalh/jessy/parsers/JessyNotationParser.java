@@ -31,6 +31,8 @@ public class JessyNotationParser extends NotationParser {
 			// get second figure + position
 			index = parseFigurePos(sub, fc2);
 			m = new Move(fc.coord, fc2.coord);
+		} else {
+			throw new NotAField();
 		}
 		return m;
 	}
@@ -42,6 +44,9 @@ public class JessyNotationParser extends NotationParser {
 	 * @return number of characters that got passed, length of the string if proper.
 	 */
 	private int parseFigurePos(final String text, final FigureCoordContainer fc) throws NotAField {
+		if (text.length() < 2)
+			throw new NotAField();
+
 		int index = 0;
 		char c = text.charAt(index);
 
@@ -49,7 +54,7 @@ public class JessyNotationParser extends NotationParser {
 		if (isUpperCase(c)) {
 			fc.figure = Figure.getFigureByChar(c);
 			if (fc.figure == null)
-				return index; // TODO Exception?
+				throw new NotAField();
 			index++;
 		} else {
 			fc.figure = new Pawn();
@@ -60,7 +65,11 @@ public class JessyNotationParser extends NotationParser {
 		if (!((c >= 'a' && c <= 'h') || (c >= '1' && c <= '8')))
 			throw new NotAField();
 
-		String sub = text.substring(index, index+2);//TODO: +2..
+		// if its shorter than "-a2"
+		if(text.length() < index+3)
+			throw new NotAField();
+
+		String sub = text.substring(index, index+2);
 		fc.coord = new Coord(sub);
 		index += 2;
 
