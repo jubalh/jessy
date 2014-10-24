@@ -1,6 +1,8 @@
 package com.github.jubalh.jessy;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
@@ -15,7 +17,7 @@ import com.github.jubalh.jessy.pieces.Figure;
  * @author Michael Vetter
  *
  */
-public class CmdLine {
+public class CmdLine implements Observer {
 
 	private Game game;
 	private NotationParser notationParser = new JessyNotationParser();
@@ -61,16 +63,14 @@ public class CmdLine {
 					if (!matchSuccess && game.isRunning()) {
 						try {
 							userMove = notationParser.parse(input);
-
-							TempHelpClass hc = game.trytomove(userMove);
-							setUserMessage(hc.getText());
+							game.process(userMove);
 						} catch (NotAField e) {
 							setUserMessage("No comprendo");
 						}
 					} 
 					// in case of unknown command
 					if (!matchSuccess && !game.isRunning()) {
-						setUserMessage("Yo Mister White! Shouldn't we get the game 'start'ed?");
+						setUserMessage("Yo Mister White! Shouldn't we get the game 'start'ed?");//TODO: highlight start
 					}
 				}
 
@@ -299,6 +299,10 @@ public class CmdLine {
 	 */
 	private void clearUserMessage() {
 		this.messageToUser = new StringBuilder();
+	}
+
+	public void update(Observable o, Object arg) {
+		setUserMessage( ((GameNotification)arg).getMessage() );
 	}
 
 }

@@ -1,14 +1,15 @@
 package com.github.jubalh.jessy;
 
+import java.util.Observable;
+
 import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.models.GenericFile;
 import com.fluxchess.jcpi.models.GenericPosition;
 import com.fluxchess.jcpi.models.GenericRank;
 import com.fluxchess.jcpi.models.GenericChessman;
-
 import com.github.jubalh.jessy.pieces.*;
 
-public class Game {
+public class Game extends Observable {
 
 	private EngineHandler engineHandler = null;
 	private Board board;
@@ -124,13 +125,19 @@ public class Game {
 		return board;
 	}
 
-	public TempHelpClass trytomove(Move move) {
-		TempHelpClass hc = new TempHelpClass();
+	public void statusUpdate(String message) {
+		GameNotification notification = new GameNotification(message);
+		setChanged();
+		notifyObservers(notification);
+	}
+
+	public void process(Move move) {
 
 		try {
 			Figure figureToMove = board.getFigure(move.getOrigin());
 			if (figureToMove == null) {
-				hc.addText("Wrong coordinates");
+				statusUpdate("Wrong coordinates");
+				return;
 			} else {
 				if (!figureToMove.isOpponent(this.getCurrentPlayer()) ) {
 					GenericFile fromFile = GenericFile.values()[move.getOrigin().getX() - 1];
@@ -155,7 +162,8 @@ public class Game {
 							board.setFigure(move.getDestination().getX(), move.getDestination().getY(), new Queen(getCurrentPlayer()));
 						engineHandler.makeMove(genMove);
 						if (engineHandler.isMate()) {
-							hc.addText("Checkmate!");
+							statusUpdate("Checkmate!");
+							return;
 						} else {
 							if ( engineHandler.isCastle() ) {
 								board.moveCastlingRook();
@@ -171,11 +179,13 @@ public class Game {
 							}
 						}
 					} else {
-						hc.addText("Move not allowed");
+						statusUpdate("Move not allowed");
+						return;
 					}
 				} else {
 					this.setValidMove(false);
-					hc.addText("It's not your turn");
+						statusUpdate("It's not your turn");
+						return;
 				}
 			}
 		} catch (NotAField e) {
@@ -183,7 +193,6 @@ public class Game {
 			System.err.println("Illegal field");
 			e.printStackTrace();
 		}
-		return hc;
 	}
 
 }
