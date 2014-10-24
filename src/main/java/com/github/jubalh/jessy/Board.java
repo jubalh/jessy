@@ -215,6 +215,28 @@ public final class Board {
 	}
 
 	/**
+	 * Moves Figure from old position to new position.
+	 * If oldX is greater than newX, it's a queen side castle.
+	 * @return true if successfully set. false if out of bound.
+	 */
+	public boolean moveCastlingRook(){
+		int oldX = lastMove.getOrigin().getX();
+		int newX = lastMove.getDestination().getX();
+		int yInt = lastMove.getDestination().getY();
+		boolean returnValue = true;
+
+		if ( oldX > newX ) {
+			returnValue &= this.setFigure(1, yInt, null);
+			returnValue &= this.setFigure(newX + 1, yInt, new Rook());
+		} else {
+			returnValue &= this.setFigure(8, yInt, null);
+			returnValue &= this.setFigure(newX - 1, yInt, new Rook());
+		}
+
+		return returnValue;
+	}
+
+	/**
 	 * Adds a move for recording
 	 * @param move to add
 	 */

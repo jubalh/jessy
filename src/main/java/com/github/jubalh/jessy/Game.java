@@ -157,6 +157,10 @@ public class Game {
 						if (engineHandler.isMate()) {
 							hc.addText("Checkmate!");
 						} else {
+							if ( engineHandler.isCastle() ) {
+								board.moveCastlingRook();
+							}
+
 							this.nextPlayer();
 							if (this.isComputerGame()) {
 								/*TODO: this should be done in a gameloop.
