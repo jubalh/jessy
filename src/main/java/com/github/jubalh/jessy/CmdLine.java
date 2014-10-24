@@ -57,10 +57,9 @@ public class CmdLine {
 				if(input.length() > 0) {
 					// parse as command
 					boolean matchSuccess = this.parseCommand(input);
-
+					// parse as a move
 					if (!matchSuccess && game.isRunning()) {
 						try {
-							// parse as a move
 							userMove = notationParser.parse(input);
 
 							TempHelpClass hc = game.trytomove(userMove);
@@ -70,8 +69,8 @@ public class CmdLine {
 						}
 					} 
 					// in case of unknown command
-					if (!matchSuccess && (userMove == null)) {
-						System.out.println("Yo Mister White! Shouldn't we get the game 'start'ed?");
+					if (!matchSuccess && !game.isRunning()) {
+						setUserMessage("Yo Mister White! Shouldn't we get the game 'start'ed?");
 					}
 				}
 
