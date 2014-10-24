@@ -11,6 +11,7 @@ import com.fluxchess.jcpi.models.GenericRank;
 import com.fluxchess.jcpi.models.GenericFile;
 import com.fluxchess.jcpi.protocols.IProtocolHandler;
 import com.fluxchess.jcpi.utils.MoveGenerator;
+import com.fluxchess.jcpi.models.GenericChessman;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class EngineHandler implements IProtocolHandler {
 		GenericMove genMove = new GenericMove(
 				GenericPosition.valueOf( GenericFile.values()[origin.getX() - 1], GenericRank.values()[origin.getY() - 1]),
 				GenericPosition.valueOf( GenericFile.values()[dest.getX() - 1], GenericRank.values()[dest.getY() - 1]));
+
 		return isValid(getCurrentBoard(), genMove);
 	}
 
