@@ -29,6 +29,7 @@ public class EngineHandler implements IProtocolHandler {
 	// Save all player's moves in a list
 	private final List<GenericMove> moves = new ArrayList<GenericMove>();
 	private final Exchanger<GenericMove> bestMove = new Exchanger<GenericMove>();
+	private int castlingInt = 0;
 
 	public void start() {
 		if (!thread.isAlive()) {
@@ -56,6 +57,7 @@ public class EngineHandler implements IProtocolHandler {
 	public void newGame() {
 		commandQueue.add(new EngineNewGameCommand());
 		moves.clear();
+		castlingInt = getHexBoard().castling;
 	}
 
 	public boolean isValidMove(GenericMove move) {
@@ -113,6 +115,16 @@ public class EngineHandler implements IProtocolHandler {
 		return MoveGenerator.getGenericMoves(getCurrentBoard()).length == 0;
 	}
 
+	public boolean isCastle() {
+		int newCastling = getHexBoard().castling;
+		if (getHexBoard().castling != castlingInt) {
+			castlingInt =  newCastling;
+			return true;
+		}
+
+		return false;
+	}
+
 	// Verify the player's move. Use the nice JCPI MoveGenerator.
 	private boolean isValid(GenericBoard board, GenericMove move) {
 		for (GenericMove validMove : MoveGenerator.getGenericMoves(board)) {
@@ -133,6 +145,15 @@ public class EngineHandler implements IProtocolHandler {
 		}
 
 		return hex88Board.getBoard();
+	}
+
+	private Hex88Board getHexBoard() {
+		Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
+		for (GenericMove genericMove : moves) {
+			int move = IntMove.convertMove(genericMove, hex88Board);
+			hex88Board.makeMove(move);
+		}
+		return hex88Board;
 	}
 
 	public IEngineCommand receive() throws IOException {
