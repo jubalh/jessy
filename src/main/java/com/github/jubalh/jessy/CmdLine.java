@@ -52,9 +52,27 @@ public class CmdLine {
 			reader.addCompleter(commandsCompleter);
 
 			String input;
+			Move userMove = null;
 			while((input = reader.readLine()) != null) {
 				if(input.length() > 0) {
-					this.parse(input);
+					// parse as command
+					boolean matchSuccess = this.parseCommand(input);
+
+					if (!matchSuccess && game.isRunning()) {
+						try {
+							// parse as a move
+							userMove = notationParser.parse(input);
+
+							TempHelpClass hc = game.trytomove(userMove);
+							setUserMessage(hc.getText());
+						} catch (NotAField e) {
+							setUserMessage("No comprendo");
+						}
+					} 
+					// in case of unknown command
+					if (!matchSuccess && (userMove == null)) {
+						System.out.println("Yo Mister White! Shouldn't we get the game 'start'ed?");
+					}
 				}
 
 				//TODO: multiline prompt
@@ -213,45 +231,41 @@ public class CmdLine {
 	}
 
 	/**
-	 * Parses user input.
+	 * If input is a command it will be executed. 
 	 * @param text to be parsed
+	 * @return true if it is a command. false if it didnt match any.
 	 */
-	public void parse(String text) {
+	public boolean parseCommand(String text) {
 		// Commands
 		if(text.matches("exit\\s?")) {
 			game.setRunning(false);
 			this.active = false;
-		} else if(text.matches("start\\s?")) {
+			return true;
+		}
+		if(text.matches("start\\s?")) {
 			this.tryStartGame(false);
-		} else if(text.matches("start againstComputer\\s?")) {
+			return true;
+		}
+		if(text.matches("start againstComputer\\s?")) {
 			this.tryStartGame(true);
-		} else if(text.matches("stop\\s?")) {
+			return true;
+		}
+		if(text.matches("stop\\s?")) {
 			if (game.isRunning()) {
 				this.setUserMessage("Game stopped");
 				game.setRunning(false);
 			}
-		} else if(text.matches("recorderStart\\s?")) {
+			return true;
+		}
+		if(text.matches("recorderStart\\s?")) {
 			//TODO board.getRecorder().setState(true);
 			//TODO this.setUserMessage("Recording game into file: " + board.getRecorder().getFilename());
-		} else if(text.matches("recorderStop\\s?")) {
+		}
+		if(text.matches("recorderStop\\s?")) {
 			//TODO board.getRecorder().setState(false);
 			//TODO this.setUserMessage("Stopped recording");
 		}
-		// Movement
-		else {
-			if (game.isRunning()) {
-
-				try {
-					Move userMove = notationParser.parse(text);
-					TempHelpClass hc = game.trytomove(userMove);
-					setUserMessage(hc.getText());
-				} catch (NotAField e) {
-					setUserMessage("No comprendo");
-				}
-			} else {
-				System.out.println("Yo Mister White! Shouldn't we get the game 'start'ed?");
-			}
-		}
+		return false;
 	}
 
 	/**
