@@ -4,8 +4,9 @@ import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.models.GenericFile;
 import com.fluxchess.jcpi.models.GenericPosition;
 import com.fluxchess.jcpi.models.GenericRank;
+import com.fluxchess.jcpi.models.GenericChessman;
 
-import com.github.jubalh.jessy.pieces.Figure;
+import com.github.jubalh.jessy.pieces.*;
 
 public class Game {
 
@@ -132,16 +133,26 @@ public class Game {
 				hc.addText("Wrong coordinates");
 			} else {
 				if (!figureToMove.isOpponent(this.getCurrentPlayer()) ) {
-					this.setValidMove(engineHandler.isValidMove(move));
+					GenericFile fromFile = GenericFile.values()[move.getOrigin().getX() - 1];
+					GenericRank fromRank = GenericRank.values()[move.getOrigin().getY() - 1];
+					GenericFile toFile = GenericFile.values()[move.getDestination().getX() - 1];
+					GenericRank toRank = GenericRank.values()[move.getDestination().getY() - 1];
+					GenericChessman promotion =
+						toRank == GenericRank.R8 || toRank == GenericRank.R1 ? GenericChessman.QUEEN : null;
+					GenericMove genMove = new GenericMove(
+								GenericPosition.valueOf(fromFile, fromRank),
+								GenericPosition.valueOf(toFile, toRank),
+								promotion);
+					this.setValidMove(engineHandler.isValidMove(genMove));
 					if(this.wasValidMove()) {
+						/*TODO: Find a decent way to ask for the promotion piece
+						 * right now it defaults to a queen
+						 */
+						// System.out.println("What piece would you like to promote to?");
 						board.moveFigure(move);
-						engineHandler.makeMove(new GenericMove(
-								GenericPosition.valueOf(
-										GenericFile.values()[move.getOrigin().getX() - 1],
-										GenericRank.values()[move.getOrigin().getY() - 1]),
-										GenericPosition.valueOf(
-												GenericFile.values()[move.getDestination().getX() - 1],
-												GenericRank.values()[move.getDestination().getY() - 1])));
+						if (genMove.promotion != null)
+							board.setFigure(move.getDestination().getX(), move.getDestination().getY(), new Queen(getCurrentPlayer()));
+						engineHandler.makeMove(genMove);
 						if (engineHandler.isMate()) {
 							hc.addText("Checkmate!");
 						} else {
