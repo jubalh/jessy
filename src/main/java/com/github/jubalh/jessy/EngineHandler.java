@@ -60,10 +60,6 @@ public class EngineHandler implements IProtocolHandler {
 	}
 
 	public boolean isValidMove(GenericMove move) {
-		if (move.promotion == null && (move.to.rank == GenericRank.R8 || move.to.rank == GenericRank.R1)) {
-			genMove = new GenericMove(move.from, move.to, GenericChessman.QUEEN);
-		}
-
 		return isValid(getCurrentBoard(), move);
 	}
 
@@ -73,9 +69,6 @@ public class EngineHandler implements IProtocolHandler {
 		GenericMove genMove = new GenericMove(
 				GenericPosition.valueOf( GenericFile.values()[origin.getX() - 1], GenericRank.values()[origin.getY() - 1]),
 				GenericPosition.valueOf( GenericFile.values()[dest.getX() - 1], GenericRank.values()[dest.getY() - 1]));
-		if (genMove.to.rank == GenericRank.R8 || genMove.to.rank == GenericRank.R1) {
-			genMove = new GenericMove(genMove.from, genMove.to, GenericChessman.QUEEN);
-		}
 
 		return isValid(getCurrentBoard(), genMove);
 	}

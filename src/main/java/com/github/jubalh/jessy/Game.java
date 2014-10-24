@@ -137,8 +137,9 @@ public class Game {
 					GenericRank fromRank = GenericRank.values()[move.getOrigin().getY() - 1];
 					GenericFile toFile = GenericFile.values()[move.getDestination().getX() - 1];
 					GenericRank toRank = GenericRank.values()[move.getDestination().getY() - 1];
-					GenericChessman promotion =
-						toRank == GenericRank.R8 || toRank == GenericRank.R1 ? GenericChessman.QUEEN : null;
+					GenericChessman promotion = null;
+					if ( figureToMove instanceof Pawn && (toRank == GenericRank.R8 || toRank == GenericRank.R1) )
+						promotion = GenericChessman.QUEEN;
 					GenericMove genMove = new GenericMove(
 								GenericPosition.valueOf(fromFile, fromRank),
 								GenericPosition.valueOf(toFile, toRank),
