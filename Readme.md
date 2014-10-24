@@ -38,6 +38,6 @@ Jessy supports command completion, so press <tab> to see a list of all commands.
 
 To start a game type `start` or `start againstComputer` depending against whom you want to play.
 
-To move a figure just type the origing immediately followed by the destination. Like this: `a2a3`.
+To move a figure just type the origin immediately followed by the destination. Like this: `a2a3`.
 
 Now play and have fun!
