@@ -11,7 +11,6 @@ public abstract class Figure {
 	private Color color;
 
 	/**
-	 * Constructor.
 	 * Creates a white figure by default.
 	 */
 	public Figure() {
@@ -19,7 +18,6 @@ public abstract class Figure {
 	}
 
 	/**
-	 * Constructor.
 	 * @param color color of figure
 	 */
 	public Figure(Color color) {
@@ -27,7 +25,6 @@ public abstract class Figure {
 	}
 
 	/**
-	 * Sets Color of figure.
 	 * @param color color to be set
 	 */
 	public void setColor(Color color) {
@@ -88,7 +85,6 @@ public abstract class Figure {
 	 * upper case character.
 	 * @param c character
 	 * @return subclass of Figure, depending on character. null if doesn't fit.
-	 * TODO: right here?
 	 */
 	public static Figure getFigureByChar(final char c) {
 		switch (c) {
