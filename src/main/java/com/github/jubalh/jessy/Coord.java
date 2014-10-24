@@ -30,7 +30,7 @@ public final class Coord {
 	public Coord(String s) throws NotAField {
 		s = s.toUpperCase(Locale.ROOT);
 		if (s.length() == 2) {
-			if (s.charAt(0) >= 'A' && s.charAt(0) <= 'Z') {
+			if (s.charAt(0) >= 'A' && s.charAt(0) <= 'H') {
 				if (s.charAt(1) <= '8' && s.charAt(1) >= '1') {
 					int x = (int)s.charAt(0) - (int) 'A';
 					x+=1;
