@@ -19,11 +19,6 @@ import com.github.jubalh.jessy.pieces.Figure;
  */
 public class CmdLine implements Observer {
 
-	private Game game;
-	private NotationParser notationParser = new JessyNotationParser();
-	private boolean active = true;
-	private StringBuilder messageToUser = new StringBuilder();
-	private static ConsoleReader reader;
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
@@ -33,6 +28,12 @@ public class CmdLine implements Observer {
 	// prompt unicode characters
 	private static final char PROMPT_TICK = '\u2713';
 	private static final char PROMPT_CROSS = '\u2717';
+
+	private NotationParser notationParser = new JessyNotationParser();
+	private StringBuilder messageToUser = new StringBuilder();
+	private boolean active = true;
+	private Game game;
+	private static ConsoleReader reader;
 
 	/**
 	 * Constructor

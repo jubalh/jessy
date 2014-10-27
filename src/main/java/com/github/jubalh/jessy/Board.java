@@ -1,6 +1,5 @@
 package com.github.jubalh.jessy;
 
-import java.io.IOException;
 import com.github.jubalh.jessy.pieces.Figure;
 import com.github.jubalh.jessy.pieces.King;
 import com.github.jubalh.jessy.pieces.Knight;

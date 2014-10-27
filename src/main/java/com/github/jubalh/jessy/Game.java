@@ -1,18 +1,26 @@
 package com.github.jubalh.jessy;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
+import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.models.GenericFile;
 import com.fluxchess.jcpi.models.GenericPosition;
 import com.fluxchess.jcpi.models.GenericRank;
 import com.fluxchess.jcpi.models.GenericChessman;
+import com.fluxchess.jcpi.utils.MoveGenerator;
+import com.fluxchess.flux.board.Hex88Board;
+import com.fluxchess.flux.move.IntMove;
 import com.github.jubalh.jessy.pieces.*;
 
 public class Game extends Observable {
 
 	private EngineHandler engineHandler = null;
+	private final List<GenericMove> moves = new ArrayList<GenericMove>();
+	private int castlingInt = 0;
 	private Board board;
 	private Recorder recorder;
 	private boolean running;
@@ -31,6 +39,9 @@ public class Game extends Observable {
 	public void init() {
 		board.reset();
 		board.init();
+
+		moves.clear();
+		castlingInt = getHexBoard().castling;
 
 		engineHandler = new EngineHandler();
 		engineHandler.start();
@@ -70,6 +81,7 @@ public class Game extends Observable {
 	}
 
 	/**
+	 * TODO: needed? take a look at isValid()...
 	 * Set if last move was okay
 	 * @param status
 	 */
@@ -153,7 +165,7 @@ public class Game extends Observable {
 								GenericPosition.valueOf(fromFile, fromRank),
 								GenericPosition.valueOf(toFile, toRank),
 								promotion);
-					this.setValidMove(engineHandler.isValidMove(genMove));
+					this.setValidMove(this.isValidMove(genMove));
 					if(this.wasValidMove()) {
 						/*TODO: Find a decent way to ask for the promotion piece
 						 * right now it defaults to a queen
@@ -162,14 +174,15 @@ public class Game extends Observable {
 						if ( board.moveFigure(move) ) {
 							recordMove(move);
 						}
-						if (genMove.promotion != null)
+						if (genMove.promotion != null) {
 							board.setFigure(move.getDestination().getX(), move.getDestination().getY(), new Queen(getCurrentPlayer()));
-						engineHandler.makeMove(genMove);
-						if (engineHandler.isMate()) {
+						}
+						this.makeMove(genMove);
+						if (this.isMate()) {
 							statusUpdate("Checkmate!");
 							return;
 						} else {
-							if ( engineHandler.isCastle() ) {
+							if ( this.isCastle() ) {
 								board.moveCastlingRook();
 							}
 
@@ -225,6 +238,75 @@ public class Game extends Observable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private Hex88Board getHexBoard() {
+		Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
+		for (GenericMove genericMove : moves) {
+			int move = IntMove.convertMove(genericMove, hex88Board);
+			hex88Board.makeMove(move);
+		}
+		return hex88Board;
+	}
+
+	private GenericBoard getCurrentBoard() {
+		Hex88Board hex88Board = getHexBoard();
+
+		return hex88Board.getBoard();
+	}
+
+	private boolean isValid(GenericBoard board, GenericMove move) {
+		for (GenericMove validMove : MoveGenerator.getGenericMoves(board)) {
+			if (move.equals(validMove)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isValidMove(GenericMove move) {
+		return isValid(getCurrentBoard(), move);
+	}
+
+	public boolean isValidMove(Move move) {
+		Coord origin = move.getOrigin();
+		Coord dest = move.getDestination();
+		GenericMove genMove = new GenericMove(
+				GenericPosition.valueOf( GenericFile.values()[origin.getX() - 1], GenericRank.values()[origin.getY() - 1]),
+				GenericPosition.valueOf( GenericFile.values()[dest.getX() - 1], GenericRank.values()[dest.getY() - 1]));
+
+		return isValid(getCurrentBoard(), genMove);
+	}
+
+	public void makeMove(GenericMove move) {
+		if (isValidMove(move)) {
+			moves.add(move);
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public void undoMove() {
+		moves.remove(moves.size() - 1);
+	}
+
+	public boolean isMate() {
+		return MoveGenerator.getGenericMoves(getCurrentBoard()).length == 0;
+	}
+
+	public boolean isCastle() {
+		int newCastling = getHexBoard().castling;
+		if (getHexBoard().castling != castlingInt) {
+			castlingInt =  newCastling;
+			return true;
+		}
+
+		return false;
+	}
+	
+	public List<GenericMove> getMoves() {
+		return this.moves;
 	}
 
 }
