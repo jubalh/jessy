@@ -110,7 +110,6 @@ public class CmdLine implements Observer {
 	private void tryStartGame(boolean isComputerGame) {
 		if (game.isRunning()) {
 			this.setUserMessage("Game is already running");
-//			System.out.println("Game is already running");
 		} else {
 			startGame(isComputerGame);
 		}
