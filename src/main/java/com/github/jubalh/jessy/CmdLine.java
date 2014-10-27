@@ -239,6 +239,7 @@ public class CmdLine implements Observer {
 	public boolean parseCommand(String text) {
 		// Commands
 		if(text.matches("exit\\s?")) {
+			//TODO: prompt if really wants to quit
 			game.setRunning(false);
 			this.active = false;
 			return true;
