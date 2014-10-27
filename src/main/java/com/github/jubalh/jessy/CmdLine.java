@@ -259,12 +259,16 @@ public class CmdLine implements Observer {
 			return true;
 		}
 		if(text.matches("recorderStart\\s?")) {
-			//TODO board.getRecorder().setState(true);
-			//TODO this.setUserMessage("Recording game into file: " + board.getRecorder().getFilename());
+			game.getRecorder().setState(true);
+			this.setUserMessage("Recording game into file: " + game.getRecorder().getFilename());
+			return true;
 		}
 		if(text.matches("recorderStop\\s?")) {
-			//TODO board.getRecorder().setState(false);
-			//TODO this.setUserMessage("Stopped recording");
+			if (game.getRecorder().getState()) {
+				game.getRecorder().setState(false);
+				this.setUserMessage("Stopped recording");
+			}
+			return true;
 		}
 		return false;
 	}

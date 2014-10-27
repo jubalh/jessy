@@ -90,7 +90,8 @@ public class EngineHandler implements IProtocolHandler {
 	}
 
 	// It's the engine's turn
-	public void compute(Game game, Board board) {
+	public Move compute(Game game, Board board) {
+		Move m = null;
 		commandQueue.add(new EngineAnalyzeCommand(new GenericBoard(GenericBoard.STANDARDSETUP), moves));
 		EngineStartCalculatingCommand startCommand = new EngineStartCalculatingCommand();
 		startCommand.setMoveTime(2000L);
@@ -100,17 +101,21 @@ public class EngineHandler implements IProtocolHandler {
 			GenericMove move = bestMove.exchange(null);
 			makeMove(move);
 
-			Coord originSquare = new Coord(move.from.file.ordinal() + 1, move.from.rank.ordinal() + 1);
-			Coord targetSquare = new Coord(move.to.file.ordinal() + 1, move.to.rank.ordinal() + 1);
-			game.setValidMove(board.moveFigure(originSquare, targetSquare));
+			//TODO: use only flux one day?
+			// flux engine move to jessy move
+	 		m = new Move( new Coord( move.from.file.ordinal() + 1, move.from.rank.ordinal() + 1),
+	 							new Coord( move.to.file.ordinal() + 1, move.to.rank.ordinal() + 1) );
+
+			game.setValidMove(board.moveFigure(m));
 			if (isMate()) {
-				//System.out.format("Checkmate!%n");//TODO:
+				//System.out.format("Checkmate!%n");//TODO: notify on checkmate
 			} else {
 				game.nextPlayer();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return m;
 	}
 
 	public boolean isMate() {

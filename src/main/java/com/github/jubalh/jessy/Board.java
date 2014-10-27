@@ -18,7 +18,6 @@ import com.github.jubalh.jessy.pieces.Bishop;
 public final class Board {
 
 	private Move lastMove;
-	private Recorder recorder;
 	private static final int BOARD_ROWS = 8;
 	private static final int BOARD_COLUMNS = 8;
 	private Figure[][] matrix;
@@ -28,15 +27,6 @@ public final class Board {
 	 */
 	public Board() {
 		reset();
-	}
-
-	/**
-	 * Constructor, which also sets recorder
-	 * @param recorder
-	 */
-	public Board(Recorder recorder) {
-		reset();
-		setRecorder(recorder);
 	}
 
 	/**
@@ -202,14 +192,6 @@ public final class Board {
 		// figure successfully set; save last move
 		if(ret) {
 			lastMove = new Move(coordOld, coordNew);
-			/*
-			 * TODO: observe and send signal here or:
-			 * make CmdLine::moveFigure() which calls board.moveFigure
-			 * and also saves lastMove in Game and records
-			 */
-
-			// and record it
-			recordMove(lastMove);
 		}
 		return ret;
 	}
@@ -234,21 +216,6 @@ public final class Board {
 		}
 
 		return returnValue;
-	}
-
-	/**
-	 * Adds a move for recording
-	 * @param move to add
-	 */
-	private void recordMove(Move move) {
-		if (recorder!=null) {
-			try {
-				recorder.record(move);
-			} catch (IOException e) {
-				System.err.println("Recorder: Error while writing");
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
@@ -305,19 +272,4 @@ public final class Board {
 		return lastMove;
 	}
 
-	/**
-	 * Set the recorder, to record moves
-	 * @param recorder
-	 */
-	public void setRecorder(Recorder recorder) {
-		this.recorder = recorder;
-	}
-
-	/**
-	 * Returns Recorder
-	 * @return recorder
-	 */
-	public Recorder getRecorder() {
-		return this.recorder;
-	}
 }

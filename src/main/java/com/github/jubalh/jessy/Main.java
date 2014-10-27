@@ -19,13 +19,13 @@ public final class Main {
 		Recorder recorder = null;
 		Board board = new Board();
 		Game game = new Game(board);
+   		CmdLine cmdBoard = null;
 
     	//JAVA 7: try(recorder = new Recorder()) {
 		try {
 			recorder = new Recorder();
-    		CmdLine cmdBoard = new CmdLine(game);
+    		cmdBoard = new CmdLine(game);
     		game.addObserver(cmdBoard);
-    		cmdBoard.run();
 		} catch (FileNotFoundException e) {
 			System.err.println("Error creating Recorder:");
 			e.printStackTrace();
@@ -33,7 +33,8 @@ public final class Main {
 			System.err.println("Error creating Recorder:");
 			e.printStackTrace();
 		} finally {
-			board.setRecorder(recorder);
+			game.setRecorder(recorder);
+    		cmdBoard.run();
     	}
 
 		try {

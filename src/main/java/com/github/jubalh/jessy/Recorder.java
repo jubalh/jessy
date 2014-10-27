@@ -74,6 +74,6 @@ public class Recorder implements AutoCloseable{
 	 * @return filename of record.
 	 */
 	public String getFilename() {
-		return this.getFilename();
+		return this.filename;
 	}
 }

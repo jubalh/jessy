@@ -47,13 +47,19 @@ public class Move {
 		return (char)(number-1+(int)'a');
 	}
 
+	/**
+	 * TODO: use notation parser?
+	 * should this use notationParser to build the string?
+	 * this method gets used by the recorder to record the moves to a file.
+	 * so the recording would be the same as the parser used.
+	 * but then we would depend on the notation on a simple class.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 
 		s.append( fieldnumberToChar(origin.getX()) );
 		s.append(origin.getY());
-		s.append("-");
 		s.append( fieldnumberToChar(destination.getX()) );
 		s.append(destination.getY());
 
