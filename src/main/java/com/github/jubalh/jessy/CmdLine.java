@@ -27,6 +27,9 @@ public class CmdLine implements Observer {
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
+	// escape sequence for bold
+	private static final String PROMPT_BOLD = "\033[1m";
+	private static final String PROMPT_BOLD_RESET = "\033[0m";
 	// prompt unicode characters
 	private static final char PROMPT_TICK = '\u2713';
 	private static final char PROMPT_CROSS = '\u2717';
@@ -70,7 +73,7 @@ public class CmdLine implements Observer {
 					} 
 					// in case of unknown command
 					if (!matchSuccess && !game.isRunning()) {
-						setUserMessage("Yo Mister White! Shouldn't we get the game 'start'ed?");//TODO: highlight start
+						setUserMessage("Yo Mister White! Shouldn't we get the game "+PROMPT_BOLD+"start"+PROMPT_BOLD_RESET+"ed?");
 					}
 				}
 
