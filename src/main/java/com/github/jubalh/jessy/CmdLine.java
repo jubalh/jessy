@@ -304,7 +304,9 @@ public class CmdLine implements Observer {
 	}
 
 	public void update(Observable o, Object arg) {
-		setUserMessage( ((GameNotification)arg).getMessage() );
+		if (arg instanceof GameNotification) {
+			setUserMessage( ((GameNotification)arg).getMessage() );
+		}
 	}
 
 }

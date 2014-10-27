@@ -24,6 +24,7 @@ public final class Main {
 		try {
 			recorder = new Recorder();
     		CmdLine cmdBoard = new CmdLine(game);
+    		game.addObserver(cmdBoard);
     		cmdBoard.run();
 		} catch (FileNotFoundException e) {
 			System.err.println("Error creating Recorder:");
