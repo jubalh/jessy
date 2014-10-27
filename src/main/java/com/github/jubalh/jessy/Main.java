@@ -5,18 +5,18 @@ package com.github.jubalh.jessy;
  * @author Michael Vetter
  */
 public final class Main {
-    private Main() { }
+	private Main() { }
 
-    /**
-     * Start.
-     * @param args cmdline params
-     */
-    public static void main(final String[] args) {
+	/**
+	 * Start.
+	 * @param args cmdline params
+	 */
+	public static void main(final String[] args) {
 		Board board = new Board();
 		Game game = new Game(board);
-   		CmdLine cmdBoard = new CmdLine(game);
+		CmdLine cmdBoard = new CmdLine(game);
 
-   		game.addObserver(cmdBoard);
-   		cmdBoard.run();
-    }
+		game.addObserver(cmdBoard);
+		cmdBoard.run();
+	}
 }
