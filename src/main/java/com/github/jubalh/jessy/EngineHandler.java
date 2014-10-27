@@ -143,17 +143,6 @@ public class EngineHandler implements IProtocolHandler {
 		return false;
 	}
 
-	// Make all the moves in the list from the start position
-	private GenericBoard getCurrentBoard() {
-		Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
-		for (GenericMove genericMove : moves) {
-			int move = IntMove.convertMove(genericMove, hex88Board);
-			hex88Board.makeMove(move);
-		}
-
-		return hex88Board.getBoard();
-	}
-
 	private Hex88Board getHexBoard() {
 		Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
 		for (GenericMove genericMove : moves) {
@@ -161,6 +150,13 @@ public class EngineHandler implements IProtocolHandler {
 			hex88Board.makeMove(move);
 		}
 		return hex88Board;
+	}
+
+	// Make all the moves in the list from the start position
+	private GenericBoard getCurrentBoard() {
+		Hex88Board hex88Board = getHexBoard();
+
+		return hex88Board.getBoard();
 	}
 
 	public IEngineCommand receive() throws IOException {
