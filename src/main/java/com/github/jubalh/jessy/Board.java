@@ -218,34 +218,6 @@ public final class Board {
 	}
 
 	/**
-	 * Checks if field is empty.
-	 * @param coord coordinates
-	 * @return true if empty
-	 * @throws NotAField
-	 */
-	public boolean isEmptyField(final Coord coord) throws NotAField {
-		if (getFigure(coord) == null)
-			return true;
-		return false;
-	}
-
-	/**
-	 * Checks if field is occupied by opponent.
-	 * @param coord coordinates
-	 * @param figure Figure to compare with figure on the field.
-	 * @return true if opponent sits on that field
-	 */
-	public boolean isOpponentField(final Coord coord, final Figure figure) throws NotAField {
-		Figure figureOnField = getFigure(coord);
-		if (figureOnField != null) {
-			if (figureOnField.isOpponent(figure)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Returns the number of columns the matrix has.
 	 * Should always be 8.
 	 * @return column count
