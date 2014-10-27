@@ -1,6 +1,5 @@
 package com.github.jubalh.jessy;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -22,7 +21,6 @@ public class Game extends Observable {
 	private final List<GenericMove> moves = new ArrayList<GenericMove>();
 	private int castlingInt = 0;
 	private Board board;
-	private Recorder recorder;
 	private boolean running;
 	private boolean moveWasValid;
 	private boolean isComputerGame;
@@ -171,9 +169,7 @@ public class Game extends Observable {
 						 * right now it defaults to a queen
 						 */
 						// System.out.println("What piece would you like to promote to?");
-						if ( board.moveFigure(move) ) {
-							recordMove(move);
-						}
+						board.moveFigure(move);
 						if (genMove.promotion != null) {
 							board.setFigure(move.getDestination().getX(), move.getDestination().getY(), new Queen(getCurrentPlayer()));
 						}
@@ -193,7 +189,6 @@ public class Game extends Observable {
 								 * best would be in another thread so jessy doesnt freeze. 
 								 */
 								Move computerMove = engineHandler.compute(this, board);
-								recordMove(computerMove);
 							}
 						}
 					} else {
@@ -210,33 +205,6 @@ public class Game extends Observable {
 			// should not occur, since it gets already checked in parseFigurePos
 			System.err.println("Illegal field");
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * set recorder
-	 * @param recorder to be set
-	 */
-	public void setRecorder(Recorder recorder) {
-		this.recorder = recorder;
-	}
-	
-	public Recorder getRecorder() {
-		return recorder;
-	}
-
-	/**
-	 * Adds a move for recording
-	 * @param move to add
-	 */
-	private void recordMove(Move move) {
-		if (recorder!=null) {
-			try {
-				recorder.record(move);
-			} catch (IOException e) {
-				System.err.println("Recorder: Error while writing");
-				e.printStackTrace();
-			}
 		}
 	}
 

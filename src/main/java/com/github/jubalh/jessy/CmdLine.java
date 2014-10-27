@@ -1,6 +1,8 @@
 package com.github.jubalh.jessy;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -54,7 +56,7 @@ public class CmdLine implements Observer {
 			reader = new ConsoleReader();
 			reader.setPrompt(this.composePrompt());
 
-			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer", "exit", "stop", "recorderStart", "recorderStop");
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer", "exit", "stop", "saveGame");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
@@ -260,17 +262,28 @@ public class CmdLine implements Observer {
 			}
 			return true;
 		}
-		if(text.matches("recorderStart\\s?")) {
-			game.getRecorder().setState(true);
-			this.setUserMessage("Recording game into file: " + game.getRecorder().getFilename());
-			return true;
-		}
-		if(text.matches("recorderStop\\s?")) {
-			if (game.getRecorder().getState()) {
-				game.getRecorder().setState(false);
-				this.setUserMessage("Stopped recording");
+		if(text.matches("saveGame\\s?")) {
+			Recorder recorder = null;
+
+			//JAVA 7: try(recorder = new Recorder()) {
+
+			try {
+				recorder = new Recorder();
+				recorder.record(game.getMoves());
+				recorder.close();
+			} catch (FileNotFoundException e) {
+				System.err.println("Error creating Recorder:");
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				System.err.println("Error creating Recorder:");
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println("Recorder: Error when saving file:");
+				e.printStackTrace();
+			} finally {
+				this.setUserMessage("Saved game into file: " + recorder.getFilename());
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
