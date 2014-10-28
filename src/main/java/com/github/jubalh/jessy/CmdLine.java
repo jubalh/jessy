@@ -199,7 +199,7 @@ public class CmdLine implements Observer {
 	 */
 	private String composePrompt() {
 		char status = CmdLine.PROMPT_CROSS;
-		final String SEPERATOR = " \u25AB ";
+		final String SEPARATOR = " \u25AB ";
 		String userMessage = this.getUserMessage();
 		StringBuilder result = new StringBuilder("");
 
@@ -207,7 +207,7 @@ public class CmdLine implements Observer {
 			result.append(userMessage);
 
 			if (!userMessage.contains("\n")) {
-				result.append(SEPERATOR);
+				result.append(SEPARATOR);
 			}
 
 			this.clearUserMessage();
@@ -219,7 +219,7 @@ public class CmdLine implements Observer {
 			} else {
 				result.append("black draws");
 			}
-			result.append(SEPERATOR);
+			result.append(SEPARATOR);
 		}
 
 		if (game.wasValidMove()) {
