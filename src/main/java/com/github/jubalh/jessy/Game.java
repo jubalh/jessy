@@ -175,7 +175,7 @@ public class Game extends Observable {
 						}
 						this.makeMove(genMove);
 						if (this.isMate()) {
-							statusUpdate("Checkmate!");
+							statusUpdate("Checkmate!\n");
 							return;
 						} else {
 							if ( this.isCastle() ) {
@@ -192,12 +192,12 @@ public class Game extends Observable {
 							}
 						}
 					} else {
-						statusUpdate("Move not allowed");
+						statusUpdate("Move not allowed\n");
 						return;
 					}
 				} else {
 					this.setValidMove(false);
-						statusUpdate("It's not your turn");
+						statusUpdate("It's not your turn\n");
 						return;
 				}
 			}

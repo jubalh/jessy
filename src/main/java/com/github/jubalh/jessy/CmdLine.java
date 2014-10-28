@@ -71,12 +71,12 @@ public class CmdLine implements Observer {
 							userMove = notationParser.parse(input);
 							game.process(userMove);
 						} catch (NotAField e) {
-							setUserMessage("No comprendo");
+							setUserMessage("No comprendo\n");
 						}
 					} 
 					// in case of unknown command
 					if (!matchSuccess && !game.isRunning()) {
-						setUserMessage("Yo Mister White! Shouldn't we get the game "+PROMPT_BOLD+"start"+PROMPT_BOLD_RESET+"ed?");
+						setUserMessage("Yo Mister White! Shouldn't we get the game "+PROMPT_BOLD+"start"+PROMPT_BOLD_RESET+"ed?\n");
 					}
 				}
 
@@ -202,12 +202,17 @@ public class CmdLine implements Observer {
 	 */
 	private String composePrompt() {
 		char status = CmdLine.PROMPT_CROSS;
-		final String SEPERATOR = " \u25AB ";
+		final String SEPARATOR = " \u25AB ";
 		String userMessage = this.getUserMessage();
 		StringBuilder result = new StringBuilder("");
 
 		if (!userMessage.isEmpty()) {
-			result.append(userMessage + SEPERATOR);
+			result.append(userMessage);
+
+			if (!userMessage.contains("\n")) {
+				result.append(SEPARATOR);
+			}
+
 			this.clearUserMessage();
 		}
 
@@ -217,7 +222,7 @@ public class CmdLine implements Observer {
 			} else {
 				result.append("black draws");
 			}
-			result.append(SEPERATOR);
+			result.append(SEPARATOR);
 		}
 
 		if (game.wasValidMove()) {
