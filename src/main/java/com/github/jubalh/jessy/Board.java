@@ -236,6 +236,7 @@ public final class Board {
 	}
 
 	/**
+	 * TODO: use moves array
 	 * Returns the last successful move made
 	 * @return last move
 	 */
