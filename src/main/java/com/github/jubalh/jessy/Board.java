@@ -136,7 +136,7 @@ public final class Board {
 	}
 
 	public boolean setFigure(GenericPosition position, final Figure figure) {
-		Coord cor = transformGenPostoCoord(position);
+		Coord cor = transformGenPosToCoord(position);
 		return setFigure(cor, figure);
 	}
 
@@ -167,12 +167,12 @@ public final class Board {
 		}
 	}
 
-	private Coord transformGenPostoCoord(GenericPosition position) {
+	private Coord transformGenPosToCoord(GenericPosition position) {
 		return new Coord(position.file.ordinal()+1, position.rank.ordinal()+1);
 	}
 
 	public Figure getFigure(GenericPosition position) throws NotAField {
-		Coord cor = this.transformGenPostoCoord(position);
+		Coord cor = this.transformGenPosToCoord(position);
 		return getFigure(cor);
 	}
 
@@ -207,7 +207,6 @@ public final class Board {
 			System.err.println("Can't move Figure from"+coordOld.toString()+" to "+coordNew.toString());
 			ret = false;
 		}
-		// figure successfully set; save last move
 		if(ret) {
 			try {
 				String s = coordOld.toString() + coordNew.toString();
@@ -259,16 +258,5 @@ public final class Board {
 	public static int getRowsCount() {
 		return BOARD_ROWS;
 	}
-
-	/**
-	 * TODO: use moves array
-	 * Returns the last successful move made
-	 * @return last move
-	 */
-	/*
-	 * public GenericMove getLastMove() {
-		return lastMove;
-	}
-	 */
 
 }
