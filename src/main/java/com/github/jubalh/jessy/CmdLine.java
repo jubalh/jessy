@@ -1,12 +1,15 @@
 package com.github.jubalh.jessy;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Observable;
 import java.util.Observer;
 
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 
+import com.fluxchess.jcpi.models.GenericMove;
 import com.github.jubalh.jessy.parsers.JessyNotationParser;
 import com.github.jubalh.jessy.parsers.NotationParser;
 import com.github.jubalh.jessy.pieces.Figure;
@@ -19,11 +22,6 @@ import com.github.jubalh.jessy.pieces.Figure;
  */
 public class CmdLine implements Observer {
 
-	private Game game;
-	private NotationParser notationParser = new JessyNotationParser();
-	private boolean active = true;
-	private StringBuilder messageToUser = new StringBuilder();
-	private static ConsoleReader reader;
 	// ANSI escape sequences for color
 	private static final String COLOR_LAST_MOVE= "\u001B[31m"; //red
 	private static final String COLOR_RESET = "\u001B[0m";
@@ -33,6 +31,12 @@ public class CmdLine implements Observer {
 	// prompt unicode characters
 	private static final char PROMPT_TICK = '\u2713';
 	private static final char PROMPT_CROSS = '\u2717';
+
+	private NotationParser notationParser = new JessyNotationParser();
+	private StringBuilder messageToUser = new StringBuilder();
+	private boolean active = true;
+	private Game game;
+	private static ConsoleReader reader;
 
 	/**
 	 * Constructor
@@ -53,11 +57,11 @@ public class CmdLine implements Observer {
 			reader = new ConsoleReader();
 			reader.setPrompt(this.composePrompt());
 
-			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer", "exit", "stop", "recorderStart", "recorderStop");
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer", "exit", "stop", "saveGame");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
-			Move userMove = null;
+			GenericMove userMove = null;
 			while((input = reader.readLine()) != null) {
 				if(input.length() > 0) {
 					// parse as command
@@ -68,16 +72,19 @@ public class CmdLine implements Observer {
 							userMove = notationParser.parse(input);
 							game.process(userMove);
 						} catch (NotAField e) {
-							setUserMessage("No comprendo");
+							setUserMessage("No comprendo\n");
 						}
 					} 
 					// in case of unknown command
 					if (!matchSuccess && !game.isRunning()) {
-						setUserMessage("Yo Mister White! Shouldn't we get the game "+PROMPT_BOLD+"start"+PROMPT_BOLD_RESET+"ed?");
+						setUserMessage("Yo Mister White! Shouldn't we get the game "+PROMPT_BOLD+"start"+PROMPT_BOLD_RESET+"ed?\n");
 					}
 				}
 
-				//TODO: multiline prompt
+				if (game.isMate()){
+					game.setRunning(false);
+				}
+
 				reader.setPrompt(this.composePrompt());
 
 				// if game should end
@@ -138,9 +145,9 @@ public class CmdLine implements Observer {
 				boolean bWasLastMove=false;
 				try {
 					// mark last move
-					Move lastMove = board.getLastMove();
-					if(lastMove != null) {
-						if(figure == board.getFigure(lastMove.getDestination())) {
+					if (!game.getMoves().isEmpty()) {
+						GenericMove lastMove = game.getMoves().get(game.getMoves().size() - 1);
+						if(figure == board.getFigure(lastMove.to)) {
 							bWasLastMove = true;
 							System.out.print(COLOR_LAST_MOVE);
 						}
@@ -196,12 +203,17 @@ public class CmdLine implements Observer {
 	 */
 	private String composePrompt() {
 		char status = CmdLine.PROMPT_CROSS;
-		final String SEPERATOR = " \u25AB ";
+		final String SEPARATOR = " \u25AB ";
 		String userMessage = this.getUserMessage();
 		StringBuilder result = new StringBuilder("");
 
 		if (!userMessage.isEmpty()) {
-			result.append(userMessage + SEPERATOR);
+			result.append(userMessage);
+
+			if (!userMessage.contains("\n")) {
+				result.append(SEPARATOR);
+			}
+
 			this.clearUserMessage();
 		}
 
@@ -211,7 +223,7 @@ public class CmdLine implements Observer {
 			} else {
 				result.append("black draws");
 			}
-			result.append(SEPERATOR);
+			result.append(SEPARATOR);
 		}
 
 		if (game.wasValidMove()) {
@@ -259,17 +271,28 @@ public class CmdLine implements Observer {
 			}
 			return true;
 		}
-		if(text.matches("recorderStart\\s?")) {
-			game.getRecorder().setState(true);
-			this.setUserMessage("Recording game into file: " + game.getRecorder().getFilename());
-			return true;
-		}
-		if(text.matches("recorderStop\\s?")) {
-			if (game.getRecorder().getState()) {
-				game.getRecorder().setState(false);
-				this.setUserMessage("Stopped recording");
+		if(text.matches("saveGame\\s?")) {
+			Recorder recorder = null;
+
+			//JAVA 7: try(recorder = new Recorder()) {
+
+			try {
+				recorder = new Recorder();
+				recorder.record(game.getMoves());
+				recorder.close();
+			} catch (FileNotFoundException e) {
+				System.err.println("Error creating Recorder:");
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				System.err.println("Error creating Recorder:");
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println("Recorder: Error when saving file:");
+				e.printStackTrace();
+			} finally {
+				this.setUserMessage("Saved game into file: " + recorder.getFilename());
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

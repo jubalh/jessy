@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import com.fluxchess.jcpi.models.GenericMove;
 
 /**
  *
@@ -17,7 +20,6 @@ public class Recorder implements AutoCloseable{
 	private BufferedWriter writer;
 	private static final String ENCODING = "utf-8";
 	private String filename = "jessy_record.txt";
-	private boolean isRecording = false;
 
 	/**
 	 * Constructor
@@ -34,13 +36,15 @@ public class Recorder implements AutoCloseable{
 	}
 
 	/**
-	 * Add a move to record
-	 * @param move move to add
-	 * @throws IOException problem writing to buffer/file
+	 * write moves in buffer
+	 * @param moves
+	 * @throws IOException
 	 */
-	public void record(Move move) throws IOException {
-		if (this.isRecording) {
-			writer.write(move.toString());
+	public void record(List<GenericMove> moves) throws IOException {
+		for (GenericMove genericMove : moves) {
+	 		Coord origin = new Coord( genericMove.from.file.ordinal() + 1, genericMove.from.rank.ordinal() + 1);
+	 		Coord destination = new Coord( genericMove.to.file.ordinal() + 1, genericMove.to.rank.ordinal() + 1);
+			writer.write(origin.toString() + destination.toString() );
 			writer.newLine();
 		}
 	}
@@ -51,22 +55,6 @@ public class Recorder implements AutoCloseable{
 	 */
 	public void close() throws IOException {
 		writer.close();
-	}
-
-	/**
-	 * Sets recorder state
-	 * @param status true = active
-	 */
-	public void setState(boolean status) {
-		this.isRecording = true;
-	}
-
-	/**
-	 * Get recorder state
-	 * @return true if should recording
-	 */
-	public boolean getState() {
-		return this.isRecording;
 	}
 
 	/**

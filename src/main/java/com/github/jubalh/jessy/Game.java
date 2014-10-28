@@ -1,20 +1,24 @@
 package com.github.jubalh.jessy;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
+import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.models.GenericFile;
-import com.fluxchess.jcpi.models.GenericPosition;
 import com.fluxchess.jcpi.models.GenericRank;
 import com.fluxchess.jcpi.models.GenericChessman;
+import com.fluxchess.jcpi.utils.MoveGenerator;
+import com.fluxchess.flux.board.Hex88Board;
+import com.fluxchess.flux.move.IntMove;
 import com.github.jubalh.jessy.pieces.*;
 
 public class Game extends Observable {
 
 	private EngineHandler engineHandler = null;
+	private final List<GenericMove> moves = new ArrayList<GenericMove>();
+	private int castlingInt = 0;
 	private Board board;
-	private Recorder recorder;
 	private boolean running;
 	private boolean moveWasValid;
 	private boolean isComputerGame;
@@ -31,6 +35,9 @@ public class Game extends Observable {
 	public void init() {
 		board.reset();
 		board.init();
+
+		moves.clear();
+		castlingInt = getHexBoard().castling;
 
 		engineHandler = new EngineHandler();
 		engineHandler.start();
@@ -70,6 +77,7 @@ public class Game extends Observable {
 	}
 
 	/**
+	 * TODO: needed? take a look at isValid()...
 	 * Set if last move was okay
 	 * @param status
 	 */
@@ -133,43 +141,35 @@ public class Game extends Observable {
 		notifyObservers(notification);
 	}
 
-	public void process(Move move) {
+	public void process(GenericMove move) {
 
 		try {
-			Figure figureToMove = board.getFigure(move.getOrigin());
+			Figure figureToMove = board.getFigure(move.from);
 			if (figureToMove == null) {
 				statusUpdate("Wrong coordinates");
 				return;
 			} else {
 				if (!figureToMove.isOpponent(this.getCurrentPlayer()) ) {
-					GenericFile fromFile = GenericFile.values()[move.getOrigin().getX() - 1];
-					GenericRank fromRank = GenericRank.values()[move.getOrigin().getY() - 1];
-					GenericFile toFile = GenericFile.values()[move.getDestination().getX() - 1];
-					GenericRank toRank = GenericRank.values()[move.getDestination().getY() - 1];
 					GenericChessman promotion = null;
-					if ( figureToMove instanceof Pawn && (toRank == GenericRank.R8 || toRank == GenericRank.R1) )
+					if ( figureToMove instanceof Pawn && (move.to.rank == GenericRank.R8 || move.to.rank == GenericRank.R1) )
 						promotion = GenericChessman.QUEEN;
-					GenericMove genMove = new GenericMove(
-								GenericPosition.valueOf(fromFile, fromRank),
-								GenericPosition.valueOf(toFile, toRank),
-								promotion);
-					this.setValidMove(engineHandler.isValidMove(genMove));
+					GenericMove genMove = new GenericMove( move.from, move.to, promotion);
+					this.setValidMove(this.isValidMove(genMove));
 					if(this.wasValidMove()) {
 						/*TODO: Find a decent way to ask for the promotion piece
 						 * right now it defaults to a queen
 						 */
 						// System.out.println("What piece would you like to promote to?");
-						if ( board.moveFigure(move) ) {
-							recordMove(move);
+						board.moveFigure(move);
+						if (genMove.promotion != null) {
+							board.setFigure(move.to, new Queen(getCurrentPlayer()));
 						}
-						if (genMove.promotion != null)
-							board.setFigure(move.getDestination().getX(), move.getDestination().getY(), new Queen(getCurrentPlayer()));
-						engineHandler.makeMove(genMove);
-						if (engineHandler.isMate()) {
-							statusUpdate("Checkmate!");
+						this.makeMove(genMove);
+						if (this.isMate()) {
+							statusUpdate("Checkmate!\n");
 							return;
 						} else {
-							if ( engineHandler.isCastle() ) {
+							if ( this.isCastle() ) {
 								board.moveCastlingRook();
 							}
 
@@ -179,17 +179,16 @@ public class Game extends Observable {
 								 * for sure after drawing the board so the user sees his last move first.
 								 * best would be in another thread so jessy doesnt freeze. 
 								 */
-								Move computerMove = engineHandler.compute(this, board);
-								recordMove(computerMove);
+								engineHandler.compute(this, board);
 							}
 						}
 					} else {
-						statusUpdate("Move not allowed");
+						statusUpdate("Move not allowed\n");
 						return;
 					}
 				} else {
 					this.setValidMove(false);
-						statusUpdate("It's not your turn");
+						statusUpdate("It's not your turn\n");
 						return;
 				}
 			}
@@ -200,31 +199,63 @@ public class Game extends Observable {
 		}
 	}
 
-	/**
-	 * set recorder
-	 * @param recorder to be set
-	 */
-	public void setRecorder(Recorder recorder) {
-		this.recorder = recorder;
-	}
-	
-	public Recorder getRecorder() {
-		return recorder;
+	private Hex88Board getHexBoard() {
+		Hex88Board hex88Board = new Hex88Board(new GenericBoard(GenericBoard.STANDARDSETUP));
+		for (GenericMove genericMove : moves) {
+			int move = IntMove.convertMove(genericMove, hex88Board);
+			hex88Board.makeMove(move);
+		}
+		return hex88Board;
 	}
 
-	/**
-	 * Adds a move for recording
-	 * @param move to add
-	 */
-	private void recordMove(Move move) {
-		if (recorder!=null) {
-			try {
-				recorder.record(move);
-			} catch (IOException e) {
-				System.err.println("Recorder: Error while writing");
-				e.printStackTrace();
+	private GenericBoard getCurrentBoard() {
+		Hex88Board hex88Board = getHexBoard();
+
+		return hex88Board.getBoard();
+	}
+
+	private boolean isValid(GenericBoard board, GenericMove move) {
+		for (GenericMove validMove : MoveGenerator.getGenericMoves(board)) {
+			if (move.equals(validMove)) {
+				return true;
 			}
+		}
+
+		return false;
+	}
+
+	public boolean isValidMove(GenericMove move) {
+		return isValid(getCurrentBoard(), move);
+	}
+
+	public void makeMove(GenericMove move) {
+		if (isValidMove(move)) {
+			moves.add(move);
+		} else {
+			throw new IllegalArgumentException();
 		}
 	}
 
+	public void undoMove() {
+		moves.remove(moves.size() - 1);
+	}
+
+	public boolean isMate() {
+		return MoveGenerator.getGenericMoves(getCurrentBoard()).length == 0;
+	}
+
+	public boolean isCastle() {
+		int newCastling = getHexBoard().castling;
+		if (getHexBoard().castling != castlingInt) {
+			castlingInt =  newCastling;
+			return true;
+		}
+
+		return false;
+	}
+	
+	public List<GenericMove> getMoves() {
+		return this.moves;
+	}
+	
 }

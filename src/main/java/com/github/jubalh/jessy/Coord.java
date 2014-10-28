@@ -94,8 +94,17 @@ public final class Coord {
 		return false;
 	}
 
+	private static char fieldnumberToChar(int number) {
+		return (char)(number-1+(int)'a');
+	}
+
 	@Override
 	public String toString() {
-		return "x: " + this.getX() + " y: " + this.getY();
+		StringBuilder s = new StringBuilder();
+
+		s.append(fieldnumberToChar(this.getX()));
+		s.append(this.getY());
+
+		return s.toString();
 	}
 }
