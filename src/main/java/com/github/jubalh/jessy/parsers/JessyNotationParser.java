@@ -12,22 +12,30 @@
 
 package com.github.jubalh.jessy.parsers;
 
-import com.github.jubalh.jessy.Coord;
-import com.github.jubalh.jessy.Move;
+import com.fluxchess.jcpi.models.GenericMove;
+import com.fluxchess.jcpi.models.IllegalNotationException;
 import com.github.jubalh.jessy.NotAField;
-import com.github.jubalh.jessy.pieces.Figure;
-import com.github.jubalh.jessy.pieces.Pawn;
 
 public class JessyNotationParser extends NotationParser {
 
 	@Override
-	public Move parse(String text) throws NotAField {
+	public GenericMove parse(String text) throws NotAField {
+		GenericMove m = null;
+
 		if (text.length() != 4) {
 			throw new NotAField();
 		}
 		String orig = text.substring(0,2);
 		String dest = text.substring(2,4);
-		return new Move(new Coord(orig), new Coord(dest));
+
+		//return new GenericMove(new Coord(orig), new Coord(dest));
+
+		try {
+			m = new GenericMove(text);
+		} catch (IllegalNotationException e) {
+			throw new NotAField();
+		}
+		return m;
 	}
 
 }

@@ -6,8 +6,6 @@ import java.util.Observable;
 
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.models.GenericFile;
-import com.fluxchess.jcpi.models.GenericPosition;
 import com.fluxchess.jcpi.models.GenericRank;
 import com.fluxchess.jcpi.models.GenericChessman;
 import com.fluxchess.jcpi.utils.MoveGenerator;
@@ -143,26 +141,19 @@ public class Game extends Observable {
 		notifyObservers(notification);
 	}
 
-	public void process(Move move) {
+	public void process(GenericMove move) {
 
 		try {
-			Figure figureToMove = board.getFigure(move.getOrigin());
+			Figure figureToMove = board.getFigure(move.from);
 			if (figureToMove == null) {
 				statusUpdate("Wrong coordinates");
 				return;
 			} else {
 				if (!figureToMove.isOpponent(this.getCurrentPlayer()) ) {
-					GenericFile fromFile = GenericFile.values()[move.getOrigin().getX() - 1];
-					GenericRank fromRank = GenericRank.values()[move.getOrigin().getY() - 1];
-					GenericFile toFile = GenericFile.values()[move.getDestination().getX() - 1];
-					GenericRank toRank = GenericRank.values()[move.getDestination().getY() - 1];
 					GenericChessman promotion = null;
-					if ( figureToMove instanceof Pawn && (toRank == GenericRank.R8 || toRank == GenericRank.R1) )
+					if ( figureToMove instanceof Pawn && (move.to.rank == GenericRank.R8 || move.to.rank == GenericRank.R1) )
 						promotion = GenericChessman.QUEEN;
-					GenericMove genMove = new GenericMove(
-								GenericPosition.valueOf(fromFile, fromRank),
-								GenericPosition.valueOf(toFile, toRank),
-								promotion);
+					GenericMove genMove = new GenericMove( move.from, move.to, promotion);
 					this.setValidMove(this.isValidMove(genMove));
 					if(this.wasValidMove()) {
 						/*TODO: Find a decent way to ask for the promotion piece
@@ -171,7 +162,7 @@ public class Game extends Observable {
 						// System.out.println("What piece would you like to promote to?");
 						board.moveFigure(move);
 						if (genMove.promotion != null) {
-							board.setFigure(move.getDestination().getX(), move.getDestination().getY(), new Queen(getCurrentPlayer()));
+							board.setFigure(move.to, new Queen(getCurrentPlayer()));
 						}
 						this.makeMove(genMove);
 						if (this.isMate()) {
@@ -188,7 +179,7 @@ public class Game extends Observable {
 								 * for sure after drawing the board so the user sees his last move first.
 								 * best would be in another thread so jessy doesnt freeze. 
 								 */
-								Move computerMove = engineHandler.compute(this, board);
+								engineHandler.compute(this, board);
 							}
 						}
 					} else {
@@ -237,16 +228,6 @@ public class Game extends Observable {
 		return isValid(getCurrentBoard(), move);
 	}
 
-	public boolean isValidMove(Move move) {
-		Coord origin = move.getOrigin();
-		Coord dest = move.getDestination();
-		GenericMove genMove = new GenericMove(
-				GenericPosition.valueOf( GenericFile.values()[origin.getX() - 1], GenericRank.values()[origin.getY() - 1]),
-				GenericPosition.valueOf( GenericFile.values()[dest.getX() - 1], GenericRank.values()[dest.getY() - 1]));
-
-		return isValid(getCurrentBoard(), genMove);
-	}
-
 	public void makeMove(GenericMove move) {
 		if (isValidMove(move)) {
 			moves.add(move);
@@ -276,5 +257,5 @@ public class Game extends Observable {
 	public List<GenericMove> getMoves() {
 		return this.moves;
 	}
-
+	
 }

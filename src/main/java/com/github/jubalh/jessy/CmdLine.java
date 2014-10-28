@@ -9,6 +9,7 @@ import java.util.Observer;
 import jline.console.ConsoleReader;
 import jline.console.completer.StringsCompleter;
 
+import com.fluxchess.jcpi.models.GenericMove;
 import com.github.jubalh.jessy.parsers.JessyNotationParser;
 import com.github.jubalh.jessy.parsers.NotationParser;
 import com.github.jubalh.jessy.pieces.Figure;
@@ -60,7 +61,7 @@ public class CmdLine implements Observer {
 			reader.addCompleter(commandsCompleter);
 
 			String input;
-			Move userMove = null;
+			GenericMove userMove = null;
 			while((input = reader.readLine()) != null) {
 				if(input.length() > 0) {
 					// parse as command
@@ -144,9 +145,9 @@ public class CmdLine implements Observer {
 				boolean bWasLastMove=false;
 				try {
 					// mark last move
-					Move lastMove = board.getLastMove();
-					if(lastMove != null) {
-						if(figure == board.getFigure(lastMove.getDestination())) {
+					if (!game.getMoves().isEmpty()) {
+						GenericMove lastMove = game.getMoves().get(game.getMoves().size() - 1);
+						if(figure == board.getFigure(lastMove.to)) {
 							bWasLastMove = true;
 							System.out.print(COLOR_LAST_MOVE);
 						}

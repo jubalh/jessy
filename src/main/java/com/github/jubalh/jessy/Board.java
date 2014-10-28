@@ -1,5 +1,8 @@
 package com.github.jubalh.jessy;
 
+import com.fluxchess.jcpi.models.GenericMove;
+import com.fluxchess.jcpi.models.GenericPosition;
+import com.fluxchess.jcpi.models.IllegalNotationException;
 import com.github.jubalh.jessy.pieces.Figure;
 import com.github.jubalh.jessy.pieces.King;
 import com.github.jubalh.jessy.pieces.Knight;
@@ -16,7 +19,7 @@ import com.github.jubalh.jessy.pieces.Bishop;
  */
 public final class Board {
 
-	private Move lastMove;
+	private GenericMove lastMove;
 	private static final int BOARD_ROWS = 8;
 	private static final int BOARD_COLUMNS = 8;
 	private Figure[][] matrix;
@@ -132,6 +135,11 @@ public final class Board {
 		return false;
 	}
 
+	public boolean setFigure(GenericPosition position, final Figure figure) {
+		Coord cor = transformGenPostoCoord(position);
+		return setFigure(cor, figure);
+	}
+
 	/**
 	 * Gets the figure that is at position.
 	 * @param x x-coordinate
@@ -159,13 +167,24 @@ public final class Board {
 		}
 	}
 
+	private Coord transformGenPostoCoord(GenericPosition position) {
+		return new Coord(position.file.ordinal()+1, position.rank.ordinal()+1);
+	}
+
+	public Figure getFigure(GenericPosition position) throws NotAField {
+		Coord cor = this.transformGenPostoCoord(position);
+		return getFigure(cor);
+	}
+
 	/**
 	 * Moves Figure from old position to new position.
 	 * @param move move to be made.
 	 * @return true if successfully set. false if out of bound.
 	 */
-	public boolean moveFigure(final Move move) {
-		return moveFigure(move.getOrigin(), move.getDestination());
+	public boolean moveFigure(final GenericMove move) {
+		Coord origin = new Coord(move.from.file.ordinal()+1, move.from.rank.ordinal()+1);
+		Coord destination = new Coord(move.to.file.ordinal()+1, move.to.rank.ordinal()+1);
+		return moveFigure(origin, destination);
 	}
 
 	/**
@@ -190,7 +209,13 @@ public final class Board {
 		}
 		// figure successfully set; save last move
 		if(ret) {
-			lastMove = new Move(coordOld, coordNew);
+			try {
+				String s = coordOld.toString() + coordNew.toString();
+				lastMove = new GenericMove(s);
+			} catch (IllegalNotationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return ret;
 	}
@@ -201,9 +226,9 @@ public final class Board {
 	 * @return true if successfully set. false if out of bound.
 	 */
 	public boolean moveCastlingRook(){
-		int oldX = lastMove.getOrigin().getX();
-		int newX = lastMove.getDestination().getX();
-		int yInt = lastMove.getDestination().getY();
+		int oldX = lastMove.from.file.ordinal()+1;
+		int newX = lastMove.to.file.ordinal()+1;
+		int yInt = lastMove.to.rank.ordinal()+1;
 		boolean returnValue = true;
 
 		if ( oldX > newX ) {
@@ -240,8 +265,10 @@ public final class Board {
 	 * Returns the last successful move made
 	 * @return last move
 	 */
-	public Move getLastMove() {
+	/*
+	 * public GenericMove getLastMove() {
 		return lastMove;
 	}
+	 */
 
 }

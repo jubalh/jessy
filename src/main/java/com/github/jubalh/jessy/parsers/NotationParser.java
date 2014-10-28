@@ -7,12 +7,12 @@
 
 package com.github.jubalh.jessy.parsers;
 
-import com.github.jubalh.jessy.Move;
+import com.fluxchess.jcpi.models.GenericMove;
 import com.github.jubalh.jessy.NotAField;
 
 public abstract class NotationParser {
 
-	abstract public Move parse(String text) throws NotAField;
+	abstract public GenericMove parse(String text) throws NotAField;
 
 	/**
 	 * Checks whether character is in upper case.
