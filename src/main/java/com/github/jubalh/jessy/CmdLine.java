@@ -80,6 +80,9 @@ public class CmdLine implements Observer {
 					}
 				}
 
+				if (game.isMate()){
+					game.setRunning(false);
+				}
 				//TODO: multiline prompt
 				reader.setPrompt(this.composePrompt());
 
