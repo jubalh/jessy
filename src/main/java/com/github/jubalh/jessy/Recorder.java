@@ -42,12 +42,9 @@ public class Recorder implements AutoCloseable{
 	 */
 	public void record(List<GenericMove> moves) throws IOException {
 		for (GenericMove genericMove : moves) {
-	 		/*
-	 		Move move = new Move( new Coord( genericMove.from.file.ordinal() + 1, genericMove.from.rank.ordinal() + 1),
-	 							new Coord( genericMove.to.file.ordinal() + 1, genericMove.to.rank.ordinal() + 1) );
-			writer.write(move.toString());
-			*/
-			writer.write(genericMove.toString());
+	 		Coord origin = new Coord( genericMove.from.file.ordinal() + 1, genericMove.from.rank.ordinal() + 1);
+	 		Coord destination = new Coord( genericMove.to.file.ordinal() + 1, genericMove.to.rank.ordinal() + 1);
+			writer.write(origin.toString() + destination.toString() );
 			writer.newLine();
 		}
 	}
