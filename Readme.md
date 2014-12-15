@@ -1,15 +1,24 @@
 # Jessy #
 
-Java console Chessprogram
+Got something for me?!
 
-Hands on experience is the best way for me to learn.
+Indeed, this is **jessy**, *a totally kafkaeque chess game*.
+This is the most awesome fuck you ever played, yo.
 
-Did this project just to get more familiar with Java.
-My goal was to put to use what I learned about the language. Classes, Exceptions and such.
 
-I never intended to build a complete chess program.
+*Idiot*: I don't like chess.
 
-So you can put pieces on the board and move them around.
+
+What? Come on! Man, you're smart.
+
+
+Okay folks, now for real.
+Hands on experience is the best way to learn.
+So I built this. Just to play around a little with that Java shit they tought us at uni. I know cool folks use C, but what do these guys know..
+
+One more thing: this game is full of bugs an' shit. No, this is not bad. It's intended. Like I said dude: *this thing is kafkaesque*!!
+
+Anyways, if you find any bugs: remove them! Make a pull request! We want to ship clean meth, no room for impurities here.
 
 ![Example](https://raw.github.com/jubalh/jessy/master/example.gif)
 
