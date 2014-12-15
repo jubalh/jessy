@@ -58,7 +58,7 @@ public class CmdLine implements Observer {
 			reader.setPrompt(this.composePrompt());
 
 			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer",
-					"exit", "stop", "saveGame", "credits");
+					"exit", "stop", "saveGame", "credits", "help");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
@@ -299,6 +299,10 @@ public class CmdLine implements Observer {
 			this.printCredits();
 			return true;
 		}
+		if(text.matches("help\\s?")) {
+			this.printHelp();
+			return true;
+		}
 		return false;
 	}
 
@@ -343,15 +347,20 @@ public class CmdLine implements Observer {
 	}
 	
 	public void printCredits() {
-		System.out.println("***********************");
-		System.out.printf("* jessy got cooked by:%n*%n");
-		System.out.println("* Chef de cuisine:");
-		System.out.println("*\t- Michael 'jubalh' Vetter");
-		System.out.printf("*%n* Cuisiniers:%n");
-		System.out.println("*\t- clinchergt");
-		System.out.println("*\t- flackbash");
-		System.out.println("*\t- fluxroot");
-		System.out.println("***********************");
+		String text = "***********************\n" +
+				"* jessy got cooked by:\n*\n" +
+				"* Chef de cuisine:\n" +
+				"*\t- Michael 'jubalh' Vetter\n" +
+				"*%n* Cuisiniers:\n" +
+				"*\t- clinchergt\n" +
+				"*\t- flackbash\n" +
+				"*\t- fluxroot\n" +
+				"***********************\n";
+		setUserMessage(text);
+	}
+	
+	private void printHelp() {
+		setUserMessage("Crying for help, bitch?!\nJust press tab, if you need more help you aren't gonna get it..\n");
 	}
 
 }
