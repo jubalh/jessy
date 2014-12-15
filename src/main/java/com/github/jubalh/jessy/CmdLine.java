@@ -57,7 +57,8 @@ public class CmdLine implements Observer {
 			reader = new ConsoleReader();
 			reader.setPrompt(this.composePrompt());
 
-			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer", "exit", "stop", "saveGame");
+			StringsCompleter commandsCompleter = new StringsCompleter("start", "start againstComputer",
+					"exit", "stop", "saveGame", "credits");
 			reader.addCompleter(commandsCompleter);
 
 			String input;
@@ -294,6 +295,10 @@ public class CmdLine implements Observer {
 				return true;
 			}
 		}
+		if(text.matches("credits\\s?")) {
+			this.printCredits();
+			return true;
+		}
 		return false;
 	}
 
@@ -335,6 +340,18 @@ public class CmdLine implements Observer {
 		if (arg instanceof GameNotification) {
 			setUserMessage( ((GameNotification)arg).getMessage() );
 		}
+	}
+	
+	public void printCredits() {
+		System.out.println("***********************");
+		System.out.printf("* jessy got cooked by:%n*%n");
+		System.out.println("* Chef de cuisine:");
+		System.out.println("*\t- Michael 'jubalh' Vetter");
+		System.out.printf("*%n* Cuisiniers:%n");
+		System.out.println("*\t- clinchergt");
+		System.out.println("*\t- flackbash");
+		System.out.println("*\t- fluxroot");
+		System.out.println("***********************");
 	}
 
 }
